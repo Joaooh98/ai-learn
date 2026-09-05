@@ -1,0 +1,22 @@
+# Credenciais e configuração local
+.env
+.env.*
+!.env.example
+
+# Ambientes e caches Python
+.venv/
+venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+
+# Saídas locais de ferramentas
+.playwright-mcp/
+graphify-out/
