@@ -2,73 +2,106 @@
 
 > Curso: **AI Gateways** · Duração: `06:12`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de estudo pela continuidade do módulo, depois das aulas práticas 14 e 15.
-
-Quando os prints forem adicionados, este README pode ser refinado com o fluxo exato exibido na aula.
-
 ## Resumo
 
-Depois que a aplicação passa a chamar o LiteLLM Proxy usando um nome lógico, a próxima evolução natural é adicionar mais modelos ao proxy e alternar entre eles sem mudar o código da aplicação.
+Esta aula continua o projeto prático do LiteLLM Proxy e mostra como adicionar mais de uma capacidade interna na gateway. A aplicação deixa de usar um modelo fixo e passa a ler `AI_GATEWAY_MODEL`, mantendo o contrato em nomes internos como `developer-assistant` e `architecture-advisor`.
 
-O objetivo arquitetural é manter a aplicação dependente de um contrato interno, enquanto o proxy controla qual provider/modelo real atende cada capacidade.
+O ponto principal é que alternar entre OpenAI e Anthropic passa a ser uma decisão de configuração da gateway, não uma mudança no código de integração da aplicação.
 
-## Ideia central
+Projeto prático registrado em: [`multi-capability-proxy`](./multi-capability-proxy/README.md)
 
-Em vez de escrever na aplicação:
+## 1. Modelo vindo da configuração
 
-```python
-model = "gpt-4.1-mini"
-```
+![Modelo vindo de AI_GATEWAY_MODEL](./01.png)
 
-a aplicação continua usando um nome interno:
+O `main.py` passa a ler a capacidade interna por variável de ambiente:
 
 ```python
-model = "developer-assistant"
+MODEL = os.environ.get("AI_GATEWAY_MODEL", "developer-assistant")
 ```
 
-O proxy pode alterar o mapeamento interno para outro modelo:
+A aplicação continua sem conhecer `gpt-*` ou `claude-*`. Ela conhece apenas o nome publicado pelo gateway.
 
-```yaml
-model_list:
-  - model_name: developer-assistant
-    litellm_params:
-      model: openai/gpt-4.1-mini
-      api_key: os.environ/OPENAI_API_KEY
+## 2. Default seguro para a aplicação
+
+![Default developer assistant](./02.png)
+
+Se `AI_GATEWAY_MODEL` não estiver definida, o código usa `developer-assistant`.
+
+Isso mantém o exemplo executável com uma capacidade padrão, mas permite alternar o comportamento sem editar o código.
+
+## 3. Duas capacidades no proxy
+
+![Duas capacidades internas](./03.png)
+
+O `config.yaml` passa a expor duas capacidades:
+
+- `developer-assistant`: mapeada para `openai/gpt-4.1-mini`;
+- `architecture-advisor`: mapeada para `anthropic/claude-sonnet-4-6`.
+
+O proxy sabe qual provider físico está por trás de cada nome. A aplicação não sabe e não precisa saber.
+
+## 4. Variáveis de ambiente
+
+![Variaveis de ambiente](./04.png)
+
+O `.env` passa a ter:
+
+- `OPENAI_API_KEY`;
+- `ANTHROPIC_API_KEY`;
+- `LITELLM_MASTER_KEY`;
+- `AI_GATEWAY_MODEL`.
+
+Os prints mostram chaves reais no editor. No projeto prático desta pasta, elas foram substituídas por placeholders em `.env.example`.
+
+## 5. Alternando a capacidade
+
+![AI_GATEWAY_MODEL architecture advisor](./05.png)
+
+Ao definir:
+
+```env
+AI_GATEWAY_MODEL=architecture-advisor
 ```
 
-ou expor uma nova capacidade:
+a mesma aplicação passa a chamar a capacidade exposta pelo proxy para o Anthropic.
 
-```yaml
-model_list:
-  - model_name: developer-assistant
-    litellm_params:
-      model: openai/gpt-4.1-mini
-      api_key: os.environ/OPENAI_API_KEY
+## 6. Execução sem mudar o código
 
-  - model_name: deep-analysis
-    litellm_params:
-      model: anthropic/claude-sonnet-4-5
-      api_key: os.environ/ANTHROPIC_API_KEY
+![Execucao](./06.png)
+
+A execução continua sendo:
+
+```bash
+python main.py
 ```
 
-## O que observar na prática
+A diferença está no ambiente e na configuração do proxy.
 
-- adicionar modelo no proxy não deveria obrigar alteração em todos os serviços;
-- alternar modelo físico deveria ser uma decisão de configuração;
-- nomes lógicos devem representar capacidade, não marca do provider;
-- a aplicação só deveria mudar quando a capacidade de negócio muda;
-- chaves reais continuam no proxy, não na aplicação.
+## 7. Resposta com outro comportamento
 
-## Checklist de entendimento
+![Resposta architecture advisor](./07.png)
 
-- A aplicação conhece o nome lógico?
-- O proxy sabe resolver esse nome para um modelo real?
-- Cada provider tem sua chave configurada no ambiente correto?
-- A troca de modelo preserva formato, qualidade e custo aceitáveis?
-- Existe observabilidade para saber qual deployment respondeu?
+A resposta muda porque o modelo físico por trás da capacidade mudou. Isso é esperado: alternar providers/modelos pode mudar estilo, profundidade, formato e vocabulário.
+
+## 8. Resultado usando `architecture-advisor`
+
+![Resultado architecture advisor](./08.png)
+
+O terminal mostra `Modelo: architecture-advisor`, mas a aplicação ainda está chamando a mesma interface HTTP do LiteLLM Proxy.
+
+## 9. Contrato da aplicação
+
+![Contrato AI_GATEWAY_MODEL](./09.png)
+
+O contrato importante para a aplicação é:
+
+```text
+AI_GATEWAY_MODEL -> nome interno da gateway
+```
+
+Não é provider. Não é modelo físico. É uma capacidade.
 
 ## Ideia-chave
 
-Adicionar e alternar modelos no proxy é o que transforma o gateway em ponto de controle. O contrato da aplicação fica estável, enquanto a infraestrutura de IA pode evoluir.
+Adicionar e alternar modelos no proxy permite trocar implementação sem trocar integração. A aplicação escolhe uma capacidade interna; o gateway decide o provider/modelo real.

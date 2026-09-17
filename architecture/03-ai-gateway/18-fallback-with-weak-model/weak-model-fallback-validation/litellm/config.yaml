@@ -1,0 +1,17 @@
+model_list:
+  - model_name: support-ticket-classifier
+    litellm_params:
+      model: os.environ/PRIMARY_MODEL
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: support-ticket-classifier-backup
+    litellm_params:
+      model: os.environ/BACKUP_MODEL
+      api_key: os.environ/ANTHROPIC_API_KEY
+
+litellm_settings:
+  fallbacks:
+    - support-ticket-classifier: ["support-ticket-classifier-backup"]
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

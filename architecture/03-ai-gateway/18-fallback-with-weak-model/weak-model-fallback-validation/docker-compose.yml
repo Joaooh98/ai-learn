@@ -1,0 +1,15 @@
+services:
+  litellm-proxy:
+    image: ghcr.io/berriai/litellm:main-stable
+    container_name: litellm-proxy
+    ports:
+      - "4000:4000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
+      PRIMARY_MODEL: ${PRIMARY_MODEL}
+      BACKUP_MODEL: ${BACKUP_MODEL}
+    volumes:
+      - ./litellm/config.yaml:/app/config.yaml:ro
+    command: ["--config", "/app/config.yaml", "--port", "4000"]

@@ -2,59 +2,94 @@
 
 > Curso: **AI Gateways** · Duração: `06:32`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de estudo pela continuidade do módulo de resiliência.
-
-Quando os prints forem adicionados, este README pode ser ajustado para refletir o fluxo exato da aula.
-
 ## Resumo
 
-Fallback técnico é uma alternativa automática quando o caminho principal falha. Em AI Gateway, isso normalmente significa tentar outro modelo, deployment, região ou provider sem exigir que a aplicação implemente essa lógica.
+Esta aula adiciona fallback técnico dentro do LiteLLM Proxy. A aplicação continua chamando apenas a capacidade principal, `developer-assistant`, mas o proxy ganha uma alternativa interna, `developer-assistant-backup`, usada automaticamente se a principal falhar.
 
-O objetivo não é melhorar a resposta. O objetivo principal é manter o serviço disponível quando o caminho principal está lento, indisponível ou retornando erro.
+O ponto arquitetural é que o fallback acontece no proxy. A aplicação não chama o backup diretamente e não precisa importar outro SDK.
 
-## Fluxo conceitual
+Projeto prático registrado em: [`proxy-technical-fallback`](./proxy-technical-fallback/README.md)
+
+## 1. Aplicação chama uma capacidade
+
+![Aplicacao chama capacidade](./01.png)
+
+A arquitetura segue:
 
 ```text
-Aplicacao
-  -> AI Gateway
-    -> tentativa principal
-      -> sucesso: retorna resposta
-      -> falha: tenta fallback tecnico
-        -> sucesso: retorna resposta alternativa
-        -> falha: retorna erro controlado
+Aplicacao Python -> LiteLLM Proxy -> OpenAI
 ```
 
-## Exemplos de fallback técnico
+Mas agora existe uma regra importante: a aplicação escolhe uma capacidade interna da gateway, não um modelo direto do provider.
 
-- modelo principal indisponível -> usar outro modelo compatível;
-- região principal indisponível -> usar deployment em outra região;
-- provider principal com erro -> usar provider secundário;
-- timeout no modelo forte -> usar modelo mais rápido;
-- erro temporário -> tentar rota alternativa com limite.
+Exemplos citados:
 
-## Cuidados
+- `developer-assistant`;
+- `architecture-advisor`.
 
-Fallback não é invisível do ponto de vista do produto. Mesmo que a API responda com sucesso, a resposta pode mudar em:
+## 2. Capacidade principal e backup
 
-- qualidade;
-- estilo;
-- latência;
-- custo;
-- aderência ao formato esperado;
-- capacidade de seguir instruções complexas.
+![Capacidade principal e backup](./02.png)
 
-Por isso, fallback técnico precisa de observabilidade. O time deve conseguir saber quando a resposta veio do caminho principal e quando veio de uma alternativa.
+O `config.yaml` define:
 
-## Boas perguntas
+- `developer-assistant`: capacidade principal por trás da OpenAI;
+- `developer-assistant-backup`: alternativa técnica por trás da Anthropic.
 
-- O fallback tem qualidade suficiente para esse caso de uso?
-- O usuário precisa saber que houve degradação?
-- O custo do fallback é maior ou menor?
-- A resposta mantém o mesmo contrato?
-- O fallback pode mascarar incidentes importantes?
+O comentário da aula é essencial: fallback técnico não garante resposta semanticamente equivalente. É outro provider/modelo, com comportamento e estilo diferentes.
+
+## 3. Regra de fallback
+
+![Regra de fallback](./03.png)
+
+A regra aparece em `litellm_settings.fallbacks`:
+
+```yaml
+litellm_settings:
+  fallbacks:
+    - developer-assistant: ["developer-assistant-backup"]
+```
+
+Se `developer-assistant` falhar, depois das tentativas configuradas, o proxy tenta `developer-assistant-backup`.
+
+## 4. Execução pela aplicação
+
+![Execucao](./04.png)
+
+A aplicação executa o mesmo comando:
+
+```bash
+python main.py
+```
+
+Ela não recebe um novo endpoint, não escolhe backup e não muda de SDK.
+
+## 5. Nome principal no proxy
+
+![Nome principal](./05.png)
+
+A capacidade principal continua publicada como `developer-assistant`. O backup existe apenas para o proxy.
+
+Essa separação evita que o código cliente comece a depender de detalhes de contingência.
+
+## 6. Ambiente apontando para a principal
+
+![Ambiente principal](./06.png)
+
+O `.env` mantém:
+
+```env
+AI_GATEWAY_MODEL=developer-assistant
+```
+
+Ou seja: mesmo com fallback configurado, o contrato da aplicação continua sendo a capacidade principal.
+
+## 7. Resultado com fallback transparente
+
+![Resultado](./07.png)
+
+O terminal mostra a aplicação usando `developer-assistant`. Se o caminho principal falhar, o proxy pode resolver por outro modelo sem expor essa decisão para a aplicação.
 
 ## Ideia-chave
 
-Fallback técnico aumenta disponibilidade, mas cria trade-offs. Ele precisa ser configurado por capacidade, não como regra genérica para todos os usos de IA.
+Fallback técnico é mecanismo de resiliência, não garantia de equivalência. Ele aumenta disponibilidade, mas precisa ser observado porque pode mudar qualidade, formato e comportamento da resposta.
