@@ -1,0 +1,12 @@
+# LiteLLM Proxy configuration.
+#
+# The app uses the logical model "developer-assistant".
+# The proxy maps that name to the real provider/model.
+model_list:
+  - model_name: developer-assistant
+    litellm_params:
+      model: openai/gpt-4.1-mini
+      api_key: os.environ/OPENAI_API_KEY
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
