@@ -2,39 +2,56 @@
 
 > Curso: **Fluxos de Chamada** · Duração: `05:29`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints nem código da aula. As notas abaixo foram registradas como
-guia de estudo pela continuidade do módulo. Quando o material prático for adicionado (prints,
-projeto de exemplo), este README pode ser ajustado para refletir o conteúdo exato da aula.
+Esta aula evolui a API síncrona da aula anterior adicionando um endpoint de streaming para explicação textual. A ideia é comparar dois fluxos no mesmo backend: JSON completo para máquina e texto progressivo para experiência humana.
 
 ## Resumo
 
-Dando sequência à implementação prática iniciada na aula 05, esta aula troca a chamada síncrona
-simples por streaming, aplicando o conceito apresentado na aula 03
-([`03-streaming-and-perceived-latency`](../03-streaming-and-perceived-latency/README.md)). O
-objetivo é mostrar, na prática, como a resposta passa a ser consumida token a token em vez de
-esperada por inteiro.
-
-## O que a aula deve cobrir
-
-- Ativação do modo streaming na chamada ao modelo (ex.: flag `stream=true` da API/SDK usada).
-- Consumo incremental da resposta (chunks/tokens) conforme eles chegam.
-- Exibição incremental do resultado (ex.: efeito de texto sendo "digitado" em tempo real).
-- Comparação direta com o comportamento síncrono da aula anterior: mesma operação, latência real
-  parecida, latência percebida bem menor.
-
-## Fluxo conceitual
+A aplicação passa a ter dois caminhos:
 
 ```text
-Aplicação -> chama modelo (stream=true)
-Modelo    -> token -> token -> token -> ... -> fim do stream
-Aplicação -> exibe/processa cada token assim que chega
+Fluxo 1: /tickets/analyze -> espera a IA terminar -> devolve JSON
+Fluxo 2: /tickets/explain -> IA gera chunks -> devolve texto em partes
 ```
+
+O endpoint de streaming não tenta devolver JSON. Ele usa um prompt próprio para texto corrido, em português, com frases curtas e progressivas.
+
+## Prompt de explicação
+
+```text
+Você é um assistente de suporte. Explique, em texto corrido e em português,
+o que o cliente está relatando e qual a recomendação inicial de tratamento.
+Escreva de forma progressiva, em algumas frases curtas. Não use JSON.
+```
+
+## Implementação vista na aula
+
+No cliente de IA:
+
+- `stream=True` faz o SDK devolver um iterável de chunks.
+- Cada `chunk.choices[0].delta.content` é repassado com `yield`.
+- Se houver erro no meio do stream, a aplicação não consegue mais trocar o status HTTP; por isso envia uma mensagem simples no próprio texto.
+
+Na rota FastAPI:
+
+- `POST /tickets/explain` retorna `StreamingResponse`.
+- A rota tenta puxar o primeiro chunk antes de começar a resposta, para transformar falha inicial em HTTP 500.
+- Depois do primeiro byte enviado, o restante é entregue com `yield from chunks`.
+
+## Teste com curl
+
+O print usa `curl -N` para não bufferizar a resposta:
+
+```bash
+curl -N -w "\nTempo total: %{time_total}s\n" \
+  -X POST http://127.0.0.1:8000/tickets/explain \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."}'
+```
+
+## Projeto prático
+
+O projeto reproduzível está em [streaming-ticket-explanation](./streaming-ticket-explanation/README.md).
 
 ## Ideia-chave
 
-O código muda pouco em relação à versão síncrona — a diferença está em como a resposta é
-consumida. Essa aula reforça que streaming é uma mudança de baixo custo de implementação com alto
-impacto na experiência percebida, o que explica por que costuma ser a primeira otimização antes de
-se considerar processamento assíncrono.
+Streaming não é para dados estruturados finais. Ele é para respostas textuais em que o usuário ganha algo vendo o conteúdo aparecer antes da conclusão completa.

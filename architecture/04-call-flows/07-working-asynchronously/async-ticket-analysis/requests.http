@@ -1,0 +1,27 @@
+### Análise de ticket de suporte (chamada síncrona à IA)
+POST http://127.0.0.1:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."
+}
+
+### Explicação textual via STREAMING (resposta chega em partes)
+POST http://127.0.0.1:8000/tickets/explain
+Content-Type: application/json
+
+{
+  "message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."
+}
+
+### Fluxo ASSÍNCRONO: cria o job e responde na hora (status pending)
+# @name createJob
+POST http://127.0.0.1:8000/tickets/full-analysis
+Content-Type: application/json
+
+{
+  "message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."
+}
+
+### Consulta o job usando o job_id da resposta acima (rode createJob primeiro)
+GET http://127.0.0.1:8000/jobs/{{createJob.response.body.$.job_id}}

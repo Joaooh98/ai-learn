@@ -2,41 +2,72 @@
 
 > Curso: **Fluxos de Chamada** · Duração: `06:18`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints nem código da aula. As notas abaixo foram registradas como
-guia de estudo pela continuidade do módulo. Quando o material prático for adicionado (prints,
-projeto de exemplo), este README pode ser ajustado para refletir o conteúdo exato da aula.
+Esta aula adiciona o terceiro fluxo do módulo: processamento assíncrono por job. A request cria um trabalho, recebe um `job_id` imediatamente e a IA roda depois, fora da resposta original.
 
 ## Resumo
 
-Fechando o módulo "Fluxos de Chamada", esta aula implementa o terceiro fluxo apresentado na parte
-teórica (aula 04 —
-[`04-when-to-turn-ai-into-async-processing`](../04-when-to-turn-ai-into-async-processing/README.md)):
-processamento assíncrono. A chamada ao modelo deixa de bloquear o fluxo principal da aplicação —
-o pedido é aceito, colocado para processar em segundo plano, e o resultado é entregue depois.
-
-## O que a aula deve cobrir
-
-- Separação entre o ponto que **recebe o pedido** e o ponto que **processa a chamada ao modelo**
-  (ex.: fila, worker ou tarefa em background).
-- Resposta imediata da aplicação ao cliente (ex.: um identificador de job/tarefa), sem esperar o
-  modelo responder.
-- Alguma forma de entregar o resultado depois: consulta por polling, callback, webhook ou evento.
-- Estados do pedido ao longo do processamento (`pendente`, `processando`, `concluído`, `falhou`).
-
-## Fluxo conceitual
+O fluxo implementado é:
 
 ```text
-Cliente    -> aplicação: pede execução
-Aplicação  -> enfileira -> responde imediatamente com um id de job
-Worker     -> consome a fila -> chama o modelo -> grava o resultado
-Cliente    -> consulta o resultado pelo id (polling/callback/webhook)
+POST /tickets/full-analysis -> cria job pending -> responde job_id
+BackgroundTasks -> processing -> chama IA -> completed/failed
+GET /jobs/{job_id} -> consulta status e resultado
 ```
+
+Nos prints, o projeto continua com os endpoints anteriores:
+
+- `POST /tickets/analyze`: síncrono, devolve JSON estruturado.
+- `POST /tickets/explain`: streaming, devolve texto progressivo.
+- `POST /tickets/full-analysis`: assíncrono, cria job.
+- `GET /jobs/{job_id}`: consulta status/resultado.
+
+## Job store didático
+
+A aula usa um dicionário Python em memória para armazenar jobs:
+
+```text
+job_id -> {"job_id", "status", "result?", "error?"}
+```
+
+Estados possíveis:
+
+```text
+pending -> processing -> completed
+pending -> processing -> failed
+```
+
+Isso é suficiente para aprender o fluxo, mas não é produção: ao reiniciar o processo os jobs somem, e múltiplos workers não compartilham esse dicionário. Em produção, isso viraria banco, Redis, fila real, Celery/RQ ou serviço equivalente.
+
+## Resultado esperado
+
+Ao criar o job:
+
+```json
+{
+  "job_id": "job_4c009606",
+  "status": "pending"
+}
+```
+
+Depois de consultar:
+
+```json
+{
+  "job_id": "job_4c009606",
+  "status": "completed",
+  "result": {
+    "category": "billing",
+    "priority": "high",
+    "summary": "Cobrança duplicada no pagamento",
+    "recommended_action": "Verificar as transações recentes do cliente e iniciar o processo de estorno para a cobrança duplicada."
+  }
+}
+```
+
+## Projeto prático
+
+O projeto reproduzível está em [async-ticket-analysis](./async-ticket-analysis/README.md).
 
 ## Ideia-chave
 
-Esta aula fecha o ciclo do módulo mostrando, na prática, o custo de infraestrutura descrito na
-aula 04 em troca de escalar sem bloquear recursos por chamada. Com os três fluxos implementados —
-síncrono (aula 05), streaming (aula 06) e assíncrono (aula 07) — o módulo entrega uma base
-comparável para decidir qual usar em cada cenário real.
+Assíncrono muda o contrato da funcionalidade. O cliente não recebe o resultado da IA na primeira resposta; ele recebe um identificador e passa a acompanhar estado.

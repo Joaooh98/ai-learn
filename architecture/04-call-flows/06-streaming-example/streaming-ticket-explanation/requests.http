@@ -1,0 +1,15 @@
+### Análise de ticket de suporte (chamada síncrona à IA)
+POST http://127.0.0.1:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."
+}
+
+### Explicação textual via STREAMING (resposta chega em partes)
+POST http://127.0.0.1:8000/tickets/explain
+Content-Type: application/json
+
+{
+  "message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."
+}

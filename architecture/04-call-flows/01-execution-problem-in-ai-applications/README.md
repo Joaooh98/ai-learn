@@ -2,45 +2,60 @@
 
 > Curso: **Fluxos de Chamada** · Duração: `04:44`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de
-estudo a partir do título e da posição da aula no módulo. Quando os prints forem adicionados,
-este README pode ser ajustado para refletir o fluxo exato da aula.
+Esta aula abre o módulo mostrando que chamadas de IA não se comportam como chamadas HTTP tradicionais. O ponto central não é apenas "a IA demora"; é que a aplicação precisa escolher conscientemente se vai esperar, transmitir em partes ou delegar a execução para background.
 
 ## Resumo
 
-Toda chamada a um modelo de IA tem um custo de execução que não existe (ou é irrelevante) em
-uma chamada tradicional a um banco de dados ou a um serviço interno: o tempo de resposta é alto,
-variável e nem sempre previsível. Um modelo pode levar de alguns milissegundos a dezenas de
-segundos para responder, dependendo do tamanho do prompt, do modelo escolhido e da carga do
-provider.
+Em uma integração tradicional, o fluxo costuma ser previsível: usuário aciona a interface, frontend chama backend, backend consulta API/banco e devolve uma resposta completa. Em IA, a resposta pode vir rápido, demorar vários segundos, chegar em partes via streaming, dar timeout ou nem chegar.
 
-Essa aula abre o módulo "Fluxos de Chamada" apresentando o problema central: se a aplicação trata
-toda chamada de IA como se fosse uma chamada síncrona comum — "chama e espera" — ela herda essa
-variabilidade de latência diretamente na experiência do usuário e na saúde do próprio sistema
-(threads presas, timeouts, filas cheias).
+Isso muda tanto a arquitetura quanto a experiência do usuário. O sistema precisa dar feedback imediato, lidar com falhas, permitir retry/cancelamento e escolher o fluxo certo para cada tipo de tarefa.
 
-## Por que isso é diferente de uma chamada comum
+## Integrações com IA e abstração
+
+O primeiro diagrama reforça a importância de uma camada intermediária entre a aplicação e os modelos:
 
 ```text
-Chamada tradicional:  aplicação -> serviço -> resposta        (latência baixa e estável)
-Chamada de IA:         aplicação -> modelo  -> resposta        (latência alta e variável)
+Aplicação -> Abstração -> AI Gateway -> modelos/providers
 ```
 
-Os fatores que tornam a execução de IA um problema arquitetural, não apenas de implementação:
+Essa abstração centraliza interface, normalização de requests/responses, compatibilidade entre modelos, roteamento, limites e políticas. O objetivo é reduzir acoplamento: a aplicação não deve depender diretamente de detalhes de cada provider.
 
-- **Latência alta**: gerar uma resposta é um processo de inferência, não uma consulta.
-- **Latência variável**: prompts maiores, modelos maiores ou picos de demanda no provider mudam o
-  tempo de resposta de forma imprevisível.
-- **Custo por chamada**: cada execução tem custo financeiro, o que muda a forma como se lida com
-  retries e re-execuções.
-- **Bloqueio de recursos**: se a chamada é síncrona, o processo, a thread ou a conexão que espera
-  a resposta fica ocupado durante todo esse tempo.
+## Chamada tradicional vs chamada de IA
+
+Uma chamada tradicional geralmente retorna uma resposta única e completa. Já uma chamada de IA tem latência variável e pode assumir vários formatos de entrega:
+
+- resposta completa e rápida;
+- resposta completa depois de vários segundos;
+- streaming em pedaços;
+- timeout;
+- falha no meio do processamento.
+
+Por isso, tratar IA como uma request comum costuma gerar UX ruim e riscos operacionais.
+
+## Quando síncrono ainda serve
+
+O material já antecipa uma regra importante: chamadas síncronas fazem sentido quando a entrada é pequena, a saída é curta e estruturada, e a resposta tende a voltar rápido. Exemplo: classificar um ticket e devolver JSON com categoria, prioridade e resumo.
+
+Para respostas longas, abertas ou variáveis, streaming melhora a percepção de progresso. Para tarefas pesadas, com várias etapas, o fluxo deve sair da request original e virar processamento assíncrono.
+
+## Fluxo para workloads pesados
+
+O desenho final apresenta a direção recomendada para tarefas caras:
+
+```text
+request pesada -> cria job -> fila -> worker -> IA -> resultado/status -> usuário acompanha
+```
+
+O usuário recebe um `job_id`, acompanha status/progresso e busca o resultado quando estiver pronto. Isso evita conexões presas, reduz timeout e permite escalar workers separadamente.
+
+## Regra prática
+
+| Situação | Fluxo indicado |
+|---|---|
+| Resposta simples e rápida | Síncrono |
+| Texto longo que o usuário pode ler aos poucos | Streaming |
+| Tarefa longa, pesada ou com várias etapas | Job assíncrono |
 
 ## Ideia-chave
 
-O problema de execução em aplicações com IA não é "a IA é lenta". É que a arquitetura da aplicação
-precisa decidir, de forma consciente, *como* esperar (ou não esperar) por essa resposta. As
-próximas aulas do módulo tratam exatamente dessa decisão: quando uma chamada síncrona ainda é
-aceitável, quando usar streaming e quando migrar para processamento assíncrono.
+O tempo percebido pelo usuário importa tanto quanto o tempo real de execução. Feedback rápido, estados explícitos e escolha correta do fluxo tornam aplicações com IA mais confiáveis e mais agradáveis de usar.

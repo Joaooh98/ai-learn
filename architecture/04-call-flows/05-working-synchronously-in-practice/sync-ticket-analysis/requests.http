@@ -1,0 +1,23 @@
+### Análise de ticket de suporte (chamada síncrona à IA)
+POST http://127.0.0.1:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Fui cobrado duas vezes e preciso de ajuda com meu pagamento."
+}
+
+### Outro exemplo - problema técnico
+POST http://127.0.0.1:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "O app trava toda vez que tento abrir a tela de relatórios."
+}
+
+### Exemplo de erro de validação (mensagem vazia -> HTTP 422)
+POST http://127.0.0.1:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": ""
+}

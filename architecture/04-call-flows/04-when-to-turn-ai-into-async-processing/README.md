@@ -2,48 +2,75 @@
 
 > Curso: **Fluxos de Chamada** · Duração: `03:52`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de
-estudo pela continuidade do módulo. Quando os prints forem adicionados, este README pode ser
-ajustado para refletir o fluxo exato da aula.
+Esta aula separa dois conceitos que às vezes são confundidos: streaming e processamento assíncrono. Streaming ainda mantém uma request aberta; processamento assíncrono tira o trabalho pesado da request original.
 
 ## Resumo
 
-Depois de síncrono (aula 02) e streaming (aula 03), esta aula fecha a parte conceitual do módulo
-definindo o terceiro caminho: processamento assíncrono. A chamada de IA deixa de bloquear o
-fluxo principal da aplicação — a aplicação dispara o trabalho, segue com outras tarefas, e a
-resposta chega depois, por um outro canal.
-
-## Sinais de que é hora de sair do síncrono/streaming
-
-- **A resposta não precisa ser imediata**: geração de relatórios, resumos em lote, enriquecimento
-  de dados, processamento de documentos.
-- **Não há um usuário esperando em tempo real**: jobs, integrações entre sistemas, pipelines de
-  dados.
-- **Alto volume concorrente**: manter uma conexão aberta por chamada não escala quando há milhares
-  de execuções simultâneas.
-- **Tolerância a falha e reprocessamento**: assíncrono normalmente já convive com fila, retry e
-  reprocessamento — mais fácil de absorver falha de um provider de IA.
-
-## Fluxo conceitual
+Streaming é útil quando o usuário se beneficia de receber partes da resposta. Processamento assíncrono é indicado quando o trabalho é longo, pesado, frágil ou composto por várias etapas.
 
 ```text
-Aplicação -> enfileira pedido -> segue seu fluxo normal
-Worker     -> consome fila -> chama o modelo -> grava resultado
-Aplicação  -> consulta resultado (polling, callback, webhook ou evento)
+Streaming: request aberta -> resposta em partes
+Assíncrono: request cria job -> processamento roda depois -> usuário consulta status
 ```
 
-## O custo de ir assíncrono
+## O que não cabe na mesma request
 
-Processamento assíncrono resolve o bloqueio de recursos e a escala, mas troca simplicidade por
-infraestrutura: é preciso fila, worker, forma de entregar o resultado (callback, webhook, evento)
-e tratamento de estado ("pendente", "processando", "concluído", "falhou"). Esse custo só se paga
-quando o problema real é volume, escala ou ausência de usuário esperando em tempo real — não deve
-ser a escolha padrão.
+O material usa uma tarefa pesada de suporte como exemplo:
+
+```text
+ler tickets -> classificar -> resumir -> identificar prioridade -> consolidar resultado
+```
+
+Esse fluxo chama IA, tem múltiplas etapas e pode demorar. Se rodar dentro de uma única request HTTP, surgem riscos:
+
+- timeout;
+- falha no meio;
+- aba fechada pelo usuário;
+- cliques repetidos;
+- recursos presos durante toda a execução.
+
+## Arquitetura com job
+
+Fluxo recomendado:
+
+```text
+1. usuário envia POST
+2. API cria job com status pending
+3. API retorna job_id imediatamente
+4. worker pega o job
+5. worker chama IA e processa
+6. resultado/status é salvo
+7. usuário acompanha por GET /jobs/{id}, WebSocket, SSE ou notificação
+```
+
+Estados principais do job:
+
+```text
+pending -> processing -> completed
+pending -> processing -> failed
+```
+
+Cada job deve ter um ID único e pode carregar logs, mensagens intermediárias e resultado parcial, dependendo da necessidade do produto.
+
+## Decisão arquitetural
+
+A pergunta central da aula é:
+
+```text
+Precisa terminar na requisição original?
+```
+
+Se sim, execute na request direta e responda ao usuário de forma síncrona. Se não, a tarefa é boa candidata a job.
+
+## O que muda com assíncrono
+
+Processamento assíncrono muda o desenho da funcionalidade, não apenas onde o código roda:
+
+- **Camada**: sai da camada de request e entra na camada de processamento.
+- **Fluxo**: passa a ter etapas desacopladas, fila/worker e estado explícito.
+- **Observabilidade**: precisa de logs, métricas, traces e dashboard ponta a ponta.
+- **Retry**: precisa de políticas de retry, backoff e DLQ para falhas transientes.
 
 ## Ideia-chave
 
-Síncrono, streaming e assíncrono não são um ranking de "melhor para pior": são três respostas
-diferentes para o mesmo problema de latência, cada uma correta em um contexto. As próximas aulas
-do módulo colocam essas três opções em prática.
+Quando a IA não precisa terminar dentro da request original, transformar a operação em job deixa a aplicação mais resiliente, mais observável e menos vulnerável a timeouts.

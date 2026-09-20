@@ -2,50 +2,73 @@
 
 > Curso: **Fluxos de Chamada** · Duração: `05:31`
 
-## Observação sobre o material
-
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de
-estudo pela continuidade do módulo. Quando os prints forem adicionados, este README pode ser
-ajustado para refletir o fluxo exato da aula.
+Esta aula mostra que streaming não necessariamente diminui o tempo total de processamento, mas muda radicalmente a percepção do usuário porque reduz o tempo até o primeiro retorno visível.
 
 ## Resumo
 
-Antes de justificar o processamento assíncrono (aula 04), o módulo apresenta uma solução
-intermediária que resolve boa parte do problema de latência sem sair do modelo síncrono: o
-streaming. A ideia central é separar **latência real** de **latência percebida** — a resposta
-completa ainda demora o mesmo tempo, mas o usuário passa a ver o resultado sendo construído.
-
-## Latência real vs. latência percebida
+No fluxo síncrono, o usuário envia uma pergunta e espera até a IA concluir tudo. No streaming, a aplicação começa a renderizar pequenos pedaços da resposta enquanto o modelo ainda está gerando o restante.
 
 ```text
-Sem streaming:  aplicação -> [espera silenciosa] -> resposta completa de uma vez
-Com streaming:  aplicação -> token -> token -> token -> ... -> resposta completa
+Síncrono:  pergunta -> IA processa -> resposta completa
+Streaming: pergunta -> IA processa -> chunk 1 -> chunk 2 -> ... -> resposta final
 ```
 
-- **Latência real**: tempo total até o último token da resposta.
-- **Latência percebida**: tempo até o usuário ver o primeiro sinal de que algo está acontecendo
-  (o primeiro token, o efeito "digitando").
+Mesmo que a resposta completa demore 18 segundos, se o primeiro texto aparece em 1,5 segundo o usuário percebe progresso e passa a confiar mais no fluxo.
 
-Streaming não reduz a latência real de forma significativa, mas reduz drasticamente a latência
-percebida, porque o feedback começa a chegar quase imediatamente após a chamada.
+## Exemplo da aula
 
-## Quando streaming resolve o problema
+O caso apresentado é uma explicação textual para um ticket:
 
-- Interfaces de chat e assistentes, onde o usuário está olhando ativamente para a tela.
-- Respostas longas, em que esperar o texto inteiro pronto criaria uma pausa desconfortável.
-- Casos em que a aplicação ainda é essencialmente síncrona do ponto de vista de fluxo, mas precisa
-  parecer responsiva.
+```http
+POST /tickets/explain
+Accept: text/event-stream
+```
 
-## O limite do streaming
+A IA produz texto progressivo e o frontend renderiza conforme os chunks chegam:
 
-Streaming continua sendo uma chamada síncrona do ponto de vista da conexão: o cliente (ou o
-processo) permanece conectado até o fim da resposta. Ele resolve percepção de latência, não
-resolve bloqueio de recursos em alto volume, chamadas que não têm um usuário olhando em tempo
-real, ou fluxos que precisam continuar mesmo que a conexão original caia — cenários que empurram
-a decisão para processamento assíncrono, tema da próxima aula.
+```text
+chunk 1 + chunk 2 + chunk 3 + ... + chunk n
+```
+
+Esse padrão é ideal para explicações, resumos, recomendações e conversas, porque o conteúdo já tem valor parcial.
+
+## Quando streaming serve
+
+Streaming funciona bem quando a resposta pode ser consumida gradualmente:
+
+- explicações;
+- conversas;
+- raciocínios narrativos;
+- resumos longos;
+- recomendações textuais.
+
+Nesses casos, ver o caminho da resposta sendo construído melhora a experiência.
+
+## Quando streaming não serve
+
+Streaming não é bom para respostas que precisam estar completas antes de serem interpretadas:
+
+- JSON final;
+- validações;
+- decisões estruturadas;
+- dados usados diretamente por outro sistema.
+
+Um JSON parcial pode parecer válido visualmente, mas ainda estar incompleto. Se o frontend interpreta pedaços como decisão final, a aplicação pode agir com dados errados.
+
+## Falhas no meio do stream
+
+Depois que a resposta começou, uma falha não se comporta como erro HTTP comum. A conexão pode cair, o servidor pode falhar ou o provider pode interromper a geração. A interface precisa mostrar estado, permitir retry e evitar ações automáticas com conteúdo incompleto.
+
+## Streaming ou job assíncrono?
+
+Pergunta principal:
+
+```text
+O usuário ganha alguma coisa vendo a resposta aos poucos?
+```
+
+Se sim, streaming. Se não, entregue a resposta completa quando estiver pronta ou transforme em job assíncrono.
 
 ## Ideia-chave
 
-Streaming é a ponte entre "síncrono simples" e "assíncrono completo": mantém o modelo de chamada
-síncrona, mas muda a forma como a resposta é entregue, atacando diretamente a percepção de
-lentidão sem reestruturar a arquitetura da aplicação.
+Streaming é uma ferramenta de experiência, não uma solução universal de performance. Ele é excelente quando o valor aparece antes da resposta completa.
