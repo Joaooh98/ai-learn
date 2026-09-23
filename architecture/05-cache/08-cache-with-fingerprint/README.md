@@ -28,3 +28,5 @@ O fingerprint fecha o bloco de cache exato do módulo: é o ponto de maior sofis
 sem sair da ideia de "mesma entrada, mesma resposta". A partir da aula 09, o módulo muda de
 categoria — de cache exato para cache **semântico**, baseado em significado, não em igualdade de
 texto.
+
+---- obs: projeto de exemplo esta aqui: architecture/05-cache/mba-ia-cache se for o caso crie uma copia somente para esse modulo sem ter todo o contexto de todas as aulas 

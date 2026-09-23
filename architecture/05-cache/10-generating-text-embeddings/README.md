@@ -24,3 +24,5 @@ embeddings de texto usando um modelo real, via API/SDK do provider escolhido.
 Gerar o embedding é o primeiro passo prático do cache semântico: sem um vetor confiável
 representando cada pergunta, não há como comparar semanticamente uma pergunta nova com as que já
 foram cacheadas — tema da aula seguinte.
+
+--- obs: projeto de exemplo esta aqui: architecture/05-cache/mba-ia-cache se for o caso crie uma copia somente para esse modulo sem ter todo o contexto de todas as aulas 

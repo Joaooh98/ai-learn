@@ -28,3 +28,6 @@ ganho de cada camada de cache adicionada (exato, semântico, prompt caching do p
 Construir o analisador sem cache primeiro é o que torna o ganho das próximas aulas mensurável:
 sem uma baseline clara, fica difícil justificar a complexidade que cache-aside, fingerprint e
 cache semântico vão adicionar ao sistema.
+
+
+---- obs: projeto de exemplo esta aqui: architecture/05-cache/mba-ia-cache se for o caso crie uma copia somente para esse modulo sem ter todo o contexto de todas as aulas 

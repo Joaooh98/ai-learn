@@ -28,3 +28,5 @@ exatamente igual à que gerou a resposta cacheada anteriormente.
 Cache exato é simples de implementar e de raciocinar sobre, mas só funciona quando a mesma
 pergunta é feita literalmente da mesma forma. Ele resolve repetição idêntica, não repetição
 semelhante.
+
+---- obs: projeto de exemplo esta aqui: architecture/05-cache/mba-ia-cache se for o caso crie uma copia somente para esse modulo sem ter todo o contexto de todas as aulas 
