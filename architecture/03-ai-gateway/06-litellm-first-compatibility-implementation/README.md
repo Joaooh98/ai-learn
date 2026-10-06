@@ -1,5 +1,7 @@
 # Aula 06 — LiteLLM como primeira implementação da compatibilidade
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:13`
 
 Esta aula apresenta o LiteLLM como uma primeira implementação prática da camada de compatibilidade discutida na aula anterior. A ideia é reduzir o acoplamento direto com SDKs e formatos específicos de providers sem ainda construir um gateway completo.
@@ -93,12 +95,20 @@ Como SDK:
 Como proxy:
 
 - camada compartilhada;
-- fallback semântico;
-- revisão humana;
-- regras de produto.
+- configuração e políticas compartilhadas;
+- roteamento e fallback técnico quando configurados;
+- ponto de integração para observabilidade e controles de acesso.
 
 O ponto importante é que o SDK não é o fim da jornada; ele é uma base para avançar. Começar com LiteLLM como SDK reduz a fricção inicial. Evoluir para proxy permite centralizar políticas e observabilidade quando a operação crescer.
 
 ## Ideia-chave
 
 LiteLLM é a primeira implementação concreta da compatibilidade: ele diminui a dependência direta dos SDKs dos providers e cria uma base para evoluir de integração local para uma fronteira centralizada de AI Gateway.
+
+## Complemento — O que o SDK e o proxy realmente mudam
+
+No SDK, a aplicação ainda carrega credenciais e configuração dos providers; a dependência passa a ser LiteLLM. No proxy, surge um serviço HTTP compartilhado que pode concentrar políticas e esconder as credenciais dos providers dos serviços clientes.
+
+Nenhum desses modos cria por si só revisão humana, avaliação semântica ou regra de aprovação do negócio. Eles oferecem a fronteira onde tais controles podem ser integrados. O [quadro dos exemplos](../README.md#o-que-os-exemplos-implementam) separa o que existe do que ainda é desenho conceitual.
+
+Uma interface comum também preserva limitações: `temperature`, parâmetros de tokens, ferramentas e formato estruturado variam entre modelos. Na troca de provider, valide os parâmetros usados pelo seu caso de uso em vez de assumir intercambialidade irrestrita.

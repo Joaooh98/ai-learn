@@ -1,5 +1,7 @@
 # Aula 02 — Chamando OpenAI com SDK
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `04:20`
 
 Esta aula materializa o cenário mais simples da aula anterior: uma aplicação Python chamando diretamente a OpenAI pelo SDK nativo.
@@ -71,3 +73,11 @@ O foco não é criar uma arquitetura final, mas demonstrar a versão mais direta
 ## Ideia-chave
 
 Antes de abstrair, é importante sentir o acoplamento. A chamada direta via SDK é rápida e clara, mas faz a aplicação conhecer detalhes que depois ficarão caros de espalhar.
+
+## Complemento — Prompt histórico e código executável
+
+O [prompt registrado](sdk-simple-example/calling-openai-with-sdk.md) pede um default diferente do [main.py](sdk-simple-example/main.py): o script usa `gpt-4-mini` quando `OPENAI_MODEL` está ausente. Configure `OPENAI_MODEL` com um identificador válido para sua conta antes de executar; uma string de exemplo não assegura disponibilidade de modelo.
+
+O projeto não define timeout nem retry explicitamente. Isso significa herdar os defaults da versão instalada do SDK, não desabilitar tentativas automáticas. Veja a [política de resiliência do módulo](../README.md#resiliência-com-orçamento-ponta-a-ponta).
+
+**Observe na execução:** erros de credencial, modelo e rede têm causas diferentes, embora o script os imprima no mesmo `except`. Uma evolução prática separaria essas causas, registraria o request ID e limitaria a saída, sem espalhar esse tratamento por todas as features.

@@ -1,6 +1,8 @@
 # Prompt 01 — Calling OpenAI with SDK
 
-> Origem: `architecture/ai-gateway/02-calling-openai-with-sdk`
+[Índice do módulo](../../README.md) · [Aula correspondente](../README.md)
+
+> Origem: `architecture/03-ai-gateway/02-calling-openai-with-sdk`
 
 Crie um exemplo simples em Python usando o SDK nativo da OpenAI.
 
@@ -56,3 +58,6 @@ O código deve:
 5. imprimir modelo usado, pergunta e resposta;
 6. tratar erros de forma simples.
 
+## Nota de revisão do registro
+
+Este texto registra o pedido da aula; os defaults solicitados não são os defaults efetivos dos scripts atuais. O exemplo direto da aula 02 usa `gpt-4-mini` quando `OPENAI_MODEL` está ausente. A cópia deste prompt na aula 07 é histórico da evolução, não instrução de execução daquele `main.py`. Para executar, siga o README do exemplo correspondente e configure um modelo disponível por variável de ambiente.

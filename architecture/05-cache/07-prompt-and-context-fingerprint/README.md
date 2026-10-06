@@ -2,34 +2,63 @@
 
 > Curso: **Cache** · Duração: `04:44`
 
-## Observação sobre o material
+## Material e foco da aula
 
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de
-estudo pela continuidade do módulo. Quando os prints forem adicionados, este README pode ser
-ajustado para refletir o fluxo exato da aula.
-
-## Resumo
-
-O cache exato da aula 06 usa a entrada bruta como chave, o que é frágil: parâmetros extras,
-ordem diferente de campos ou pequenas variações de formatação quebram o hit mesmo quando a
-pergunta é, na prática, a mesma. Esta aula introduz o conceito de **fingerprint**: uma chave de
-cache derivada de forma controlada do prompt e do contexto relevante, normalizando o que não deve
-afetar o resultado.
+Os quatro prints mostram por que a mensagem sozinha não identifica uma execução.
+[O segundo](02.png) conecta prompt, regras, modelo e contexto; [o terceiro](03.png) apresenta
+`PromptVersion + RulesVersion + ModelCapability + NormalizedText`.
 
 ## Conceito
 
+Fingerprint é uma representação determinística dos fatores que definem se uma resposta pode
+ser reutilizada. O hash transforma essa representação em chave compacta; não verifica se
+os fatores escolhidos são suficientes.
+
 ```text
-prompt + contexto + parâmetros relevantes -> normalização -> hash -> fingerprint (chave de cache)
+texto + contrato + contexto + escopo → representação estável → hash → chave
 ```
 
-Pontos que costumam entrar na normalização antes de gerar o fingerprint:
+O exemplo implementa quatro campos:
 
-- Texto do prompt (normalizado: espaços, caixa, pontuação irrelevante).
-- Parâmetros que mudam o resultado (modelo, temperatura, system prompt).
-- Contexto adicional relevante (ex.: dados injetados no prompt), quando ele afeta a resposta.
+```json
+{
+  "prompt_version": "prompt_v1",
+  "rules_version": "rules_v1",
+  "model_capability": "fast_model",
+  "normalized_text": "tenho dúvidas sobre cobrança"
+}
+```
 
-## Ideia-chave
+Mudar uma versão muda a chave mesmo com texto igual. Isso impede reutilizar análise sob outro
+conjunto declarado de regras. A aula amplia o cache exato; não o transforma em cache semântico.
 
-Fingerprint continua sendo cache **exato** — só que exato sobre uma versão normalizada da entrada,
-não sobre o texto bruto. Isso aumenta a taxa de hit sem introduzir o risco de falso positivo que
-o cache semântico (aulas 09 em diante) vai trazer.
+## Complemento de estudo: o que precisa entrar no contrato
+
+Conforme o caso de uso, inclua modelo e revisão, parâmetros relevantes, system prompt, schema
+de saída, versão dos dados recuperados, ferramentas disponíveis, idioma, tenant e permissões.
+Esses itens podem ser representados por versões confiáveis, desde que mudem quando o
+comportamento muda. Fingerprint é uma decisão sobre **equivalência da execução**.
+
+`model_capability="fast_model"` é um rótulo do exemplo, não o identificador efetivo do modelo.
+Trocar `OPENAI_MODEL` sem alterar uma versão de compatibilidade permite reutilizar registros
+semânticos antigos. Mudar o prompt real sem atualizar `prompt_version` também deixa a
+invalidação incompleta.
+
+Ordenar as chaves do JSON estabiliza a serialização de um dicionário construído da mesma forma;
+não equivale a canonicalização universal entre linguagens e formatos. [Referência: `json.dumps`
+e `sort_keys`](https://docs.python.org/3/library/json.html#json.dumps).
+
+## Normalização exige cuidado
+
+Remover caixa, pontuação ou espaços pode fundir entradas que deveriam produzir respostas
+diferentes. Cache exato com fingerprint ainda pode servir resposta errada por normalização
+excessiva ou contexto ausente. Ele evita aproximação vetorial, mas não elimina todos os falsos hits.
+
+Tenant e autorização devem ser filtros obrigatórios de escopo quando necessários, não apenas
+palavras embutidas no texto. Hash também não criptografa nem torna anônimo o conteúdo que
+permanece armazenado.
+
+## Exercício
+
+Monte o fingerprint para um classificador multilíngue que consulta política por cliente.
+Quais campos mudam se a política for atualizada ou a permissão do usuário revogada?

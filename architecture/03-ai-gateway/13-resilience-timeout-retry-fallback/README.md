@@ -1,5 +1,7 @@
 # Aula 13 — Resiliência - timeout, retry e fallback
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `04:29`
 
 ## Resumo
@@ -89,3 +91,13 @@ Algumas opções:
 ## Ideia-chave
 
 Timeout, retry e fallback são decisões de produto e arquitetura. O gateway ajuda a aplicar essas decisões de forma padronizada e observável.
+
+## Complemento — Deadline global e classificação de falhas
+
+Some todas as etapas: conexão, tentativa do primário, backoff, novas tentativas, fallback e entrega ao cliente. Um timeout de tentativa não é necessariamente o prazo total da operação. O cliente e a infraestrutura precisam permitir o orçamento escolhido; esperar mais no provider não recupera uma request já encerrada pelo ingress.
+
+Retry funciona melhor para falhas temporárias. Credenciais inválidas, parâmetro incompatível e entrada incorreta pedem correção, não insistência automática. Em rate limit, respeite a indicação de espera quando disponível e evite sincronizar todos os consumidores.
+
+Também conte retries do SDK. Se cliente, proxy e provider SDK repetirem de forma independente, o total de tentativas pode crescer muito. A [política do módulo](../README.md#resiliência-com-orçamento-ponta-a-ponta) traz um exemplo numérico e a referência dos defaults.
+
+Timeout não prova que a geração remota parou. Antes de repetir ações com efeitos externos, use idempotência e reconciliação. Se um stream já publicou texto, não concatene uma nova resposta de outro modelo sem sinalizar reinício.

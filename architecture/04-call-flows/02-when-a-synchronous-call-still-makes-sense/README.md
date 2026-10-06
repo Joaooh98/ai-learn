@@ -1,5 +1,7 @@
 # Aula 02 — Quando uma chamada síncrona ainda faz sentido
 
+[Índice do módulo](../README.md)
+
 > Curso: **Fluxos de Chamada** · Duração: `04:17`
 
 Esta aula delimita o espaço em que a chamada síncrona continua sendo uma boa escolha. Nem toda integração com IA precisa de streaming ou fila; o problema é usar síncrono para tudo.
@@ -66,3 +68,11 @@ Problemas comuns:
 ## Ideia-chave
 
 Síncrono não é errado. Ele só precisa ser reservado para tarefas pequenas, previsíveis e de baixo risco. O erro arquitetural é deixar trabalho longo preso na mesma request.
+
+## Complemento — Síncrono no contrato, concorrente no servidor
+
+A rota `/tickets/analisar` é o nome usado no exemplo conceitual da aula. O projeto executável da [aula 05](../05-working-synchronously-in-practice/sync-ticket-analysis/README.md) expõe `POST /tickets/analyze`.
+
+“Síncrono” aqui significa que a resposta HTTP espera o resultado. Isso não exige bloquear o event loop. O FastAPI executa rotas `def` em thread pool; uma rota `async def` usando um client assíncrono também pode esperar a IA antes de responder. Trocar a sintaxe para `async` não cria um job persistido. [Documentação de concorrência do FastAPI](https://fastapi.tiangolo.com/async/).
+
+Defina um prazo total compatível com o cliente e com a infraestrutura, incluindo retries. Um pequeno input não garante retorno rápido em picos de carga; valide a distribuição de latência. Em novas tentativas iniciadas pelo usuário, diferencie retry intencional de submissão duplicada.

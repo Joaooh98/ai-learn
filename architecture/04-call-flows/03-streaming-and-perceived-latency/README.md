@@ -1,5 +1,7 @@
 # Aula 03 — Streaming e latência percebida
 
+[Índice do módulo](../README.md)
+
 > Curso: **Fluxos de Chamada** · Duração: `05:31`
 
 Esta aula mostra que streaming não necessariamente diminui o tempo total de processamento, mas muda radicalmente a percepção do usuário porque reduz o tempo até o primeiro retorno visível.
@@ -44,9 +46,9 @@ Streaming funciona bem quando a resposta pode ser consumida gradualmente:
 
 Nesses casos, ver o caminho da resposta sendo construído melhora a experiência.
 
-## Quando streaming não serve
+## Quando o resultado precisa estar completo
 
-Streaming não é bom para respostas que precisam estar completas antes de serem interpretadas:
+Streaming não dispensa esperar o fechamento e validar resultados usados como decisão final:
 
 - JSON final;
 - validações;
@@ -72,3 +74,13 @@ Se sim, streaming. Se não, entregue a resposta completa quando estiver pronta o
 ## Ideia-chave
 
 Streaming é uma ferramenta de experiência, não uma solução universal de performance. Ele é excelente quando o valor aparece antes da resposta completa.
+
+## Complemento — Streaming, SSE e contrato de eventos
+
+O cabeçalho `Accept: text/event-stream` mostrado acima ilustra SSE conceitualmente. O [demo da aula 06](../06-streaming-example/streaming-ticket-explanation/README.md) entrega `text/plain; charset=utf-8`, sem eventos SSE. Enviar esse `Accept` não converte o corpo em SSE.
+
+SSE requer `Content-Type: text/event-stream` e mensagens com campos como `event`, `data` e, quando usado, `id`, separadas por uma linha vazia. O navegador recebe eventos enquadrados nesse protocolo. O `EventSource` nativo abre uma URL via GET; o POST JSON do exemplo é melhor consumido com `fetch` e leitura incremental do corpo, ou exige outro contrato de endpoint. [Especificação oficial de SSE](https://html.spec.whatwg.org/multipage/server-sent-events.html).
+
+Chunks de rede não são necessariamente tokens nem frases completas. O consumidor precisa decodificar UTF-8 incrementalmente e preservar fragmentos quando interpreta eventos ou JSON. Para dados estruturados, pode exibir progresso e juntar o documento; a ação de negócio espera conclusão e validação.
+
+Streaming não reduz por si só quantidade de tokens, chamadas ou trabalho do modelo. Ainda mantém conexão aberta e requer tratamento de cancelamento, buffer no caminho, pausa entre chunks e falhas parciais. Meça tempo até o primeiro texto e tempo total separadamente.

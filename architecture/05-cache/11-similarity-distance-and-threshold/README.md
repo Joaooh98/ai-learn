@@ -2,36 +2,61 @@
 
 > Curso: **Cache** · Duração: `05:27`
 
-## Observação sobre o material
+## Material e foco da aula
 
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de
-estudo pela continuidade do módulo. Quando os prints forem adicionados, este README pode ser
-ajustado para refletir o fluxo exato da aula.
+Os cinco prints distinguem proximidade vetorial, score e corte de decisão.
+[02.png](02.png) contrasta distância e similaridade; [04.png](04.png) coloca a decisão na
+aplicação. As escalas e os thresholds dos desenhos são exemplos didáticos.
 
-## Resumo
+## Direção da comparação
 
-Com embeddings sendo gerados (aula 10), a aula explica como comparar dois vetores para decidir se
-os textos que eles representam são "parecidos o suficiente" — a peça que falta antes de implementar
-o cache semântico de fato.
+| Medida | Interpretação | Regra típica de aceitação |
+| --- | --- | --- |
+| Similaridade de cosseno | Maior valor: direções mais próximas | `similaridade >= limiar` |
+| Distância de cosseno | Menor valor: direções mais próximas | `distância <= limite` |
+| Distância euclidiana (L2) | Menor valor: vetores mais próximos | `distância <= limite` |
 
-## Conceitos
+Não aplique “acima do threshold = hit” a toda métrica. A direção depende do significado do score.
 
-- **Similaridade/distância**: medidas como similaridade de cosseno ou distância euclidiana, usadas
-  para comparar dois vetores de embedding e obter um número que indica o quão próximos eles estão.
-- **Threshold**: valor de corte que decide, a partir da similaridade/distância calculada, se dois
-  textos devem ser tratados como "a mesma pergunta" para fins de cache.
-
-## Fluxo conceitual
+Para vetores não nulos `u` e `v`:
 
 ```text
-embedding(pergunta nova) vs embedding(pergunta cacheada) -> similaridade/distância
-  acima do threshold -> tratar como a mesma pergunta (hit semântico)
-  abaixo do threshold -> tratar como pergunta diferente (miss semântico)
+similaridade_cosseno(u,v) = (u · v) / (||u|| × ||v||)
+distância_cosseno(u,v)    = 1 - similaridade_cosseno(u,v)
 ```
 
-## Ideia-chave
+A similaridade de cosseno pode variar de -1 a 1; a distância correspondente, de 0 a 2.
+Nem toda API expõe essa escala diretamente. Produto interno e L2 também não compartilham
+um threshold universal com o cosseno.
 
-O threshold é o parâmetro mais sensível do cache semântico: threshold muito permissivo gera falsos
-positivos (respostas erradas por excesso de confiança na similaridade); threshold muito restritivo
-reduz o cache semântico a pouco mais que um cache exato. A aula 15 volta a esse tema aplicado à
-prática.
+## O que o projeto usa
+
+Em [db.py](../mba-ia-cache/db.py), `<=>` calcula distância de cosseno e
+`1 - (embedding <=> query)` calcula a similaridade. A consulta ordena por distância crescente.
+Esses operadores estão documentados no [pgvector](https://github.com/pgvector/pgvector#querying).
+
+`evaluate_best_match()` em [main.py](../mba-ia-cache/main.py) aceita o primeiro candidato se
+`best_match.similarity >= threshold`. Assim, com limiar ilustrativo de 0,90:
+
+```text
+distância = 0,08 → similaridade = 0,92 → candidato aceito pelo score
+distância = 0,15 → similaridade = 0,85 → candidato rejeitado
+```
+
+## Complemento de estudo: o score não é probabilidade
+
+Similaridade de 0,92 não significa 92% de chance de a resposta estar correta. Ela descreve a
+relação geométrica dos vetores. Correção depende também de contexto, escopo, contrato, frescor
+e qualidade da resposta armazenada.
+
+Vetores normalizados podem produzir ordenações relacionadas para cosseno, produto interno e
+L2, mas valores de corte ainda exigem a transformação correspondente. Trocar métrica ou modelo
+sem recalibrar muda a política de aceitação.
+
+O código restringe o threshold a `0 < threshold <= 1`; essa é uma escolha do exemplo, não
+a definição completa da escala do cosseno.
+
+## Exercício
+
+Para limiar de similaridade 0,90, qual é o limite equivalente de distância de cosseno?
+Por que o mesmo número não pode ser usado diretamente como limite de distância L2?

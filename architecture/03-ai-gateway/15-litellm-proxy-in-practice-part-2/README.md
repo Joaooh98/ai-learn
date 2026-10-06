@@ -1,5 +1,7 @@
 # Aula 15 — LiteLLM Proxy na prática - parte 2
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:11`
 
 ## Resumo
@@ -101,3 +103,11 @@ O resultado mostra uma explicação em dois parágrafos sobre AI Gateway. A resp
 ## Ideia-chave
 
 O código da aplicação fica estável enquanto a decisão de provider/modelo fica no proxy. Esse é o primeiro passo prático para tratar IA como uma capacidade interna governada.
+
+## Complemento — Cliente HTTP e segredos
+
+Usar `OpenAI(base_url=...)` mantém o SDK como cliente compatível com o proxy; a autenticação enviada nesse caminho é a credencial do gateway. A chave do provider é consumida pelo proxy. No laboratório, as duas estão no mesmo `.env`; a separação do fluxo de chamadas não torna esse arquivo inacessível ao client.
+
+`LITELLM_MASTER_KEY` é usada aqui para reduzir a montagem do exemplo. Em uma operação compartilhada, a aplicação deve receber uma credencial com permissões e limites adequados, sem privilégios administrativos. Veja [governança do módulo](../README.md#governança-do-laboratório-e-da-operação).
+
+O SDK pode fazer retries internos e tem defaults próprios de timeout. A prática não define uma política ponta a ponta. Uma resposta em dois parágrafos também é instrução de prompt, não garantia do client.

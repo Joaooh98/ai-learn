@@ -1,5 +1,7 @@
 # Aula 11 — Expondo capacidades, não modelos físicos
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:28`
 
 ## Resumo
@@ -75,3 +77,13 @@ Perguntas úteis para modelar capacidades:
 ## Ideia-chave
 
 AI Gateway saudável expõe intenção de uso, não marca/modelo. Isso protege o produto contra mudanças de custo, provider, disponibilidade e estratégia técnica.
+
+## Complemento — Versionar capacidades quando o comportamento muda
+
+Uma capacidade deve ter contrato observável: entrada permitida, saída, limites, nível mínimo de qualidade e tratamento de falha. Se a mudança de modelo altera esse contrato, considere publicar uma nova versão ou fazer rollout gradual com avaliações, mesmo que o nome HTTP possa permanecer igual.
+
+Nomes de tarefas como `support-ticket-classifier` ajudam a comunicar intenção. Nomes de níveis como `chat-rapido` também podem ser úteis quando o contrato publicado descreve custo, latência e qualidade desse nível. O problema é usar um rótulo sem critérios verificáveis.
+
+Embeddings precisam de cuidado adicional: trocar o modelo pode alterar o espaço vetorial, mesmo com a mesma dimensão. A mudança exige planejar versionamento e reindexação dos documentos; a interface normalizada não garante comparabilidade entre vetores de modelos distintos.
+
+**Conexão com cache:** a chave precisa acompanhar versão da capacidade, prompt e implementação quando esses fatores afetam a resposta. Veja [05 — Cache](../../05-cache/README.md).

@@ -1,5 +1,7 @@
 # Aula 05 — Compatibilidade - a primeira capacidade de uma AI Gateway
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:38`
 
 Esta aula aprofunda a primeira capacidade importante de um AI Gateway: compatibilidade. Antes de pensar em roteamento inteligente, fallback ou governança completa, o gateway precisa oferecer uma forma padronizada de acesso aos modelos.
@@ -100,3 +102,13 @@ O próximo passo indicado é LiteLLM, usado como caminho prático para reduzir a
 ## Ideia-chave
 
 A primeira entrega de valor de um AI Gateway é reduzir a fricção de integração. Compatibilidade cria uma interface comum, mas a arquitetura ainda precisa respeitar as diferenças reais entre modelos.
+
+## Complemento — Compatibilidade como contrato testável
+
+Defina uma matriz por capacidade: endpoint usado, tipos de entrada, schema de saída, ferramentas, tamanho de contexto, streaming e parâmetros obrigatórios. Só entram no mesmo grupo modelos que passam nos exemplos representativos desse contrato.
+
+A normalização de sintaxe não assegura equivalência de conteúdo. Uma classificação pode retornar JSON válido e escolher a categoria errada; uma extração pode obedecer ao schema e preencher um dado inventado. Esses casos exigem avaliações com respostas esperadas e critérios do domínio.
+
+Parâmetros não suportados precisam de decisão explícita. Removê-los silenciosamente pode mudar a finalidade da chamada; por exemplo, perder uma restrição de formato ou de ferramentas. Consulte os [limites de compatibilidade](../README.md#compatibilidade-e-contrato-por-capacidade).
+
+**Exercício:** escolha um primário e um backup para classificação. Compare aderência ao schema, taxa de acerto por categoria, latência p95 e custo por resultado aceito. Custo por chamada isolada pode esconder retries e respostas descartadas.

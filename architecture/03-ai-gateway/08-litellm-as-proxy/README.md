@@ -1,5 +1,7 @@
 # Aula 08 — LiteLLM como Proxy
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:08`
 
 ## Resumo
@@ -66,3 +68,11 @@ Essa aula marca a transição mental de “biblioteca de compatibilidade” para
 ## Ideia-chave
 
 LiteLLM como SDK resolve compatibilidade dentro da aplicação. LiteLLM como proxy cria uma camada compartilhada de governança, segurança, roteamento e observabilidade.
+
+## Complemento — O proxy precisa de operação própria
+
+O fluxo compartilhado acrescenta uma chamada de rede e uma dependência operacional. Defina disponibilidade, capacidade, localização, implantação e controle de mudança do gateway. Várias aplicações usando a mesma configuração tornam uma troca de modelo relevante para vários produtos.
+
+Chaves reais ficam no proxy quando a distribuição de segredos respeita essa fronteira. O `.env` único do laboratório ajuda a executar localmente, mas não prova isolamento de acesso ao arquivo. Em uma implantação, distribua a cada serviço somente os segredos que ele precisa.
+
+Também é preciso configurar os recursos prometidos: ter um proxy não cria automaticamente orçamento, limites, chaves por aplicação ou dashboards. Veja a [governança realmente configurada nos demos](../README.md#governança-do-laboratório-e-da-operação).

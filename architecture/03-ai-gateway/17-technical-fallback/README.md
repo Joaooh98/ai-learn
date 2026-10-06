@@ -1,5 +1,7 @@
 # Aula 17 — Fallback técnico
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `06:32`
 
 ## Resumo
@@ -68,7 +70,7 @@ Ela não recebe um novo endpoint, não escolhe backup e não muda de SDK.
 
 ![Nome principal](./05.png)
 
-A capacidade principal continua publicada como `developer-assistant`. O backup existe apenas para o proxy.
+A capacidade principal continua publicada como `developer-assistant`. O backup está publicado no proxy e não é escolhido pelo fluxo normal da aplicação. A configuração didática não restringe seu acesso por chave virtual.
 
 Essa separação evita que o código cliente comece a depender de detalhes de contingência.
 
@@ -93,3 +95,11 @@ O terminal mostra a aplicação usando `developer-assistant`. Se o caminho princ
 ## Ideia-chave
 
 Fallback técnico é mecanismo de resiliência, não garantia de equivalência. Ele aumenta disponibilidade, mas precisa ser observado porque pode mudar qualidade, formato e comportamento da resposta.
+
+## Complemento — Demonstrar que o fallback aconteceu
+
+A chamada bem-sucedida e o print `Modelo: developer-assistant` só comprovam que o client recebeu uma resposta. Para comprovar fallback, observe a tentativa principal que falhou e o deployment que respondeu nos logs ou metadados do gateway.
+
+O [YAML presente](proxy-technical-fallback/litellm/config.yaml) configura `litellm_settings.fallbacks` e não fixa `num_retries` ou timeout. Não atribua um número de tentativas ao exemplo. A documentação atual mostra `router_settings.fallbacks` no quickstart e também mantém exemplos em `litellm_settings`; confira a versão usada. [Referência oficial de failover](https://docs.litellm.ai/docs/proxy/reliability).
+
+HTTP 200 com texto semanticamente ruim não dispara automaticamente o fallback técnico. A [aula 18](../18-fallback-with-weak-model/README.md) mostra esse limite. Um backup só pode atender a capacidade se seus formatos, privacidade, contexto e qualidade forem aceitáveis para o produto.

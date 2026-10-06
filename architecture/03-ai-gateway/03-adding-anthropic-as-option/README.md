@@ -1,5 +1,7 @@
 # Aula 03 — Adicionando Anthropic como opção
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `04:28`
 
 Esta aula evolui o exemplo anterior para permitir escolher entre OpenAI e Anthropic por variável de ambiente. A mudança é pequena no produto, mas grande na arquitetura: a aplicação passa a conhecer dois SDKs, dois clients, duas chaves e dois formatos de chamada.
@@ -59,7 +61,7 @@ Se esse padrão for repetido por várias features, a aplicação começa a carre
 Esta aula ainda não implementa:
 
 - fallback;
-- retry;
+- política explícita de retry na aplicação;
 - roteamento inteligente;
 - normalização completa de entrada e saída;
 - medição centralizada de custo;
@@ -71,3 +73,11 @@ Isso é proposital. O exercício mostra apenas a dor inicial: suportar dois prov
 ## Ideia-chave
 
 Escolher provider por variável de ambiente é melhor do que duplicar aplicações, mas ainda não é gateway. A aplicação continua sabendo demais sobre cada provider.
+
+## Complemento — Escolha explícita e retries internos
+
+O artefato executável está em [main.py](provider-selection-example/main.py); dependências e variáveis estão em [requirements.txt](provider-selection-example/requirements.txt) e [.env.example](provider-selection-example/.env.example). O código usa defaults históricos diferentes do prompt: `gpt-4-mini` e `claude-3-5-sonnet-20241022`. Defina `AI_MODEL` em conjunto com `AI_PROVIDER`; a [documentação do exemplo](provider-selection-example/README.md) explica a atualização por ambiente.
+
+A condição `if/elif` seleciona uma única integração e não implementa fallback. Isso não exclui retries internos dos SDKs. Se uma tentativa HTTP falhar, o client pode repetir antes de devolver uma exceção à aplicação.
+
+Outro limite: `response.content[0].text` assume que o primeiro bloco Anthropic é textual. Uma integração mais ampla precisa tratar tipos de conteúdo, recusas, ferramentas e término por limite de tokens. Compatibilidade começa pelo contrato que a feature realmente aceita, não apenas pela existência de dois clients.

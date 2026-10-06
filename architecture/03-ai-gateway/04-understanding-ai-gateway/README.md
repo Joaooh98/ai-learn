@@ -1,5 +1,7 @@
 # Aula 04 — Entendendo AI Gateway
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:29`
 
 Esta aula define o AI Gateway como uma fronteira arquitetural controlada entre aplicação e modelos de IA. Depois de ver chamada direta e múltiplos SDKs, o foco passa a ser onde colocar controle, padronização e evolução.
@@ -100,3 +102,11 @@ Uma integração madura precisa:
 ## Ideia-chave
 
 AI Gateway é uma fronteira arquitetural. Ele concentra decisões operacionais e técnicas para que as features não precisem carregar detalhes de cada provider.
+
+## Complemento — Fronteira de integração e responsabilidade de negócio
+
+Um gateway pode autenticar e limitar uma chamada sem saber se o resultado está correto para o usuário. Critérios como classificação aceitável, necessidade de revisão humana e permissão para executar uma ação continuam exigindo regras e avaliação do produto. Um proxy não entrega essas garantias automaticamente.
+
+Centralização também pede operação: capacidade, disponibilidade, atualização segura de configuração e isolamento entre consumidores. Uma solução pronta só entrega o SLA e os recursos previstos na implantação ou no contrato contratado; o nome da ferramenta não define essas garantias.
+
+**Pergunta de revisão:** se o gateway responder HTTP 200 com uma análise inadequada, qual componente detectará o problema e qual comportamento o usuário verá? A aula [18 — validação do fallback](../18-fallback-with-weak-model/README.md) torna essa fronteira concreta.

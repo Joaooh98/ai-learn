@@ -1,5 +1,7 @@
 # Aula 09 — LiteLLM Proxy - Fluxo da requisição
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:27`
 
 ## Resumo
@@ -65,8 +67,16 @@ O fluxo apresentado é:
 Client -> Proxy -> Validation -> Router -> Endpoint -> Provider -> Response
 ```
 
-Primeiro a requisição é autenticada e validada. Depois passa por rate limit e autorização. Só então o router decide qual endpoint interno deve receber a chamada, como chat completions, embeddings, responses ou outro recurso.
+Primeiro a requisição é autenticada e validada. Depois passa por rate limit e autorização. O caminho HTTP identifica o recurso solicitado, como chat completions, embeddings ou responses. O router resolve o nome lógico de modelo para um deployment elegível; selecionar esse deployment é diferente de escolher o endpoint da API.
 
 ## Ideia-chave
 
 Um AI Gateway precisa tratar requisições de IA como tráfego governado: com identidade, limite, custo, permissão, observabilidade e roteamento.
+
+## Complemento — Identidade e rastreabilidade da requisição
+
+A virtual key é uma credencial de acesso ao gateway, não a chave do provider. Use uma identidade por consumidor e atribua permissões e orçamento a ela. O laboratório posterior usa uma master key compartilhada e não demonstra esse isolamento.
+
+Ao acompanhar uma requisição, diferencie o recurso HTTP solicitado, a capacidade lógica, o deployment efetivo e o provider. Esses identificadores respondem perguntas diferentes: qual API foi usada, qual intenção foi solicitada e qual implementação respondeu.
+
+Uma boa investigação liga request ID da aplicação, tentativa no gateway e request ID do provider. Registre também falhas, retries e cache hits; observar somente respostas bem-sucedidas subestima gasto e incidentes.

@@ -1,5 +1,7 @@
 # Aula 12 — Governança mínima - acesso, custo e limites
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:41`
 
 ## Resumo
@@ -71,3 +73,13 @@ Nem toda capacidade merece o mesmo tratamento. Uma classificação simples pode 
 ## Ideia-chave
 
 Governança mínima em AI Gateway significa responder três perguntas desde cedo: quem pode acessar, quanto pode gastar e até onde pode ir.
+
+## Complemento — Limites precisam de escopo e evidência
+
+RPM limita frequência; TPM limita volume de tokens por janela; concorrência limita chamadas simultâneas; orçamento limita gasto no período definido. Uma restrição não substitui as outras. Registre também como estimativas de tokens e gasto são atualizadas ao terminar ou falhar uma chamada.
+
+Uma chamada pode ser autorizada para um modelo e inadequada para determinada informação ou finalidade. O produto precisa definir o escopo de uso, e a operação precisa aplicar a política em todas as rotas, inclusive fallback e cache.
+
+**No repositório:** os Compose das aulas 14–18 não incluem banco, Redis, virtual keys por aplicação ou quotas. Eles demonstram acesso com master key e nomes lógicos. A [seção de governança](../README.md#governança-do-laboratório-e-da-operação) mostra o passo seguinte sem atribuir recursos ausentes ao exemplo.
+
+Para avaliar uso em cache, diferencie consumo efetivo do provider, consumo lógico do produto e economia estimada. Os três podem divergir.

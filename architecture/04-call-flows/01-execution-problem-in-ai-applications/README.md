@@ -1,8 +1,10 @@
 # Aula 01 — O problema de execução em aplicações com IA
 
+[Índice do módulo](../README.md)
+
 > Curso: **Fluxos de Chamada** · Duração: `04:44`
 
-Esta aula abre o módulo mostrando que chamadas de IA não se comportam como chamadas HTTP tradicionais. O ponto central não é apenas "a IA demora"; é que a aplicação precisa escolher conscientemente se vai esperar, transmitir em partes ou delegar a execução para background.
+Esta aula abre o módulo mostrando como geração com IA amplia a variabilidade de latência e de entrega de conteúdo em integrações HTTP. O ponto central não é apenas "a IA demora"; é que a aplicação precisa escolher conscientemente se vai esperar, transmitir em partes ou delegar a execução para background.
 
 ## Resumo
 
@@ -59,3 +61,11 @@ O usuário recebe um `job_id`, acompanha status/progresso e busca o resultado qu
 ## Ideia-chave
 
 O tempo percebido pelo usuário importa tanto quanto o tempo real de execução. Feedback rápido, estados explícitos e escolha correta do fluxo tornam aplicações com IA mais confiáveis e mais agradáveis de usar.
+
+## Complemento — Escolha pelo contrato e pelo prazo
+
+Outras APIs também podem ser lentas, variáveis e transmitidas em partes. O diferencial prático da geração com IA é que a aplicação precisa combinar tempo de geração, consumo de tokens, utilidade parcial e aceitação de uma saída probabilística.
+
+Use métricas do caso real: latência p50/p95, tempo até o primeiro conteúdo, tempo total, falhas e percentual de resultados aceitos. O número de etapas e a necessidade de recuperar a tarefa após desconexão também entram na decisão.
+
+Os três fluxos podem coexistir. Um job pode usar streaming internamente e publicar progresso por SSE; uma rota com `async def` pode continuar entregando uma única resposta completa. Veja a [distinção entre concorrência, entrega e durabilidade](../README.md#três-dimensões-que-não-devem-ser-confundidas).

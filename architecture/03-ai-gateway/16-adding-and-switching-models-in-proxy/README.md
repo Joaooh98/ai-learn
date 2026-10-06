@@ -1,5 +1,7 @@
 # Aula 16 — Adicionando e alternando modelos no Proxy
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `06:12`
 
 ## Resumo
@@ -105,3 +107,13 @@ Não é provider. Não é modelo físico. É uma capacidade.
 ## Ideia-chave
 
 Adicionar e alternar modelos no proxy permite trocar implementação sem trocar integração. A aplicação escolhe uma capacidade interna; o gateway decide o provider/modelo real.
+
+## Complemento — Selecionar capacidade não é fallback
+
+`AI_GATEWAY_MODEL=architecture-advisor` escolhe outra capacidade antes de enviar a chamada. Se a capacidade escolhida falhar, esse YAML não tenta automaticamente `developer-assistant`: não há fallback configurado na aula 16.
+
+Cada nome também possui apenas um deployment no exemplo. Portanto, a configuração não demonstra balanceamento entre vários destinos do mesmo grupo.
+
+O prompt da aplicação permanece o mesmo ao alternar as capacidades. O alias não adiciona sozinho um prompt de arquiteto ou uma política semântica; esses nomes organizam a integração. Se duas capacidades precisam de formatos ou instruções diferentes, isso deve estar no contrato e na implementação correspondente.
+
+Depois de mudar variáveis do Compose, recrie o container. Depois de editar o arquivo montado, verifique se a versão executada recarrega a configuração ou reinicie o serviço. A troca deve aparecer nos logs do deployment efetivo.

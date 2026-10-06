@@ -1,5 +1,7 @@
 # Aula 01 — Introdução - Integrações com IA
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:05`
 
 Esta aula apresenta o problema arquitetural que aparece quando várias partes de uma aplicação passam a chamar modelos de IA diretamente. No começo, uma chamada direta via SDK é rápida e suficiente; com o tempo, decisões como provider, modelo, custo, latência, fallback, retry e logs começam a se espalhar pelo sistema.
@@ -107,3 +109,11 @@ O ponto mais importante: o gateway não existe só para "chamar modelo". Ele exi
 ## Ideia-chave
 
 Chamada direta é uma boa porta de entrada. AI Gateway é a resposta quando as decisões sobre IA precisam deixar de estar espalhadas e passar a ser padronizadas, observáveis e governadas.
+
+## Complemento — O custo da centralização
+
+Um gateway também vira uma dependência compartilhada: indisponibilidade, quota ou configuração errada podem afetar várias features ao mesmo tempo. O ganho precisa compensar esse novo caminho de rede e sua operação. Em uma aplicação pequena, um módulo local com contrato, timeout e logs pode ser um estágio suficiente.
+
+Compare três evidências antes de introduzir o serviço: quantidade de integrações duplicadas, frequência de alterações nos providers e necessidade de controlar consumo entre times. Volume isolado não determina a decisão.
+
+**Exercício:** identifique uma feature que usa IA e liste quais escolhas pertencem ao produto (resultado aceito, prazo, privacidade) e quais podem ser compartilhadas (autenticação, normalização, contabilização). O gateway aplica a política; o time do produto continua definindo o que é uma resposta útil.

@@ -9,7 +9,7 @@ as ferramentas usadas no fluxo de desenvolvimento. O repositório de origem foi 
 
 | Pasta | Conteúdo |
 |---|---|
-| `architecture/` | Material sobre acoplamento e saúde de aplicações |
+| [architecture/](architecture/README.md) | Acoplamento e saúde de aplicações, AI Gateway, fluxos de chamada e cache |
 | `cli-lang/` | Exercício de ingestão e busca semântica com LangChain e PostgreSQL/pgVector |
 | `design-docs/` | Módulos do MBA sobre documentação, design e arquitetura |
 | `prompt-engineering/` | Exercícios de prompting, agentes, versionamento e avaliação |

@@ -1,5 +1,7 @@
 # Aula 18 — Fallback com modelo fraco
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `05:38`
 
 ## Resumo
@@ -49,7 +51,7 @@ Formato esperado:
 O `.env` mostra dois cenários:
 
 - cenário saudável: modelo primário forte responde JSON puro;
-- cenário de fallback: modelo primário inexistente força o proxy a acionar o backup fraco.
+- cenário de fallback: modelo primário inexistente produz uma falha de configuração usada na aula para exercitar a rota alternativa; o acionamento depende da política e da versão do proxy.
 
 No resultado exibido, o fallback responde com markdown/crases. A chamada retorna, mas a resposta não é JSON puro.
 
@@ -88,13 +90,13 @@ O `config.yaml` usa:
 - `OPENAI_API_KEY` para o principal;
 - `ANTHROPIC_API_KEY` para o backup.
 
-Isso permite alternar cenário sem reiniciar o desenho da aplicação.
+Isso permite alternar cenário sem editar o código da aplicação. Ao mudar variáveis repassadas pelo Compose, recrie o container para que o proxy receba os novos valores.
 
 ## 7. Backup fraco
 
 ![Backup fraco](./07.png)
 
-O backup é publicado como `support-ticket-classifier-backup` e existe só para o proxy.
+O backup é publicado como `support-ticket-classifier-backup` e é usado como rota alternativa pelo proxy. Com a master key didática, ele também pode ser chamado diretamente; não há política de autorização que o torne privado neste exemplo.
 
 O comentário da aula destaca que esse modelo mais fraco pode responder com HTTP 200, mas com confiança/aderência abaixo do necessário.
 
@@ -102,9 +104,9 @@ O comentário da aula destaca que esse modelo mais fraco pode responder com HTTP
 
 ![Alternando cenario](./08.png)
 
-Ao apontar `PRIMARY_MODEL` para um modelo válido, o fluxo passa. Ao apontar para um modelo inexistente, o proxy aciona fallback.
+Ao apontar `PRIMARY_MODEL` para um modelo válido, o caminho primário pode atender normalmente. Um modelo inexistente exercita uma falha de configuração; confira os logs para verificar se a versão executada encaminhou a chamada para o backup.
 
-Esse artifício simula indisponibilidade do provider principal.
+Esse artifício não reproduz todos os cenários de indisponibilidade, timeout ou rate limit do provider principal.
 
 ## 9. Validação do contrato
 
@@ -124,3 +126,13 @@ Essa validação deixa claro que a aplicação ainda precisa defender o contrato
 ## Ideia-chave
 
 Fallback com modelo fraco pode preservar disponibilidade técnica e quebrar utilidade de negócio. Em fluxos estruturados, a aplicação precisa validar contrato, não apenas sucesso HTTP.
+
+## Complemento — O contrato validado é parcial
+
+A função [contrato_quebrado](weak-model-fallback-validation/app/main.py) verifica conteúdo, parse JSON, objeto e categoria. Ela não exige `reason`, não verifica seu tipo nem proíbe campos extras. Uma categoria JSON como lista ou objeto também pode provocar `TypeError` na consulta ao conjunto de categorias. O exemplo evidencia a necessidade de validação; não é um validador completo do schema mostrado.
+
+Este client não envia `response_format`; a saída depende do prompt. Em uma evolução, use formato estruturado compatível com o modelo e um schema local com categoria enumerada, motivo obrigatório e regras de campos extras. A validação de formato ainda não comprova acerto da classificação.
+
+“Fraco” descreve o papel didático do backup. A quebra exibida não prova que toda resposta do backup será inválida nem que todo modelo primário será correto. Compare vários casos com critérios de avaliação.
+
+Invalidar o modelo primário exercita uma classe específica de falha; não prova a política para timeout, 429 e erro no meio de streaming. Registre a versão do proxy, o erro original e o deployment final em cada experimento.

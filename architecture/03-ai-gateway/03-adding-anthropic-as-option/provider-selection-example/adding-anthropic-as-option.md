@@ -1,6 +1,8 @@
 # Prompt 02 — Adding Anthropic as Option
 
-> Origem: `architecture/ai-gateway/03-adding-anthropic-as-option`
+[Índice do módulo](../../README.md) · [Aula correspondente](../README.md)
+
+> Origem: `architecture/03-ai-gateway/03-adding-anthropic-as-option`
 >
 > Observação: as imagens mostram integralmente o início, variáveis/defaults e regras finais do prompt. O bloco central de dependências/execução foi reconstruído seguindo o padrão do prompt anterior e o contexto visível nas capturas.
 
@@ -68,3 +70,6 @@ O código deve:
 
 Deixe comentários curtos no código mostrando que agora a aplicação conhece dois SDKs, dois clients e dois formatos de chamada.
 
+## Nota de revisão do registro
+
+Preservamos o pedido e a indicação dos trechos reconstruídos. O script da aula 03 usa defaults históricos `gpt-4-mini` e `claude-3-5-sonnet-20241022`, diferentes deste prompt. Configure `AI_MODEL` antes de executar. A cópia na aula 07 documenta a etapa anterior; o código ali já utiliza LiteLLM. Escolher um único provider e não implementar fallback não desativa os retries internos de um SDK.

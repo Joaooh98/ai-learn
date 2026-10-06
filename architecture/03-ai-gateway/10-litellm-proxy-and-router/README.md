@@ -1,5 +1,7 @@
 # Aula 10 — LiteLLM Proxy e Router
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `03:44`
 
 ## Resumo
@@ -75,3 +77,11 @@ Antes do roteamento, o proxy verifica chave virtual, orçamento e rate limit. De
 ## Ideia-chave
 
 Router é o mecanismo que permite expor capacidades estáveis para a aplicação enquanto os modelos físicos podem mudar por custo, qualidade, disponibilidade ou política interna.
+
+## Complemento — Grupo lógico e políticas de escolha
+
+Mais de um deployment pode compartilhar o mesmo `model_name`. Nesse caso o router precisa escolher entre destinos elegíveis conforme a estratégia e seus limites. Já dois nomes distintos no arquivo não significam balanceamento entre eles: cada grupo precisa de roteamento ou fallback configurado.
+
+Um nome lógico é um ponto de estabilidade, mas sozinho não define um contrato semântico. Especifique o schema, os parâmetros admitidos, o prazo e o comportamento de falha da capacidade. Trocar o deployment exige verificar esses critérios.
+
+Nos exemplos, a aplicação imprime a variável `MODEL` enviada. Esse print mostra a capacidade solicitada, não prova qual provider respondeu. O retorno ou os logs do gateway podem conter informações do modelo físico; abstração de integração não significa esconder toda evidência operacional.

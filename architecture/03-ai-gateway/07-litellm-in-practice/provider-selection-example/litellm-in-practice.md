@@ -1,6 +1,8 @@
 # Prompt 03 — LiteLLM in Practice
 
-> Origem: `architecture/ai-gateway/07-litellm-in-practice`
+[Índice do módulo](../../README.md) · [Aula correspondente](../README.md)
+
+> Origem: `architecture/03-ai-gateway/07-litellm-in-practice`
 >
 > Observação: o prompt abaixo foi reconstruído a partir dos prints da aula 07 e do resultado exibido nas capturas. Os prints mostram o início, as regras, as dependências e o resultado esperado do `main.py`; os trechos não visíveis foram completados pelo contexto do próprio resultado.
 
@@ -70,3 +72,6 @@ Resultado esperado:
 - a troca entre OpenAI e Anthropic deve acontecer apenas por `AI_PROVIDER` e `AI_MODEL`;
 - o código deve mostrar que LiteLLM remove a duplicação de SDKs, clients e formatos de resposta.
 
+## Nota de revisão do registro
+
+Este prompt descreve a refatoração solicitada. O `main.py` presente usa defaults históricos `gpt-4-mini` e `claude-3-5-sonnet-20241022`, diferentes dos defaults acima. Use `AI_PROVIDER` e `AI_MODEL` coerentes, com uma versão de modelo disponível na conta. A regra de aceitar modelos já prefixados não valida a coerência do prefixo com `AI_PROVIDER`; isso é um limite do artefato, descrito no README da aula.

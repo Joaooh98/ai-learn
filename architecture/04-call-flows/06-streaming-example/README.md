@@ -1,5 +1,7 @@
 # Aula 06 — Exemplificando com streaming
 
+[Índice do módulo](../README.md)
+
 > Curso: **Fluxos de Chamada** · Duração: `05:29`
 
 Esta aula evolui a API síncrona da aula anterior adicionando um endpoint de streaming para explicação textual. A ideia é comparar dois fluxos no mesmo backend: JSON completo para máquina e texto progressivo para experiência humana.
@@ -34,7 +36,7 @@ No cliente de IA:
 Na rota FastAPI:
 
 - `POST /tickets/explain` retorna `StreamingResponse`.
-- A rota tenta puxar o primeiro chunk antes de começar a resposta, para transformar falha inicial em HTTP 500.
+- A rota tenta puxar o primeiro chunk antes de começar a resposta. Uma exceção que escape do gerador nesse ponto vira HTTP 500; erros capturados dentro do gerador podem ser entregues como texto com HTTP 200.
 - Depois do primeiro byte enviado, o restante é entregue com `yield from chunks`.
 
 ## Teste com curl
@@ -54,4 +56,14 @@ O projeto reproduzível está em [streaming-ticket-explanation](./streaming-tick
 
 ## Ideia-chave
 
-Streaming não é para dados estruturados finais. Ele é para respostas textuais em que o usuário ganha algo vendo o conteúdo aparecer antes da conclusão completa.
+Neste exemplo, streaming entrega explicação textual progressiva. Dados estruturados também podem ser transmitidos em partes, desde que o consumidor tenha um protocolo de eventos e valide o resultado final antes de agir.
+
+## Complemento — Comportamento observado no código
+
+A resposta é um fluxo de texto simples, sem SSE ou eventos `done/error`. O consumidor junta os fragmentos do corpo. Não existe correspondência garantida entre cada `yield` e cada chunk recebido pelo navegador, porque os buffers do transporte podem agrupar conteúdo.
+
+O prefetch chama `next(chunks)` antes de criar a resposta. Falhas na criação da chamada ao provider podem escapar e virar HTTP 500. Já o bloco `try/except` dentro de `explain_ticket()` captura erros durante a iteração, inclusive antes do primeiro texto, e os transforma em uma mensagem textual. Nesse caso a rota pode enviar HTTP 200 com essa mensagem; o status não prova conclusão bem-sucedida.
+
+Depois de iniciada a resposta, um erro precisa de um sinal no contrato do corpo. Em uma evolução, eventos explícitos de conclusão e falha são mais confiáveis do que acrescentar um marcador indistinguível do conteúdo do modelo.
+
+O demo não fecha explicitamente o stream upstream nem implementa cancelamento da geração quando o client desconecta. Encerrar leitura local não assegura interrupção remota. Esses pontos devem ser verificados ao evoluir o client e o servidor.

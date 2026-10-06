@@ -1,0 +1,31 @@
+### Primeira chamada: deve chamar IA
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Segunda chamada igual: deve retornar exact_cache
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Mesma mensagem com espaços e maiúsculas: exact_cache por causa da normalização
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "  tenho   DÚVIDAS sobre cobrança, pode me ajudar?  "
+}
+
+### Texto normalizado diferente: deve gerar cache miss
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "a tenho DÚVIDAS sobre cobrança, pode me ajudar?"
+}

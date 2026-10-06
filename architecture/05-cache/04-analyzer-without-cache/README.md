@@ -2,32 +2,60 @@
 
 > Curso: **Cache** · Duração: `07:11`
 
-## Observação sobre o material
+## Material e foco da aula
 
-Esta pasta ainda não contém prints nem código da aula. As notas abaixo foram registradas como
-guia de estudo pela continuidade do módulo. Quando o material prático for adicionado (prints,
-projeto de exemplo), este README pode ser ajustado para refletir o conteúdo exato da aula.
+Há dez prints do analisador em FastAPI, do prompt e de requisições ao modelo. A versão da aula
+chama o modelo em toda requisição; [o endpoint](06.png) e [a segunda chamada](10.png) registram
+essa linha de base. O [projeto compartilhado](../mba-ia-cache/README.md) é uma versão posterior
+com as camadas integradas, não uma cópia isolada desta etapa.
 
-## Resumo
+## O caso de uso observado
 
-Depois da parte conceitual (aulas 01 a 03), o módulo inicia a prática construindo um analisador —
-um endpoint ou serviço que chama um modelo de IA para processar uma entrada — **sem nenhum
-cache**. Essa versão serve como linha de base: é contra ela que as próximas aulas vão medir o
-ganho de cada camada de cache adicionada (exato, semântico, prompt caching do provider).
+`POST /tickets/analyze` recebe uma mensagem de suporte e retorna análise estruturada:
 
-## O que a aula deve cobrir
+```json
+{
+  "category": "billing",
+  "confidence": 0.95,
+  "reason": "A mensagem descreve uma dúvida sobre cobrança."
+}
+```
 
-- Implementação de um caso de uso simples que chama um modelo a cada requisição.
-- Observação de latência e custo repetidos mesmo quando a mesma pergunta (ou uma pergunta muito
-  parecida) é feita mais de uma vez.
-- Ausência proposital de qualquer camada de cache, para deixar o problema visível antes de
-  resolvê-lo.
+Esse JSON ilustra o contrato, não valores que o modelo sempre retornará. As categorias previstas
+são `billing`, `technical_support`, `account`, `cancellation` e `other`. Os prints mostram
+`ChatPromptTemplate`, `init_chat_model` e `with_structured_output(TicketAnalysis)`; LangChain
+já aparece nessa etapa.
 
-## Ideia-chave
+```text
+mensagem → prompt de classificação → modelo de chat → TicketAnalysis → resposta HTTP
+```
 
-Construir o analisador sem cache primeiro é o que torna o ganho das próximas aulas mensurável:
-sem uma baseline clara, fica difícil justificar a complexidade que cache-aside, fingerprint e
-cache semântico vão adicionar ao sistema.
+`source`, `ai_call_number` e `elapsed_ms` tornam visíveis origem, contador e tempo medido
+na aplicação. Repetir a mensagem nesta versão incrementa o contador novamente.
 
+## Complemento de estudo: medir uma linha de base útil
 
----- obs: projeto de exemplo esta aqui: architecture/05-cache/mba-ia-cache se for o caso crie uma copia somente para esse modulo sem ter todo o contexto de todas as aulas 
+Compare o mesmo conjunto de entradas, prompt, modelo e regras. Registre latência mediana e p95,
+erros, consumo real de tokens e qualidade da classificação. Um único tempo no print não
+representa a distribuição de latência, e contar chamadas não calcula o custo financeiro.
+
+Temperatura zero reduz uma fonte de variação, mas não garante que inferências repetidas sempre
+serão idênticas. Cache de resposta fixa uma saída já gerada.
+
+Saída estruturada valida formato e tipos conforme o schema, não a verdade da análise.
+O campo `confidence: float` do exemplo não impõe o intervalo de 0 a 1, embora o prompt o peça;
+restrições como `Field(ge=0, le=1)` seriam um complemento. [Referências: saída estruturada
+no LangChain](https://docs.langchain.com/oss/python/langchain/models#structured-output)
+e [restrições de campos no Pydantic](https://pydantic.dev/docs/validation/latest/concepts/fields/#field-constraints).
+
+## Leitura do código consolidado
+
+A inferência permanece em `chain.invoke({"message": request.message})` de
+[main.py](../mba-ia-cache/main.py). No código atual ela só ocorre depois dos misses exato e
+semântico. Para estudar a baseline, compare o bloco de inferência com os prints; uma chamada
+ao endpoint atual não executa automaticamente o fluxo sem cache.
+
+## Pergunta de revisão
+
+Como demonstrar que a redução de latência veio do cache se o tempo do provedor varia entre
+requisições? Quais métricas precisam acompanhar o número de chamadas evitadas?

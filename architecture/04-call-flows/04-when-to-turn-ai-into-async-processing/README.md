@@ -1,5 +1,7 @@
 # Aula 04 — Quando transformar IA em processamento assíncrono
 
+[Índice do módulo](../README.md)
+
 > Curso: **Fluxos de Chamada** · Duração: `03:52`
 
 Esta aula separa dois conceitos que às vezes são confundidos: streaming e processamento assíncrono. Streaming ainda mantém uma request aberta; processamento assíncrono tira o trabalho pesado da request original.
@@ -74,3 +76,13 @@ Processamento assíncrono muda o desenho da funcionalidade, não apenas onde o c
 ## Ideia-chave
 
 Quando a IA não precisa terminar dentro da request original, transformar a operação em job deixa a aplicação mais resiliente, mais observável e menos vulnerável a timeouts.
+
+## Complemento — Um job aceito precisa ser recuperável
+
+`async def` e `await` organizam concorrência durante uma execução. Eles não criam persistência, fila, identidade da tarefa ou recuperação após restart. Um job durável exige esses mecanismos explicitamente.
+
+Uma arquitetura de produção precisa coordenar registro do job e publicação para processamento. Se apenas salvar o job e a publicação falhar, ele pode ficar pendente sem executor; se publicar antes de persistir, o worker pode não encontrar seu estado. Uma estratégia é registrar job e evento de saída na mesma transação e publicar esse evento com um processo separado, com deduplicação.
+
+Defina prazo máximo, política de expiração, retry com orçamento, resultado de falha e autorização para consultar o job. Mensagens podem ser entregues novamente; o worker precisa tolerar repetição sem executar efeitos externos duplicados. Consulte as [tarefas e idempotência do Celery](https://docs.celeryq.dev/en/stable/userguide/tasks.html).
+
+SSE, polling e WebSocket são modos de acompanhar a execução. Eles não substituem armazenar o estado. O client deve conseguir reconstruir a tela consultando o job depois de reconectar.

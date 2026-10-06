@@ -1,5 +1,7 @@
 # Aula 14 — LiteLLM Proxy na prática
 
+[Índice do módulo](../README.md)
+
 > Curso: **AI Gateways** · Duração: `07:16`
 
 ## Resumo
@@ -37,8 +39,8 @@ O proxy é executado com Docker Compose, expondo a porta `4000`.
 Configuração principal:
 
 - imagem do LiteLLM Proxy;
-- `OPENAI_API_KEY` real usada internamente pelo proxy;
-- `LITELLM_MASTER_KEY` usada pela aplicação para autenticar no proxy;
+- `OPENAI_API_KEY` usada pelo proxy na chamada ao provider;
+- `LITELLM_MASTER_KEY` administrativa usada pela aplicação neste laboratório para autenticar no proxy;
 - montagem do arquivo `litellm/config.yaml`;
 - comando apontando para o config e porta `4000`.
 
@@ -77,3 +79,11 @@ O que e uma AI Gateway e por que ela e importante em aplicacoes com IA?
 ## Ideia-chave
 
 Nesta prática, o ganho não está em chamar um modelo. O ganho está em provar que a aplicação conversa com uma capacidade interna e deixa o modelo físico sob controle do proxy.
+
+## Complemento — Estado atual do artefato
+
+A aula registra a montagem inicial, mas o [main.py presente](minimal-proxy-client/app/main.py) já contém a chamada executável ao proxy. A aula 15 registra a continuação pedagógica e uma versão muito semelhante do client.
+
+Execute a partir da pasta do projeto, com `.env` preenchido e proxy ativo; o [README do exemplo](minimal-proxy-client/README.md) contém o procedimento completo. O endpoint é `http://localhost:4000` porque o Python roda no host. Em outro container, `localhost` apontaria para esse próprio container; a URL precisa refletir a rede da implantação.
+
+O nome lógico estável é o aprendizado demonstrado. Não há nesse YAML quotas por consumidor, dashboard configurado, cache ou balanceamento entre deployments.

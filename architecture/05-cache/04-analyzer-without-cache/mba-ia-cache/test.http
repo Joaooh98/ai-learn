@@ -1,0 +1,15 @@
+### Primeira chamada: deve chamar a IA
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Segunda chamada igual: também deve chamar a IA
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}

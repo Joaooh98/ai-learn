@@ -1,5 +1,7 @@
 # Minimal Proxy Client
 
+[Índice do módulo](../../README.md) · [Aula correspondente](../README.md)
+
 > Origem: aula 14 — LiteLLM Proxy na pratica.
 
 Este projeto registra a primeira metade da pratica: preparar uma aplicacao Python minima para chamar o LiteLLM Proxy local em vez de chamar a OpenAI diretamente.
@@ -45,4 +47,24 @@ O que e uma AI Gateway e por que ela e importante em aplicacoes com IA?
 
 ## Observacao
 
-Esta pasta documenta a montagem inicial da aula 14. A aula 15 contem a versao completa do `main.py` com a chamada executavel.
+A aula 14 registra a montagem inicial, e a aula 15 registra sua continuação. O `app/main.py` presente nesta pasta já contém uma chamada executável completa ao proxy.
+
+## Como executar o código presente
+
+Nesta pasta, prepare `.env` com as chaves e suba o proxy:
+
+```bash
+cp .env.example .env
+docker compose up
+```
+
+Depois de preencher o `.env` e com o proxy disponível, abra outro terminal nesta pasta:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r app/requirements.txt
+python app/main.py "Explique AI Gateway com um exemplo de suporte"
+```
+
+O client roda no host e chama `localhost:4000`. A chave administrativa é usada somente para simplificar o laboratório. Veja os [limites dos exemplos](../../README.md#o-que-os-exemplos-implementam) e a [continuação da prática](../../15-litellm-proxy-in-practice-part-2/README.md).

@@ -2,29 +2,57 @@
 
 > Curso: **Cache** · Duração: `03:47`
 
-## Observação sobre o material
+## Material e foco da aula
 
-Esta pasta ainda não contém prints da aula. As notas abaixo foram registradas como guia de
-estudo pela continuidade do módulo. Quando os prints forem adicionados, este README pode ser
-ajustado para refletir o fluxo exato da aula.
-
-## Resumo
-
-Guardar uma resposta no cache resolve o problema de repetir trabalho, mas cria um novo problema:
-por quanto tempo essa resposta continua válida? A aula cobre os três conceitos que lidam com isso.
+Os três prints relacionam tempo de vida, resposta desatualizada e invalidação.
+[O problema de uma resposta stale](02.png) usa mudanças de regra, prompt e contexto do ticket;
+[o último print](03.png) distingue TTL, remoção manual e versão/fingerprint.
 
 ## Conceitos
 
-- **TTL (time to live)**: tempo definido para uma entrada do cache continuar válida antes de
-  expirar automaticamente.
-- **Resposta stale**: dado desatualizado que ainda está sendo servido do cache, seja porque o TTL
-  é longo demais, seja porque a fonte mudou antes do TTL expirar.
-- **Invalidação**: remover ou forçar a atualização de uma entrada do cache antes do TTL natural,
-  normalmente porque algo relevante mudou (novo contexto, nova versão do prompt, dado de origem
-  alterado).
+- **TTL (*time to live*)**: prazo de reutilização definido para uma entrada. A política deve
+  especificar se começa na escrita e se acessos o renovam.
+- **Resposta stale**: resultado que já não representa a fonte, as regras ou o contexto atuais.
+  Pode ficar desatualizado antes de o TTL vencer.
+- **Invalidação**: deixar de aceitar uma entrada após uma mudança relevante, por remoção,
+  atualização ou mudança da identidade usada na consulta.
 
-## Ideia-chave
+```text
+09:00 → resposta gerada sob rules_v1; TTL ilustrativo de 1 hora
+09:05 → regra muda para rules_v2
+09:06 → entrada ainda não expirou, mas já não serve sob a regra nova
+```
 
-TTL curto reduz o risco de resposta stale, mas aumenta miss e custo. TTL longo reduz custo, mas
-aumenta o risco de servir informação desatualizada. Definir TTL é sempre um trade-off entre
-custo/latência e frescor da resposta — não existe um valor universalmente correto.
+TTL limita por quanto tempo se permite reutilizar; não prova que a resposta está atualizada.
+A escolha depende da volatilidade dos dados e do custo de uma resposta incorreta.
+
+## Complemento de estudo: três mecanismos diferentes
+
+| Mecanismo | Efeito | Limite |
+| --- | --- | --- |
+| Expiração | Recusa entrada depois de um prazo | Mudanças anteriores podem gerar stale |
+| Invalidação por evento | Reage a alteração conhecida | Depende da entrega e do processamento do evento |
+| Versionamento | Consulta passa a usar outra identidade | Entradas antigas continuam armazenadas |
+
+Quando a origem muda, uma estratégia comum é atualizar a fonte e depois invalidar o cache;
+inverter a ordem permite que uma leitura recarregue o valor antigo. [Referência: consistência
+no Cache-Aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside#problems-and-considerations).
+
+`stale-while-revalidate` é uma política opcional: servir uma entrada antiga por um prazo definido
+enquanto outra tarefa atualiza o resultado. Só cabe quando o domínio aceita essa defasagem.
+Ela não está implementada neste projeto.
+
+## O que o projeto realmente implementa
+
+Em [main.py](../mba-ia-cache/main.py), mudar `prompt_version` ou `rules_version` altera o
+fingerprint; em [db.py](../mba-ia-cache/db.py), essas versões filtram a busca semântica. Isso é
+invalidação **lógica**: deixa de consultar o conjunto anterior, sem apagá-lo.
+
+Não há TTL em `CACHE`, campo `expires_at`, filtro de expiração no SQL nem rotina de limpeza.
+`created_at` registra a criação; sozinho não faz uma entrada expirar. Voltar para uma versão
+anterior pode tornar entradas antigas acessíveis novamente.
+
+## Exercício
+
+Escolha uma política de validade para classificação estável de tickets e outra para resposta
+sobre uma cobrança que acabou de mudar de status. Justifique os eventos que invalidam cada uma.
