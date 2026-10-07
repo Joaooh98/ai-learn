@@ -8,6 +8,9 @@ Os 23 prints mostram extração de configuração/modelos, criação de `OpenAIE
 endpoint `POST /embeddings/generate`. [10.png](10.png) mostra validação e chamada em lote;
 [19.png](19.png) registra a dimensão retornada; [23.png](23.png) mostra três textos de teste.
 
+O [snapshot prático desta aula](mba-ia-cache/README.md) contém exatamente esse estágio do
+projeto, isolado dos recursos de PostgreSQL e busca semântica adicionados nas aulas seguintes.
+
 ## Fluxo observado
 
 ```text
@@ -27,7 +30,7 @@ Exemplo de corpo compatível com o endpoint:
 }
 ```
 
-Em [main.py](../mba-ia-cache/main.py), a API rejeita lista vazia e textos que ficam vazios após
+Em [main.py](mba-ia-cache/main.py), a API rejeita lista vazia e textos que ficam vazios após
 normalização. `embed_documents(normalized_texts)` gera os vetores, mas a resposta HTTP expõe
 somente `embedding_dimension` e os cinco primeiros componentes em `embedding_preview`.
 A prévia não é suficiente para calcular similaridade ou persistir o vetor completo.

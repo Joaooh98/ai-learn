@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:8001
+
+### 1) Estado da demonstração
+GET {{baseUrl}}/health
+
+### 2) PRIMEIRA chamada -> provider_cache_hit=false (cached_tokens=0)
+# O provider processa o prompt inteiro e pode guardar o prefixo do lado dele.
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre a cobrança na minha fatura, pode me ajudar?"
+}
+
+### 3) Mensagem DIFERENTE -> provider_cache_hit pode ser true mesmo assim
+# O provider não cacheia a RESPOSTA. Ele reaproveita o processamento do prefixo
+# estático, que é idêntico porque a mensagem variável entra por último.
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Não consigo acessar minha conta"
+}
+
+### 4) Outra mensagem -> novo possível hit no mesmo prefixo
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Quero cancelar minha assinatura hoje"
+}
+
+### 5) MESMA mensagem do bloco 2 -> a IA é chamada MESMO ASSIM (ai_calls sobe)
+# Em um cache exato da aplicação a IA nem rodaria. O cache do provider nunca
+# evita a chamada: ele apenas pode descontar o input repetido, em modo best-effort.
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre a cobrança na minha fatura, pode me ajudar?"
+}

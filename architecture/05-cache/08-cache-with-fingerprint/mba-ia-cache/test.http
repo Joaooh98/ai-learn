@@ -1,0 +1,50 @@
+### Primeira chamada com prompt_v1: deve chamar IA
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Segunda chamada igual com prompt_v1: deve retornar exact_cache
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Mudar prompt_version em runtime para prompt_v2
+PUT http://localhost:8000/config
+Content-Type: application/json
+
+{
+  "prompt_version": "prompt_v2"
+}
+
+### Mesma mensagem com prompt_v2: deve gerar cache miss
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Voltar à versão original
+PUT http://localhost:8000/config
+Content-Type: application/json
+
+{
+  "prompt_version": "prompt_v1"
+}
+
+### Entrada de prompt_v1 continua no cache: deve retornar exact_cache
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Consultar a configuração ativa
+GET http://localhost:8000/config

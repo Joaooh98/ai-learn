@@ -1,0 +1,30 @@
+### Primeira chamada: deve chamar IA
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Segunda chamada igual: deve retornar exact_cache
+POST http://localhost:8000/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### Configuração atual (inclui embedding_model)
+GET http://localhost:8000/config
+
+### Gerar embeddings de textos
+POST http://localhost:8000/embeddings/generate
+Content-Type: application/json
+
+{
+  "texts": [
+    "Como cancelo minha assinatura?",
+    "Quero cancelar meu plano",
+    "Não consigo acessar minha conta"
+  ]
+}

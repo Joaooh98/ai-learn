@@ -47,11 +47,12 @@ O cache em memória tem quatro limites observáveis:
 Caches locais e sincronização entre instâncias também aparecem na
 [referência de Cache-Aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside#problems-and-considerations).
 
-## Conferência no projeto atual
+## Conferência no snapshot
 
-Em [main.py](../mba-ia-cache/main.py), `normalize_text()`, `build_cache_key()` e `CACHE`
-continuam disponíveis, mas o hash recebe o fingerprint completo e o miss exato segue para o
-cache semântico. O arquivo atual consolida etapas posteriores.
+O [projeto desta aula](mba-ia-cache/README.md) mantém `normalize_text()`, `build_cache_key()` e
+`CACHE` em um único [main.py](mba-ia-cache/main.py), como aparece nos prints. O roteiro em
+[test.http](mba-ia-cache/test.http) separa miss, hit, equivalência por normalização e uma mensagem
+que produz nova chave. Fingerprint contextual e cache semântico ainda não fazem parte desta etapa.
 
 ## Exercício
 

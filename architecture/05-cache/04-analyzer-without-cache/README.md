@@ -6,8 +6,8 @@
 
 Há dez prints do analisador em FastAPI, do prompt e de requisições ao modelo. A versão da aula
 chama o modelo em toda requisição; [o endpoint](06.png) e [a segunda chamada](10.png) registram
-essa linha de base. O [projeto compartilhado](../mba-ia-cache/README.md) é uma versão posterior
-com as camadas integradas, não uma cópia isolada desta etapa.
+essa linha de base. O [snapshot prático desta aula](mba-ia-cache/README.md) preserva esse estado
+antes da introdução de qualquer cache.
 
 ## O caso de uso observado
 
@@ -48,12 +48,11 @@ restrições como `Field(ge=0, le=1)` seriam um complemento. [Referências: saí
 no LangChain](https://docs.langchain.com/oss/python/langchain/models#structured-output)
 e [restrições de campos no Pydantic](https://pydantic.dev/docs/validation/latest/concepts/fields/#field-constraints).
 
-## Leitura do código consolidado
+## Leitura do snapshot
 
-A inferência permanece em `chain.invoke({"message": request.message})` de
-[main.py](../mba-ia-cache/main.py). No código atual ela só ocorre depois dos misses exato e
-semântico. Para estudar a baseline, compare o bloco de inferência com os prints; uma chamada
-ao endpoint atual não executa automaticamente o fluxo sem cache.
+A inferência ocorre diretamente em `chain.invoke({"message": request.message})` de
+[main.py](mba-ia-cache/main.py). O roteiro em [test.http](mba-ia-cache/test.http) repete a mesma
+mensagem para tornar visível que `ai_call_number` aumenta em todas as requisições.
 
 ## Pergunta de revisão
 

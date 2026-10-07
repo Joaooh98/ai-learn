@@ -2,12 +2,24 @@
 
 > Curso: **Cache** · Duração: `07:06`
 
-## Observação sobre o material
+## Projeto prático da aula
 
-Esta pasta contém **31 prints**, de `01.png` a `31.png`, com código, requisições e respostas da
-demonstração. Os arquivos `provider_cache.py` e `provider_cache.http` aparecem nas imagens,
-mas seus fontes não estão neste repositório. O [projeto disponível](../mba-ia-cache/README.md)
-demonstra cache exato/semântico e não expõe a telemetria de provider mostrada aqui.
+O exemplo foi reconstruído em
+[`provider-cache/`](provider-cache/README.md) a partir dos **31 prints**, de `01.png` a
+`31.png`. Ele é um snapshot independente, focado apenas em prompt caching da OpenAI:
+
+- [`provider_cache.py`](provider-cache/provider_cache.py): API, prompt longo, chamada estruturada,
+  contador `ai_calls` e telemetria de tokens;
+- [`provider_cache.http`](provider-cache/provider_cache.http): sequência de requests usada para
+  observar miss, hits com mensagens diferentes e nova chamada com mensagem repetida;
+- [`.env.example`](provider-cache/.env.example) e
+  [`requirements.txt`](provider-cache/requirements.txt): preparação para execução futura.
+
+As capturas mostram o comportamento, o prompt e a parte principal dos dois arquivos de código.
+O início do Python, com imports, schemas e constantes, não aparece; essa parte foi reconstituída
+pelo contrato das respostas e pelo padrão dos exemplos anteriores. Os arquivos de ambiente,
+dependências e documentação são apoio mínimo inferido e estão identificados no
+[README do projeto](provider-cache/README.md#o-que-veio-das-capturas).
 
 ## Resumo
 

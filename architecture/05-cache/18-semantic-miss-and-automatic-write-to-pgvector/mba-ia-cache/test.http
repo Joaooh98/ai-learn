@@ -1,0 +1,59 @@
+@baseUrl = http://localhost:8000
+
+### 1. Confere banco, extensão e tabela
+GET {{baseUrl}}/db/status
+
+### 2. Usa um escopo novo para não misturar itens de outras práticas
+PUT {{baseUrl}}/config
+Content-Type: application/json
+
+{
+  "prompt_version": "prompt_aula_18",
+  "rules_version": "rules_aula_18",
+  "semantic_cache_threshold": 0.9
+}
+
+### 3. Primeira mensagem: miss -> IA -> escrita automática no pgvector
+# Observe semantic_cache_write.attempted=true, saved=true e item_id preenchido.
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Quero cancelar meu plano"
+}
+
+### 4. Mesma mensagem no mesmo processo: hit exato, sem nova escrita
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Quero cancelar meu plano"
+}
+
+### 5. Paráfrase: pode reutilizar o item gravado automaticamente
+# A decisão real depende do score observado e do threshold atual.
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Preciso cancelar minha assinatura"
+}
+
+### 6. Inspeciona os candidatos persistidos para a paráfrase
+POST {{baseUrl}}/semantic-cache/search
+Content-Type: application/json
+
+{
+  "input_text": "Preciso cancelar minha assinatura",
+  "limit": 5
+}
+
+### 7. Avalia explicitamente o melhor candidato
+POST {{baseUrl}}/semantic-cache/evaluate
+Content-Type: application/json
+
+{
+  "input_text": "Preciso cancelar minha assinatura",
+  "threshold": 0.9,
+  "limit": 5
+}

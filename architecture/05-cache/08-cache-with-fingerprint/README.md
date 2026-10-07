@@ -10,7 +10,7 @@ alterada; [21.png](21.png) mostra acesso sob a versão anterior.
 
 ## Implementação observada
 
-Em [main.py](../mba-ia-cache/main.py), as funções relevantes são:
+No [snapshot da aula](mba-ia-cache/README.md), as funções relevantes são:
 
 ```python
 def normalize_text(text: str) -> str:
@@ -54,9 +54,9 @@ de versão da tabela semântica. Configuração e cache em memória não são co
 5. Volte à versão original: verifique que a entrada anterior não foi apagada.
 
 Essas verificações podem usar apenas funções puras. Requisições de inferência em
-[test.http](../mba-ia-cache/test.http) usam o provedor e podem ter custo.
+[test.http](mba-ia-cache/test.http) usam o provedor e podem ter custo.
 
-## Limite do projeto consolidado
+## Limite desta etapa
 
-No código atual, miss exato pode virar hit semântico. Chave diferente não implica necessariamente
-nova chamada de chat. Observe `source` e os blocos `cache` e `semantic_cache` separadamente.
+Este snapshot termina no cache exato com fingerprint. Busca semântica e pgvector aparecem nas
+aulas seguintes; por isso uma chave diferente nesta etapa leva a uma nova chamada ao modelo.

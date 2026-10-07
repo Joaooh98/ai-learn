@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:8000
+
+### 1. Confere banco, extensão e tabela
+GET {{baseUrl}}/db/status
+
+### 2. Confere o threshold usado pelo endpoint de tickets
+GET {{baseUrl}}/config
+
+### 3. Insere manualmente o item que poderá virar hit semântico
+# Na aula 17, resultados novos do endpoint de tickets ainda não são gravados
+# automaticamente no pgvector. Por isso o candidato é preparado por esta rota.
+POST {{baseUrl}}/semantic-cache/items
+Content-Type: application/json
+
+{
+  "input_text": "Como cancelo minha assinatura?",
+  "response_json": {
+    "category": "cancellation",
+    "confidence": 0.92,
+    "reason": "O usuário quer cancelar a assinatura."
+  }
+}
+
+### 4. Mensagem parecida: pode retornar semantic_cache se superar o threshold
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Preciso cancelar meu plano"
+}
+
+### 5. Mensagem sem candidato aceito: chama a IA e preenche somente o cache exato
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### 6. Mensagem idêntica: retorna exact_cache no mesmo processo
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Tenho dúvidas sobre cobrança, pode me ajudar?"
+}
+
+### 7. Eleva o threshold para observar um miss semântico
+PUT {{baseUrl}}/config
+Content-Type: application/json
+
+{
+  "semantic_cache_threshold": 0.99
+}
+
+### 8. Use uma paráfrase ainda não presente no cache exato
+POST {{baseUrl}}/tickets/analyze
+Content-Type: application/json
+
+{
+  "message": "Quero encerrar a minha assinatura"
+}
