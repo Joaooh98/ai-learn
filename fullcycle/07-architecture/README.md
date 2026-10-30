@@ -15,6 +15,7 @@ RAG organiza a recuperação de documentos para compor o contexto da resposta.
 | [04 — Fluxos de chamada](04-call-flows/README.md) | 7 | A resposta precisa terminar nesta requisição, chegar em partes ou virar um job? |
 | [05 — Cache](05-cache/README.md) | 23 | Quando uma análise anterior ou parte do processamento pode ser reaproveitada? |
 | [06 — RAG](06-RAG/README.md) | 34 | Como recuperar documentos e compor o contexto de uma resposta? |
+| [07 — Observabilidade](07-observability/README.md) | 16 | Como instrumentar, monitorar e governar aplicações com IA em produção? |
 
 A numeração acompanha as pastas existentes; não há módulo `01` neste diretório. Cada índice
 leva às aulas e exemplos. As durações e os prints registram a sequência do curso, enquanto
