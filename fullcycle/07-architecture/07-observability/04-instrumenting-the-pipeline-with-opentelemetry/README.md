@@ -12,3 +12,4 @@
   Padrão usado nas aulas anteriores: uma seção por imagem, com a imagem embutida,
   o que ela mostra e a leitura técnica por trás dela.
 -->
+todo exemplo foi com o https://opentelemetry.io/docs/languages/
