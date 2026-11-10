@@ -1,0 +1,16 @@
+langchain
+langchain-core
+langchain-openai
+langchain-postgres
+langchain-text-splitters
+fastapi
+uvicorn
+python-frontmatter
+psycopg[binary]
+python-dotenv
+pydantic
+pydantic-settings
+PyYAML
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp

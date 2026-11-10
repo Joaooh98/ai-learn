@@ -16,6 +16,7 @@ RAG organiza a recuperação de documentos para compor o contexto da resposta.
 | [05 — Cache](05-cache/README.md) | 23 | Quando uma análise anterior ou parte do processamento pode ser reaproveitada? |
 | [06 — RAG](06-RAG/README.md) | 34 | Como recuperar documentos e compor o contexto de uma resposta? |
 | [07 — Observabilidade](07-observability/README.md) | 16 | Como instrumentar, monitorar e governar aplicações com IA em produção? |
+| [08 — Testes e Evaluation](08-testing-and-evaluation/README.md) | 28 | Como medir a qualidade de respostas, RAG e agentes e impedir regressões? |
 
 A numeração acompanha as pastas existentes; não há módulo `01` neste diretório. Cada índice
 leva às aulas e exemplos. As durações e os prints registram a sequência do curso, enquanto

@@ -1,6 +1,6 @@
 # 07 — Observabilidade
 
-[Arquitetura](../README.md) · [Anterior: RAG](../06-RAG/README.md)
+[Arquitetura](../README.md) · [Anterior: RAG](../06-RAG/README.md) · [Próximo: Testes e Evaluation](../08-testing-and-evaluation/README.md)
 
 Este módulo reúne 16 aulas sobre Observabilidade, seguindo a ordem do curso. As pastas estão numeradas
 e cada aula contém um README com título, duração e espaço para as notas e imagens.
