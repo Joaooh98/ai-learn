@@ -1,6 +1,6 @@
 # 08 — Testes e Evaluation
 
-[Arquitetura](../README.md) · [Anterior: Observabilidade](../07-observability/README.md)
+[Arquitetura](../README.md) · [Anterior: Observabilidade](../07-observability/README.md) · [Próximo: Segurança](../09-security/README.md)
 
 Este módulo reúne 28 aulas sobre Testes e Evaluation em arquiteturas com IA, seguindo a ordem
 do curso. As pastas estão numeradas e cada aula contém um README com título, duração e espaço para
