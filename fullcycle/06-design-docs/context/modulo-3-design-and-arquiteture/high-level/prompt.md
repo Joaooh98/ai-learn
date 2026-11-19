@@ -29,3 +29,23 @@ Retomando o HLD de rate limiting já conhecido, a nova camada aqui não é redes
 O fluxo mais útil é: reunir insumos, executar a entrevista guiada, gerar o draft no template escolhido, rodar checagem de consistência e revisar manualmente. Esse processo reduz a fricção de começar do zero sem terceirizar o raciocínio arquitetural. O resultado esperado não é um documento final perfeito, mas um draft inicial mais mastigado e mais barato de evoluir.
 
 https://app.notion.com/p/Prompt-para-gera-o-de-um-HLD-fcb11da75aff8281937901fcb2f9054f
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Prompt reutilizável com origem e estado de cada afirmação
+
+```text
+Produza um rascunho de HLD a partir dos insumos fornecidos.
+Para cada decisão relevante, registre fonte e estado: confirmada, proposta ou pendente.
+Não transforme defaults em requisitos aceitos. Se faltar informação que muda o desenho,
+explique o impacto da lacuna e mantenha-a aberta.
+Mostre limites do sistema, responsabilidades e fluxos de sucesso e falha.
+Ao final, liste contradições entre produto, código e documentos, com caminhos reais.
+Não afirme que a solução foi implementada ou medida sem evidência anexada.
+```
+
+Antes de gerar o draft, confira se as referências do projeto existem. Um JSON com campos
+preenchidos garante estrutura, sem demonstrar que os valores são corretos. A revisão humana
+precisa decidir as pendências, e não apenas melhorar a redação.

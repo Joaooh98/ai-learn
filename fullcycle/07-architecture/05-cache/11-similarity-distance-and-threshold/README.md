@@ -60,3 +60,29 @@ a definição completa da escala do cosseno.
 
 Para limiar de similaridade 0,90, qual é o limite equivalente de distância de cosseno?
 Por que o mesmo número não pode ser usado diretamente como limite de distância L2?
+
+---
+
+> Complemento revisado em 19/11/2026. Exemplos propostos não são medições da aula.
+
+## Aprofundamento: calibrar pela consequência da reutilização
+
+Os cinco prints vão de vetores à decisão da aplicação. Os cortes 0,70, 0,90 e 0,82 que
+aparecem nos desenhos pertencem a exemplos diferentes; não constituem uma tabela de thresholds
+intercambiáveis. O HNSW desenhado também não demonstra que esse índice esteja criado no projeto.
+
+### Dataset de pares proposto
+
+Monte pares com rótulo `pode_reutilizar`: paráfrases realmente equivalentes, negações, mudança
+de plano, versão de política e tenant. Calibre o limiar no conjunto de validação e confira
+em um conjunto separado quantas reutilizações eram erradas. Inclua pares semanticamente
+próximos que precisam de respostas diferentes, como cancelar um plano e cancelar uma reunião.
+
+Aplique o escopo de acesso e a validade antes de aceitar qualquer candidato. Para respostas
+com efeitos externos, reusar texto não deve reexecutar a ação anterior. Se o resultado
+contiver informação individual, proximidade semântica não permite compartilhá-lo com outro usuário.
+
+Reporte taxa de hits aceitos, erro entre os hits, custo total do lookup e validade da resposta.
+Uma política de cache que evita muitas gerações mas aumenta respostas incorretas pode piorar
+custo por resultado útil. Dimensão, modelo de embedding, métrica e versão dos dados devem
+acompanhar cada calibração.

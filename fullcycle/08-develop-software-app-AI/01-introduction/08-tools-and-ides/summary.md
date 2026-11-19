@@ -1,5 +1,38 @@
-# Ferramentas e IDEs
+## IDEs nativas de IA
+IDEs nativas de IA são ambientes que já nasceram com o workflow de assistência e automação como parte central do produto, em vez de tratarem IA como extensão opcional. Cursor e Windsurf exemplificam essa categoria porque colocam chat, edição assistida, execução de tarefas e, em alguns casos, modelos próprios no centro da experiência. Isso reduz fricção para delegar trabalho diretamente no editor e acelera a transição do fluxo manual para o fluxo orientado por agentes. A diferença prática não é só interface: a IDE passa a ser pensada como superfície de coordenação da IA.
 
-> Duração: `09:13`
+## CLIs como ambiente operacional de automação
+CLI é a forma de operar agentes e assistentes pelo terminal, usando comandos em vez de painéis visuais como ponto principal de interação. Cloud Code, Codex, Gemini CLI e o CLI da Cursor mostram que o terminal deixou de ser apenas um lugar para build, teste e deploy e passou a ser também um lugar de delegação de implementação. Isso importa porque a CLI se encaixa bem em automação, scripts, ambientes remotos e composição com outras ferramentas. Quando o terminal é aberto dentro da própria IDE, a separação entre editor e executor praticamente desaparece.
 
-<!-- A preencher com o resumo da aula. -->
+## Plugins e extensões em IDEs generalistas
+Plugins permitem transformar uma IDE generalista em um ambiente de desenvolvimento com IA sem trocar completamente de ferramenta. VS Code e JetBrains seguem esse caminho ao aceitar assistentes nativos e integrações externas, como GitHub Copilot, Cloud Code, Codex e Gemini. O ganho está em preservar o ambiente já conhecido pela equipe enquanto se adicionam capacidades de geração, edição e execução assistida. O custo é que a experiência pode ficar menos integrada do que em uma IDE concebida desde o início para esse workflow.
+
+## VS Code como base de convergência
+VS Code virou base de convergência porque muitos produtos do mercado derivam dele ou reproduzem sua ergonomia, o que reduz custo de adoção. Quando uma ferramenta nova mantém atalhos, layout e comportamento próximos do VS Code, a migração deixa de exigir reaprendizado completo. Isso ajuda a explicar por que forks e extensões cresceram tão rápido no ecossistema de IA aplicada ao desenvolvimento. O que muda não é apenas o editor, mas o grau de automação acoplado ao editor.
+
+## JetBrains e o ecossistema de plugins com IA
+JetBrains ocupa um espaço relevante porque já era forte em ambientes especializados antes da onda atual de IA e incorporou esse movimento sem abandonar sua base. O JetBrains AI Assistant representa a camada nativa, enquanto o suporte a plugins externos mantém flexibilidade para combinar fornecedores diferentes. Para quem já trabalha nesse ecossistema, isso evita trocar de IDE apenas para adotar agentes e automações. A escolha, portanto, passa menos por marca e mais por encaixe no workflow técnico existente.
+
+## Agent-first workflow
+Agent-first workflow é um modelo em que o agente deixa de ser um recurso lateral e passa a organizar a experiência principal de desenvolvimento. Em vez de abrir a IDE para editar arquivos e ocasionalmente pedir ajuda, o desenvolvedor abre um gerenciador de agentes, distribui trabalhos por workspaces e acompanha execuções paralelas. Isso altera o papel operacional do desenvolvedor: menos digitação contínua, mais delegação, revisão e coordenação por checkpoints, como já visto ao tratar de paralelização. O centro do trabalho sai do arquivo individual e vai para o sistema de execução.
+
+## Google Antigravity como exemplo de ambiente agent-first
+Google Antigravity exemplifica o agent-first workflow ao colocar um Agent Manager como tela principal e permitir múltiplos workspaces executando tarefas em paralelo. Retomando o cenário recorrente do capítulo, o mesmo trabalho que antes podia ser conduzido em um editor com prompts pontuais agora pode ser distribuído entre frentes separadas, cada uma com sua execução e seus artefatos. O efeito prático é mudar a pergunta de “qual arquivo eu edito agora?” para “qual frente eu delego agora e em que checkpoint eu reviso?”. Esse desenho aproxima a ferramenta de um ambiente de orquestração, não apenas de edição.
+
+## Artefatos gerados pela própria IA no workflow
+Em ambientes mais agent-first, a IA não apenas escreve código: ela também produz artefatos intermediários para sustentar a própria execução. Isso se conecta ao uso de documentação e artefatos já estabelecido anteriormente, mas aqui a novidade é o ambiente favorecer explicitamente que o agente registre passos, contexto e progresso enquanto trabalha. O desenvolvedor passa a inspecionar não só o resultado final, mas também os documentos operacionais que a IA gerou para chegar até ele. Essa camada aumenta autonomia, mas também exige revisão mais criteriosa para evitar erro em cascata.
+
+## Ambiente spec-driven
+Um ambiente spec-driven organiza o desenvolvimento para que a especificação seja o ponto de partida da execução, e não apenas um apoio opcional. Amazon Kiro representa esse padrão ao estruturar o fluxo desde o início em torno da especificação, reforçando a lógica já conhecida de Spec Driven Development, mas agora incorporada ao próprio ambiente de trabalho. A consequência é que delegar, revisar e evoluir implementação passa a depender ainda mais da qualidade do artefato inicial. O ambiente deixa de incentivar improviso e passa a incentivar formalização antes da execução.
+
+## Amazon Kiro como exemplo de spec-driven environment
+Amazon Kiro exemplifica um ambiente em que a especificação não é um documento externo anexado ao processo, mas a interface principal de condução do trabalho. Retomando o mesmo tipo de tarefa do capítulo, a diferença não está no objetivo final, e sim em como a execução começa: primeiro a especificação orienta, depois a implementação acontece. Isso favorece consistência entre intenção, artefatos e código, especialmente quando múltiplas frentes precisam avançar sem microgerenciamento. O ambiente, nesse caso, reforça disciplina de processo por design.
+
+## Formas híbridas de trabalho
+Forma híbrida é a combinação deliberada de mais de uma categoria de ferramenta no mesmo workflow, como usar uma IDE principal e acionar CLIs ou plugins conforme a tarefa. Esse arranjo existe porque ferramentas diferentes costumam ser melhores em problemas diferentes: uma pode oferecer mais velocidade, outra mais controle fino, outra melhores recursos de automação. Em vez de buscar uma ferramenta perfeita, o desenvolvedor monta um stack operacional coerente com seu modo de revisar, depurar e delegar. A maturidade está em saber trocar de superfície sem perder contexto.
+
+## Como o workflow muda entre IDE, CLI, plugin e agent-first
+No modo IDE nativa, a delegação acontece perto do código e a revisão tende a alternar rapidamente entre instrução e edição manual. No modo CLI, o trabalho fica mais scriptável e composicional, o que favorece automação e uso em terminal local ou remoto. No modo plugin, a IA entra como capacidade adicional dentro de um ambiente já consolidado, preservando hábitos anteriores. No modo agent-first, a unidade principal deixa de ser o arquivo e passa a ser a frente de trabalho delegada, com revisão concentrada em resultados e artefatos.
+
+## Convergência de ferramentas
+Convergência de ferramentas significa que categorias e nomes continuam mudando, mas os padrões operacionais começam a se parecer cada vez mais. Recursos que surgem em uma ferramenta tendem a aparecer rapidamente em outras, porque o mercado está iterando em alta velocidade e os próprios fornecedores usam IA para acelerar entrega. Isso reduz a importância de apostar no nome “certo” e aumenta a importância de entender o modelo mental de uso. Quem aprende a operar por delegação, revisão, especificação e composição de ambiente transfere essa competência entre ferramentas diferentes com pouco atrito.

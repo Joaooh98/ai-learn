@@ -17,7 +17,7 @@ True positives surgem da interseção entre o conjunto previsto e o conjunto esp
 False positives aparecem na diferença entre o previsto e o esperado. No mesmo exemplo, `error` foi retornado pelo modelo, mas não estava no ground truth daquele registro, então ele entra como excesso indevido. Essa operação captura exatamente o que o prompt acusou sem respaldo no dataset.
 
 ## Diferença para false negatives
-False negatives vêm da diferença inversa: esperado menos previsto. Se o dataset esperava `error` e o modelo não trouxe esse item, então esse finding foi perdido e precisa entrar como FN. Esse cálculo mede a parte do ground truth que ficou descoberta pela resposta do modelo.
+False negatives vêm da diferença inversa: esperado menos previsto. Se o dataset esperava `crash` e o modelo não trouxe esse item, então esse finding foi perdido e precisa entrar como FN. Esse cálculo mede a parte do ground truth que ficou descoberta pela resposta do modelo.
 
 ## Tratamento de denominador zero
 O pipeline precisa tratar explicitamente casos em que os denominadores das fórmulas ficam zerados. Quando `TP + FP` é zero, a precision não pode ser calculada pela divisão direta; o mesmo cuidado vale para recall e, por consequência, para F1. Retornar `0` nesses casos evita exceções em runtime e mantém a evaluation executável em lotes inteiros, inclusive em exemplos vazios ou respostas sem findings.
@@ -28,5 +28,31 @@ O formato de retorno precisa ser compatível com a integração de evaluation, p
 ## Leitura prática do resultado
 Precision, recall e F1 já foram definidos anteriormente; aqui o ponto novo é como alimentá-los corretamente a partir dos findings extraídos. Se a extração, o pareamento ou a comparação estiverem errados, a fórmula continua correta, mas o score deixa de representar o comportamento real do prompt. Em evaluation comparativa, a confiabilidade da métrica depende mais da qualidade desse pipeline do que da fórmula em si.
 
-## video aula explicada e apresenta com esse arquivo .../prompts/mba-ia-prompt-engineering/7-evaluation/2-precision/metrics.py
 
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Correspondência com o código disponível
+
+O arquivo da aula é [metrics.py](../../../../7-evaluation/2-precision/metrics.py).
+As funções locais se chamam `calculate_precision_recall_f1` e `extract_findings_comparable`.
+A extração compara tuplas `(type, severity)` e normaliza a severidade para minúsculas.
+Não valida linha, descrição nem se a correção proposta resolve o problema.
+
+### Armadilhas antes da fórmula
+
+- `zip(outputs, examples)` termina na lista mais curta sem avisar. Confira quantidade e
+  identidade dos exemplos; em coleta própria, associe pelo ID do registro, não pela ordem de chegada.
+- Transformar findings em `set` colapsa duplicatas. Duas ocorrências do mesmo tipo e severidade
+  viram uma unidade. Se o objetivo for contar ocorrências, inclua identidade/localização e uma
+  regra de matching com pareamento um a um.
+- Severidade errada torna uma previsão simultaneamente FP e FN nesse contrato, mesmo que
+  o tipo esteja correto. Avalie tipo e severidade separadamente se quiser diagnosticar a causa.
+- `shared/parsers.py` retorna `{}` quando o JSON é inválido. Isso não distingue falha de
+  parsing de uma análise válida com zero findings. Registre `parse_error` separadamente.
+
+Retornar zero para denominador vazio é a convenção do exemplo. Documente-a e reporte
+contagens; conjunto sem bugs e sem alertas não tem o mesmo significado de uma avaliação
+cheia de erros. Essas observações são da leitura do código, sem alteração dos scripts.

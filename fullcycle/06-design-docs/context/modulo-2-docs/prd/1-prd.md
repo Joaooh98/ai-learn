@@ -24,3 +24,20 @@ PRD não é um artefato exclusivo de product managers. Desenvolvedores também p
 
 ## Contexto explícito para uma IA que não conhece o produto
 Retomando a ideia de documentação como contexto operacional, o PRD resolve um problema simples: o time conhece o produto, mas a IA não. Por isso, registrar o que parece óbvio internamente não é desperdício; é a forma de transferir intenção, valor e limites para um agente que entra sem histórico do projeto. Antes de pedir como construir algo, é preciso explicitar o que esse algo é e por que existe. Essa ordem melhora a qualidade das respostas técnicas geradas depois.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura do quadro: independência documental é uma escolha
+
+![Objetivo de um PRD e níveis possíveis](img/1.png)
+
+O quadro propõe produto, módulo/épico e feature como granularidades possíveis. Módulo técnico
+e épico de produto não têm correspondência obrigatória: um épico pode atravessar vários
+módulos. Use a divisão que permite explicitar problema, público, resultado e exclusões.
+
+Antes de abrir um PRD, pergunte qual decisão ficará mais clara para quem o lê. Mudanças
+pequenas podem caber em uma issue bem especificada. Uma feature que afeta acesso, integração
+e experiência de vários públicos pode precisar de documento próprio, mesmo que reutilize
+uma tecnologia conhecida.

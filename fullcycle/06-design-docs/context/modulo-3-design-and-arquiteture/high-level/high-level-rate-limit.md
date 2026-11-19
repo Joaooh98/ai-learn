@@ -36,3 +36,22 @@ O documento mostra interfaces como `check`, contexto, identidade, escopo, decis�
 
 
 https://devfullcycle.notion.site/HLD-Rate-Limiter-2981423c0388803c904ac92eeb11a049
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Revisão do exemplo: políticas que mudam a arquitetura
+
+Os valores de latência desta nota são objetivos do exemplo, sem benchmark local que os
+confirme. Para medir, defina carga, concorrência, distribuição das chaves, estado do Redis
+e inclusão ou não do custo de rede no percentil.
+
+Há uma diferença de desenho a resolver antes da implementação: a nota de PRD de rate limiting
+menciona microserviço dedicado e janela deslizante; este HLD descreve SDK in-process, e o FDD
+trabalha com fixed window/token bucket. São alternativas que não devem ser tratadas como uma
+única decisão já coerente. Registre a escolha ou uma mudança de escopo em ADR.
+
+`Fail-open` troca enforcement por disponibilidade em uma condição delimitada. Defina timeout,
+rotas elegíveis, duração da degradação, recuperação e alerta. Uma rota sensível pode exigir
+outra política. Memória local em várias réplicas não preserva automaticamente uma cota global.

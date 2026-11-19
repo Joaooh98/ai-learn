@@ -11,3 +11,9 @@ engenharia e não descrevem uma ferramenta em execução.
 
 O antigo plano de adoção de skills foi movido para `research/` no repositório `ai-tools`, pois
 documenta uma decisão da ferramenta e não uma aula.
+
+## Síntese e atualização
+
+A revisão de **19/11/2026** interpretou as 22 imagens e incrementou 21 notas com cenários,
+limites e fontes verificáveis. A nova pasta [99-synthesis-and-updates](99-synthesis-and-updates/README.md)
+reúne o entendimento da trilha, práticas atuais e um exemplo de rastreabilidade de rate limiting.

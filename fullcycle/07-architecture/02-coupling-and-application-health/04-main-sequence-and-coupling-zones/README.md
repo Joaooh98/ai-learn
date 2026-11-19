@@ -31,7 +31,7 @@ As aulas 01–03 construíram o vocabulário e os sintomas. Esta aula fecha a pa
 > **Dor arquitetural:** alto acoplamento torna mudanças **arriscadas e caras**.
 > Muitas dependências em volta de um módulo aumentam a **fragilidade**.
 
-O diagrama mostra o caso completo: um módulo que ao mesmo tempo **depende de muita coisa** (A, B, C… N entrando) e do qual **muita gente depende** (1, 2, 3… Z saindo).
+O quadro pretende mostrar dependências nos dois sentidos, mas os títulos laterais e as setas estão trocados sob a convenção `X → Y` = “X depende de Y”: A, B, C… N entrando são consumidores do módulo; 1, 2, 3… Z saindo são dependências dele. Conte a direção das setas pela convenção explícita, sem usar a legenda invertida para calcular `Ca` e `Ce`.
 
 ### Sinais de alerta
 
@@ -130,7 +130,7 @@ mais estável              mais instável
 
 > Quanto mais **dependências de saída** um módulo possui → maior o valor de `I` e, portanto, maior a instabilidade do módulo.
 
-Nada novo em relação à aula 02 — mas note a escala colorida: a imagem trata valores baixos como verde e altos como vermelho. **Isso vale para o módulo médio, não como regra universal.** Um adaptador com `I = 0.9` está correto; um núcleo de domínio com `I = 0.9` está errado. O que decide é o cruzamento com `A`, que vem a seguir.
+Nada novo em relação à aula 02 — mas note a escala colorida: a imagem trata valores baixos como verde e altos como vermelho. **Isso vale para o módulo médio, não como regra universal.** Um adaptador com `I = 0.9` pode estar cumprindo seu papel; no domínio, esse valor pede investigação das dependências. O cruzamento com `A` ajuda a interpretar, sem certificar o design.
 
 ### Contas rápidas
 
@@ -163,7 +163,7 @@ A = ─────────────────────────�
 - classes abstratas
 - estruturas equivalentes
 
-O último item importa em linguagens sem `abstract class`: em TypeScript contam `interface` e `type`; em Go, `interface`; em Rust, `trait`. A ferramenta que você usar na aula 06 vai precisar dessa definição explícita para contar.
+O último item importa em linguagens sem `abstract class`: em TypeScript é preciso decidir se aliases `type` realmente representam abstrações no critério adotado; em Go, `interface`; em Rust, `trait`. A ferramenta que você usar na aula 06 vai precisar dessa definição explícita para contar.
 
 ---
 
@@ -180,7 +180,7 @@ O plano onde tudo se junta:
 
 > **Não decorar a fórmula.** O gráfico vem de medir proporções: `dependência + estabilidade + abstração`.
 
-Cada módulo do sistema vira **um ponto**. Quanto mais perto da linha, melhor. Um ponto abaixo dela é marcado como *"mais distante da relação ideal"*.
+Cada módulo do sistema vira **um ponto**. A proximidade da linha representa equilíbrio segundo essas duas métricas, sem certificar qualidade ou utilidade do módulo. No desenho, um ponto abaixo dela é marcado como *"mais distante da relação ideal"*.
 
 ⚠️ **A orientação da linha neste slide precisa de correção** — veja [Pontos de atenção](#pontos-de-atenção-nos-slides).
 
@@ -272,7 +272,7 @@ baixo│ ╱                       ╲
 2. Conte elementos abstratos e totais → calcule `A`
 3. Plote `(I, A)` no gráfico
 4. Calcule `D = |A + I − 1|`
-5. Ordene por `D` decrescente — **os maiores `D` são a fila de refatoração**
+5. Ordene por `D` para iniciar uma investigação, combinando a distância com ciclos, papel do módulo e dificuldades reais de mudança
 
 ### Onde cada perfil deveria cair
 
@@ -331,6 +331,32 @@ A
   0             1
 ```
 
-Isso é coerente com a leitura de sempre: **o que é muito dependido (`I` baixo) precisa ser abstrato (`A` alto)**, e o que é volátil (`I` alto) pode e deve ser concreto (`A` baixo).
+Isso é coerente com a leitura de sempre: **no modelo, dependências muito utilizadas (`I` baixo) merecem investigação de abstrações úteis (`A` alto)**, e módulos com `I` alto podem ser concretos conforme sua responsabilidade. `I` alto não mede volatilidade temporal.
 
 > A imagem 08 apresenta o mesmo conteúdo projetado num eixo só (abstração × valor). Como simplificação didática funciona — mas a zona de dor **não** é definida só por "ser concreto": é por ser concreto **e estável**. Um controller concreto e instável está na sequência principal, não na zona de dor.
+
+---
+
+> Complemento revisado em 19/11/2026. Exemplos propostos não são medições da aula.
+
+## Aprofundamento: uma fila de investigação, não uma nota de qualidade
+
+Os oito quadros combinam sinais de manutenção com métricas estruturais. A revisão preserva
+as imagens, inclusive a reta ascendente e a notação ambígua de `I`, mas usa para o cálculo
+`I=Ce/(Ca+Ce)` e a linha descendente `A+I=1`, conforme a correção já explicada acima.
+
+### Experimento aritmético proposto
+
+Um módulo tem `Ca=8`, `Ce=2`, cinco tipos, dos quais três abstratos. Então `I=0,2`,
+`A=0,6` e `D=0,2`. Se apenas dividirmos o diretório em dois e mudarmos a unidade de contagem,
+o novo gráfico não demonstra melhora de design: mudamos também o instrumento de medição.
+
+Antes de criar interfaces para reduzir `D`, escolha uma mudança de negócio representativa.
+Quais arquivos ela afeta? Há ciclo de dependência? O contrato permite testar a regra sem
+iniciar serviços externos? Depois da refatoração, repita esse cenário e compare mantendo
+as mesmas convenções do grafo. O número ajuda a escolher onde olhar, não substitui essa evidência.
+
+Diminuir dependências entrantes também não reduz necessariamente `I`: com `Ce` fixo,
+reduzir `Ca` aumenta a fração. E um objeto de valor concreto muito utilizado pode ser
+apropriado mesmo longe da linha. O objetivo é facilitar mudanças necessárias sem comprometer
+comportamento, não deslocar todos os pontos por obrigação para uma reta.

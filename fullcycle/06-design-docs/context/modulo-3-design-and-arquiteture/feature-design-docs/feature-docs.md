@@ -27,3 +27,22 @@ Um FDD costuma reunir contexto e motivação técnica, objetivos, escopo e exclu
 
 ## Implicações para implementação com IA
 Um FDD bem escrito melhora a implementação assistida por IA porque fornece contexto operacional reutilizável em vez de depender de prompts vagos. Como o documento já explicita contratos, erros, configuração e critérios de aceite, a IA passa a gerar código e testes com menos espaço para interpretação arbitrária. O ganho principal não é “automatizar a feature”, mas reduzir a distância entre o que foi decidido e o que será implementado.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura das imagens: fechar ambiguidade com exemplos de fronteira
+
+![Propósito do FDD e perguntas de implementação](img/01.png)
+
+![Seções sugeridas do FDD](img/02.png)
+
+Os quadros pedem contratos, concorrência, falhas e aceite técnico. Para cada operação, descreva
+entrada válida, entrada inválida, autorização, idempotência quando aplicável e efeito parcial.
+Um exemplo de resposta de sucesso não cobre timeout depois de uma gravação concluída.
+
+Mantenha uma representação canônica dos contratos. Para APIs HTTP, uma especificação
+[OpenAPI](https://spec.openapis.org/oas/latest.html) pode ser validada e usada nas ferramentas
+do projeto. Ela complementa o texto de fluxos e decisões; não prova por si só que a implementação
+cumpre o comportamento descrito. Fixe uma versão suportada pela sua cadeia de ferramentas.

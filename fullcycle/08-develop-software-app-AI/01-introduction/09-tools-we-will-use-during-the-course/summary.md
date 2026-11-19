@@ -1,5 +1,23 @@
-# Ferramentas que vamos utilizar durante o curso
+## Stack didático adotado
+A base operacional escolhida combina Cursor e Cloud Code CLI. O Cursor entra como ambiente principal para interação com o código, debugging, chats rápidos e uso pontual do Agent Manager; o Cloud Code CLI entra como ferramenta principal para execuções mais orientadas por terminal e para partes específicas do fluxo. Essa escolha reduz a ambiguidade do curso, porque fixa uma referência concreta para demonstrações sem transformar a ferramenta em dependência conceitual. O objetivo é dar ao aluno um caminho estável de acompanhamento e, ao mesmo tempo, preservar a transferibilidade do método.
 
-> Duração: `05:05`
+## Papel de cada ferramenta no fluxo
+O Cursor cobre a camada de trabalho mais próxima do código-fonte: inspeção, edição, depuração e interações rápidas. Já o Cloud Code CLI será usado nas partes em que o fluxo depende mais de comandos, agentes e instruções operacionais específicas da interface de linha de comando. Retomando os workflows já discutidos, a divisão aqui não é teórica, mas instrumental: uma ferramenta serve melhor à supervisão e outra à execução estruturada. Essa separação ajuda a entender por que o curso usa uma combinação, e não uma única plataforma para tudo.
 
-<!-- A preencher com o resumo da aula. -->
+## Ferramentas complementares e demonstrações pontuais
+OpenAI Codex, Google Antigravity, interface web e uso pelo celular aparecem como apoio, não como base principal. Eles entram para mostrar conceitos, comparar abordagens e evidenciar que o workflow não depende de uma marca única. Quando uma demonstração usar essas opções, o foco deve ser observar o padrão operacional reaparecendo em outra superfície. Isso reforça a ideia de convergência entre ferramentas já apresentada anteriormente.
+
+## Convergência e portabilidade do workflow
+A maior parte do que será implementado continua portável entre ferramentas porque workflows, prompts, agentes e skills tendem a reaparecer com nomes ou interfaces diferentes. Isso significa que o aluno não precisa contratar exatamente o mesmo stack para acompanhar o raciocínio técnico. Se uma plataforma suportar capacidades equivalentes, o fluxo pode ser reproduzido com adaptações pequenas de comando, interface ou sintaxe. A competência central continua sendo reconhecer a estrutura do processo, não memorizar botões.
+
+## O que pode ser específico do Cloud Code
+Alguns recursos, instruções de prompt e comportamentos operacionais usados nas demonstrações são específicos do Cloud Code no momento atual. Isso afeta principalmente a forma de invocar agentes, organizar certos workflows e aproveitar funcionalidades que ainda não chegaram com o mesmo nível de maturidade em outros CLIs. A consequência prática é simples: a ideia permanece transferível, mas a implementação literal pode mudar fora do Cloud Code. Quando isso acontecer, a adaptação deve preservar a intenção do fluxo, não a sintaxe exata.
+
+## Como acompanhar com outra ferramenta
+Acompanhar com outra IDE, CLI ou ambiente continua viável desde que você abstraia cada demonstração em três camadas: objetivo, mecanismo e comando concreto. Primeiro identifique o que a execução quer alcançar; depois observe qual capacidade da ferramenta está sendo usada; por fim, traduza isso para o comando ou interface equivalente no seu ambiente. Se a sua ferramenta não suportar exatamente o mesmo modo de operação do Cloud Code, a solução é reimplementar o passo com os recursos disponíveis, mantendo o mesmo resultado esperado. Esse raciocínio evita recomeçar do zero sempre que a interface muda.
+
+## Custo e expectativa de setup
+Grande parte dessas ferramentas é paga, mas isso não impede o acompanhamento do conteúdo. A escolha pedagógica do stack serve para padronizar as demonstrações, não para impor uma contratação obrigatória. O ponto decisivo é conseguir seguir os conceitos e reconhecer quais partes são universais e quais dependem de uma feature específica da ferramenta usada. Isso reduz ansiedade de setup, porque o aluno não precisa reproduzir exatamente o mesmo ambiente para aprender o processo.
+
+## Critério de aprendizagem esperado
+O resultado esperado não é sair operando meia dúzia de comandos decorados de uma ferramenta específica. O ganho real está em conseguir adaptar o workflow à empresa, ao domínio e à metodologia em que o desenvolvimento acontece. Retomando os pilares já estabelecidos, a ferramenta é apenas a superfície; o valor profissional está em entender a lógica por trás da delegação, da revisão e da execução. Quando o conceito está claro, trocar de plataforma vira ajuste operacional, não ruptura de aprendizado.

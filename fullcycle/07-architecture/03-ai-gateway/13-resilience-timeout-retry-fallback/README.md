@@ -101,3 +101,30 @@ Retry funciona melhor para falhas temporárias. Credenciais inválidas, parâmet
 Também conte retries do SDK. Se cliente, proxy e provider SDK repetirem de forma independente, o total de tentativas pode crescer muito. A [política do módulo](../README.md#resiliência-com-orçamento-ponta-a-ponta) traz um exemplo numérico e a referência dos defaults.
 
 Timeout não prova que a geração remota parou. Antes de repetir ações com efeitos externos, use idempotência e reconciliação. Se um stream já publicou texto, não concatene uma nova resposta de outro modelo sem sinalizar reinício.
+
+---
+
+> Complemento revisado em 19/11/2026. Exemplos propostos não são medições da aula.
+
+## Aprofundamento: contrato de tentativa e resultado
+
+Os seis quadros apresentam concentração de políticas, tempos por caso de uso, retry limitado,
+árvore de fallback e suas consequências. As faixas de segundos do slide 02 são sugestões
+didáticas, não SLOs medidos ou limites universais de APIs.
+
+### Orçamento proposto para estudo
+
+Suponha um deadline total de 8 segundos. Reserve até 3 para a primeira tentativa, até 0,5
+para espera e até 3 para o backup, preservando 1,5 para validação e entrega. Esses valores
+ilustram distribuição de orçamento; não são configuração já presente nos demos. Uma nova
+tentativa só deve iniciar se ainda houver tempo útil no prazo total.
+
+Conte separadamente: falha de transporte, resposta de formato inválido e resposta válida
+porém incorreta no domínio. Falhar tecnicamente pode justificar outra rota; mudar apenas
+para obter uma resposta sem avaliar equivalência pode esconder uma regressão de qualidade.
+A [documentação de fallback do LiteLLM](https://docs.litellm.ai/docs/proxy/reliability)
+é referência para a mecânica do proxy, mas a aplicação continua responsável pelo contrato.
+
+Como exercício, simule atraso, limite de requisição, erro de credencial e interrupção de stream.
+Registre destino efetivo, tentativas e deadline consumido. Use dependências controladas para
+os cenários; o material desta revisão não executou chamadas pagas nem valida todos os providers.

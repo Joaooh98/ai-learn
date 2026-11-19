@@ -18,3 +18,24 @@ O workflow prático segue uma sequência simples: reunir insumos, usar o templat
 
 ## Aplicação prática no exemplo do rate limiter
 Retomando o cenário do rate limiter, a camada nova aqui não é redefinir a feature, mas gerar sua especificação detalhada com apoio da IA. Em vez de depender apenas de perguntas soltas, você pode anexar o HLD já existente, o PRD correspondente, trechos da codebase e o template do FDD para pedir um draft inicial. Se preferir, pode até pular a entrevista e usar diretamente o esqueleto de saída como instrução de preenchimento. O resultado esperado é um documento próximo do que a empresa precisa, mas ainda tratado como rascunho a ser refinado.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Prompt para impedir contratos inventados
+
+```text
+Gere o FDD da feature com base no HLD, requisitos e código fornecidos.
+Diferencie comportamento existente de mudança proposta.
+Para cada operação, detalhe entrada, saída, autorização, falhas e efeitos parciais.
+Associe requisito -> decisão -> contrato -> cenário de teste usando IDs e caminhos reais.
+Se PRD e HLD divergirem, registre a divergência antes de escolher uma solução.
+Use PENDENTE para valores sem origem; não invente percentis, quotas ou benchmarks.
+Separe recomendações de pesquisa das decisões aceitas pelo projeto.
+```
+
+O prompt não substitui a conferência do contrato. Faça uma leitura como consumidor da API:
+o documento permite prever o que acontece ao repetir, cancelar ou negar a operação?
+Se a resposta depender de suposição do leitor, refine o comportamento ou registre a decisão
+que ainda falta.

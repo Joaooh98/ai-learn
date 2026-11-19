@@ -21,3 +21,20 @@ A engenharia de software muda quando muda a forma de organizar trabalho, feedbac
 
 ## Inteligência artificial como novo fator de transformação
 A inteligência artificial adiciona uma nova camada a essa transformação porque muda novamente a economia da documentação. Se antes o debate era apenas entre excesso e ausência, agora documentos úteis também funcionam como contexto operacional para ferramentas capazes de apoiar implementação, análise e manutenção. Isso reforça a necessidade de registros claros e proporcionais, não de burocracia. O princípio continua o mesmo: documentar para fazer o software funcionar melhor, agora também em um ambiente em que pessoas e sistemas usam esse contexto.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura do quadro e consequência prática
+
+![A prioridade ágil não elimina a documentação](img/image.png)
+
+O quadro destaca a prioridade de software funcionando e reposiciona o documento como meio
+de alinhamento. O [Manifesto Ágil original](https://agilemanifesto.org/iso/ptbr/manifesto.html)
+também reconhece valor nos elementos que recebem menor prioridade.
+
+Uma aplicação concreta é incluir, na mesma revisão da mudança, o contrato afetado e a
+justificativa de uma decisão importante. Uma alteração pequena pode exigir apenas atualizar
+um exemplo; uma mudança de consistência ou acesso pode justificar ADR e revisão de arquitetura.
+A quantidade de texto deve acompanhar risco e necessidade de comunicação, não a duração da sprint.

@@ -52,3 +52,25 @@ Quando a documentação é tratada como pré-condição para começar a construi
 
 ## RUP como transição
 O RUP surge nesse contexto como uma tentativa de organizar o desenvolvimento com forte disciplina de processo e uso intensivo de artefatos, sem abandonar a preocupação com controle. Ele não rompe com a centralidade da documentação; em vez disso, refina e estrutura melhor como decisões, requisitos e modelos são registrados ao longo do projeto. Essa posição intermediária prepara a transição entre a rigidez do waterfall e abordagens posteriores mais adaptáveis.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura dos quadros e precisão do recorte histórico
+
+![Visão introdutória da documentação](img/1.png)
+
+![Requisitos, análise, implementação e testes](img/2.png)
+
+![Entrega, manutenção e feedback tardio](img/3.png)
+
+Os recortes descrevem um modelo sequencial didático e o custo de receber feedback tarde.
+A menção a RUP no mesmo quadro não o torna equivalente ao waterfall: trate as iterações do
+RUP separadamente, conforme a [nota do processo](../rup/resum.md). As imagens não são uma
+linha do tempo histórica suficiente para datar todas as metodologias citadas.
+
+Na prática, registre o que precisa ser decidido antes de uma mudança e o que pode ser
+validado por um protótipo. Para uma integração externa, um teste de contrato curto pode
+revelar uma premissa errada antes de uma especificação extensa. O documento registra o
+resultado e a decisão, evitando transformar uma hipótese inicial em compromisso definitivo.

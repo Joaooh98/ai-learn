@@ -5,7 +5,7 @@ RUP é um processo de desenvolvimento criado pela Rational Software e depois inc
 O RUP estrutura o desenvolvimento em disciplinas como levantamento de requisitos, análise, design, implementação, teste e gerenciamento de configuração. A função dessa divisão é modularizar o trabalho e deixar explícito o que precisa ser produzido, acompanhado e validado ao longo do projeto. Retomando o cenário de registrar decisões do projeto, esse contexto deixa de ficar preso a um único pacote documental inicial e passa a ser distribuído entre disciplinas que evoluem ao longo das iterações.
 
 ## Iteração como mecanismo de feedback
-As fases do RUP se repetem de forma iterativa, o que cria feedback loops mais curtos do que em processos puramente lineares. Em vez de documentar por longos períodos para só então implementar, o time revisa continuamente o que foi definido, construído e aprendido. O ganho prático é descobrir problemas antes, quando o custo de ajuste ainda é menor.
+Cada fase do RUP pode conter uma ou mais iterações, criando ciclos de feedback menores que uma entrega única ao fim do projeto. Em vez de documentar por longos períodos para só então implementar, o time revisa continuamente o que foi definido, construído e aprendido. O ganho prático é descobrir problemas antes, quando o custo de ajuste ainda é menor.
 
 ## Inception
 Inception é a fase em que o projeto define escopo, objetivos e viabilidade de negócio. Ela existe para responder se vale a pena iniciar o esforço e qual problema o sistema realmente pretende resolver. Sem essa base, as iterações seguintes podem ser eficientes na execução, mas desalinhadas quanto ao propósito.
@@ -33,3 +33,28 @@ Gerenciamento de configuração integra o conjunto de disciplinas para controlar
 
 ## Vantagens e limitações em relação ao waterfall
 Em comparação com o waterfall, o RUP permite revisões e ajustes a cada iteração, reduz riscos por validação progressiva e melhora a comunicação entre times e stakeholders. Ainda assim, ele continua mais complexo de gerenciar, exige muita documentação e pode ser caro demais para projetos pequenos. A lição importante dessa transição histórica é que o problema não era documentar ou não documentar, mas encontrar um equilíbrio entre documentação, iteração e coordenação.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura dos quatro quadros: fase não é disciplina
+
+![RUP e organização do processo](img/1.png)
+
+![As quatro fases](img/2.png)
+
+![Iterações, casos de uso e arquitetura](img/3.png)
+
+![Benefícios e custos de coordenação](img/4.png)
+
+As fases são Inception, Elaboration, Construction e Transition. Cada fase contém uma ou
+mais iterações; requisitos, design, implementação e teste são disciplinas que podem ocorrer
+em várias delas, com ênfases diferentes. Não é necessário repetir mecanicamente as quatro
+fases em cada iteração. A [descrição da IBM](https://www.ibm.com/docs/en/rational-clearquest/10.0.8?topic=settings-project-planning)
+distingue registros de fase e iteração.
+
+“Centrado em arquitetura” descreve o papel da arquitetura no processo. Não obriga a aplicação
+a ter um servidor central nem equivale a congelar todas as decisões antes de programar.
+Ao aplicar essa ideia hoje, use uma iteração para reduzir um risco concreto e registre a
+evidência: integração confirmada, limite de desempenho observado ou hipótese refutada.

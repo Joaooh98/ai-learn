@@ -27,3 +27,11 @@ as notas e imagens.
 
 Adicione os prints na pasta da aula, na ordem em que aparecem, e preencha o README com
 as notas correspondentes. Preserve os nomes das imagens que já estão no módulo.
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[10-how-to-tell-if-a-rag-attack-worked](10-how-to-tell-if-a-rag-attack-worked/README.md); [11-poisoning-the-knowledge-base](11-poisoning-the-knowledge-base/README.md); [12-provenance-and-trust-before-retrieval](12-provenance-and-trust-before-retrieval/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

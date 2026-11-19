@@ -21,3 +21,20 @@ O juiz não deve escolher com base em preferência vaga; ele precisa operar com 
 
 ## Fluxo prático da execução
 A execução segue uma ordem simples: subir o dataset, criar os prompts, rodar as duas variantes sobre as mesmas entradas e enviar as saídas ao juiz. O dataset continua sendo a base comum da comparação, como já visto anteriormente, mas agora ele alimenta duas gerações concorrentes em vez de uma comparação contra ground truth. O juiz recebe três entradas por caso: código-fonte, resposta A e resposta B. O resultado de cada item é uma decisão entre A, B ou `tie`, que depois pode ser agregada para orientar a próxima iteração de prompt.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Juiz separado não significa independente
+
+Uma chamada adicional pode usar o mesmo modelo das gerações. Mesmo outro modelo pode
+compartilhar vieses. Defina a rubrica antes de ver o resultado, calibre uma amostra com
+revisão humana e investigue os desacordos. Trocar a posição das respostas ajuda a detectar
+preferência por A ou B que não depende do conteúdo.
+
+No código [pairwise_helpers.py](../../../7-evaluation/3-pairwise/pairwise_helpers.py),
+a decisão é extraída pela presença das letras `A` e `B`. Texto como `INVALID` contém `A`
+e pode ser aceito como vitória de A. Prefira um contrato explícito com um campo enumerado
+`A`, `B` ou `TIE`, validando a resposta inteira. Falha de parsing deve ser erro, não empate.
+O exemplo continua preservado como material didático; essa limitação não foi corrigida aqui.

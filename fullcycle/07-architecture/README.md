@@ -1,10 +1,11 @@
 # Arquitetura de aplicações com IA
 
 Material de estudo sobre dependências de código, acesso a modelos, execução de chamadas,
-reutilização de resultados e recuperação de documentos. As cinco trilhas se conectam: organizar
+reutilização de resultados e recuperação de documentos. As oito trilhas se conectam: organizar
 módulos facilita trocar providers; um gateway centraliza políticas de acesso; o fluxo define
 como o usuário acompanha o trabalho; cache decide quais resultados podem ser reutilizados;
-RAG organiza a recuperação de documentos para compor o contexto da resposta.
+RAG organiza a recuperação de documentos para compor o contexto da resposta; observabilidade,
+evaluation e segurança permitem diagnosticar, medir e controlar esse comportamento.
 
 ## Módulos e ordem sugerida
 
@@ -101,3 +102,12 @@ Projete um classificador de tickets e explique as escolhas antes de implementar:
 Os exemplos são independentes: não compartilham automaticamente gateway, cache ou banco. Cada
 projeto declara dependências, portas e comandos em seu README. Os limites observados e as
 correções desta revisão estão no [registro de revisão](REVISAO.md).
+
+
+## Síntese e atualização de novembro de 2026
+
+A [nova síntese](99-synthesis-and-updates/README.md) conecta as oito trilhas e registra uma
+revisão focal de dez aulas com 63 imagens, incluindo cinco READMEs preenchidos. O
+[registro de cobertura](99-synthesis-and-updates/review-record.md) distingue o material lido
+do restante do acervo; o [exercício de integração](99-synthesis-and-updates/integration-exercise.md)
+propõe contratos e cenários para um atendimento com IA auditável.

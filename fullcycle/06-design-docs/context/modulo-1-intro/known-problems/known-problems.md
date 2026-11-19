@@ -27,3 +27,21 @@ Quando a documentação é vista como tarefa paralela, ela compete com desenvolv
 
 ## Inteligência artificial como próximo contexto
 Esses problemas explicam por que a discussão não termina em “documentar mais” ou “documentar menos”. O desafio real é produzir documentação confiável, proporcional, lida e sustentável dentro da rotina de engenharia. Esse diagnóstico prepara a transição para o próximo contexto: usar inteligência artificial para reduzir atrito de produção, manutenção e consumo documental. A questão central passa a ser como tornar a documentação útil o suficiente para pessoas e também para sistemas apoiados por IA.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: cada problema precisa de um mecanismo
+
+![Problemas recorrentes de documentação](img/1.png)
+
+| Problema do quadro | Melhoria aplicável | Como conferir |
+|---|---|---|
+| Ausência ou conteúdo vencido | Dono, status e revisão vinculada à mudança | O documento identifica o estado real e sua referência de código |
+| Produção lenta | Template proporcional à decisão | Cada seção ajuda um leitor ou explicita uma pendência |
+| Pouca leitura | Índice e links a partir da tarefa | Um novo integrante encontra contrato e decisão sem procurar no chat |
+| Tipo documental errado | Pergunta e público antes do template | Requisitos, operação e tutorial não se misturam |
+
+Adicionar uma data não torna o conteúdo correto. Confira caminhos, exemplos e invariantes
+contra o sistema. Checks automáticos de links ajudam, mas não verificam a veracidade do texto.

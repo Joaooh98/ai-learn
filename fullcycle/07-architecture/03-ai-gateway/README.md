@@ -89,3 +89,11 @@ Fallbacks, cache e rotas alternativas precisam respeitar o mesmo escopo de acess
 Revisão documental e inspeção dos artefatos em **1 de outubro de 2026**. As referências oficiais ficam junto dos assuntos que sustentam. Modelos, endpoints e configurações mudam; confirme a versão efetivamente usada. As capturas e durações são registros da aula, não evidência de disponibilidade atual de recursos.
 
 O histórico de aposentadoria dos modelos Anthropic está nos READMEs dos exemplos das aulas 03 e 07. Os nomes solicitados em prompts e os defaults divergentes do código foram preservados e identificados; a atualização de execução usa variáveis de ambiente.
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[13-resilience-timeout-retry-fallback](13-resilience-timeout-retry-fallback/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

@@ -21,3 +21,24 @@ Quando a IA gera código e depois atualiza a documentação com base nesse mesmo
 
 ## Workflow de documentação na era da IA
 Documentação entra no workflow como entrada e como saída. Primeiro, ela fornece contexto para desenvolvimento mais assertivo; depois, é regenerada ou ajustada para refletir o que foi implementado. Esse fluxo torna a documentação operacional: ela não apenas descreve o sistema, mas participa ativamente da sua evolução.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: documento vivo precisa de verificação
+
+![Documentação como contexto de desenvolvimento com IA](img/1.png)
+
+O quadro apresenta a documentação como ativo e contexto para modelos. A possibilidade de
+geração rápida não comprova sincronização com o código. Um texto regenerado pela mesma IA
+que implementou a mudança pode repetir a mesma interpretação incorreta.
+
+Uma rotina melhor é revisar o diff, identificar contratos afetados, atualizar apenas os documentos
+correspondentes e conferir exemplos contra testes ou uma execução observável. Marque cada
+informação como estado implementado, proposta ou hipótese. Preserve a origem de requisitos
+e decisões: caminho/commit para código, trecho para reunião e URL/data para pesquisa.
+
+A abordagem [docs as code](https://www.writethedocs.org/guide/docs-as-code/) integra documentos
+a versionamento, revisão e verificações. Ela reduz o atrito de manutenção, sem dispensar
+julgamento técnico sobre o conteúdo.

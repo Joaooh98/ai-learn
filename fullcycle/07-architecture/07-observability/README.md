@@ -30,3 +30,11 @@ e cada aula contém um README com título, duração e espaço para as notas e i
 
 Adicione os prints na pasta da aula, na ordem em que aparecem, e preencha o README com
 as notas correspondentes. Preserve os nomes das imagens que já estão no módulo.
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[10-privacy-cardinality-sampling-and-retention](10-privacy-cardinality-sampling-and-retention/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

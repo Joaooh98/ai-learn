@@ -1,5 +1,26 @@
-# Documentação e artefatos
+## Documentação como centro do processo
+Documentação deixa de ser um artefato secundário e passa a ser a principal fonte de verdade do desenvolvimento com IA. Quando a execução é delegada a agentes e workflows já conhecidos, o resultado depende menos da digitação manual do código e mais da clareza do que foi especificado. Por isso, grande parte do trabalho técnico migra para produzir, revisar e corrigir markdowns, tarefas e especificações. Se a entrada estiver errada, a IA vai escalar esse erro com velocidade.
 
-> Duração: `06:21`
+## Artefatos e especificações
+Artefatos são os documentos intermediários que orientam a execução: tarefas, especificações, registros de decisão e outros arquivos que definem o que deve ser construído. Eles importam porque a IA não “adivinha” intenção de produto; ela opera sobre instruções explícitas, contexto disponível e restrições fornecidas. Uma especificação boa reduz ambiguidade, melhora a autonomia da IA e aumenta a chance de o código gerado já nascer alinhado ao objetivo real. Uma especificação ruim produz implementação coerente com o texto, mas incoerente com o produto.
 
-<!-- A preencher com o resumo da aula. -->
+## O efeito cascata do “next” sem revisão
+Dar “next” sem revisar os artefatos intermediários cria um efeito cascata: pequenos erros nas tarefas viram desvios maiores nas próximas etapas e terminam em um sistema organizado, porém errado. O problema não é só uma tarefa mal escrita, mas a propagação automática dessa tarefa para novas especificações, novas execuções e novas decisões derivadas. Retomando o cenário de workflow já estabelecido, o risco aparece quando a conveniência de avançar substitui a validação criteriosa do que foi gerado. No fim, pode existir muito output, muita estrutura e pouco produto funcionando.
+
+## Revisão de artefatos é mais crítica que revisão de código
+Revisar código continua importante, mas a revisão mais valiosa acontece antes da implementação, nos documentos que instruem a IA. Quando tarefas e critérios estão claros, a qualidade do código tende a subir porque a geração passa a operar com direção correta; além disso, agentes especializados podem refinar, revisar ou simplificar o código depois. O ponto crítico, portanto, não é apenas detectar defeitos no resultado final, mas impedir que a especificação errada contamine toda a cadeia de execução. Corrigir cedo custa menos e evita retrabalho em escala.
+
+## Qualidade do resultado da IA
+A qualidade do resultado da IA depende diretamente da qualidade do contexto, das regras e das instruções fornecidas. Isso inclui guidelines, restrições arquiteturais, definição de escopo e critérios de aceitação suficientemente claros para orientar a geração. Mesmo quando o código produzido é tecnicamente bom, ele ainda pode ser inadequado se estiver respondendo a uma especificação ruim. Qualidade, nesse contexto, é aderência ao produto e ao domínio, não apenas limpeza sintática ou estilo de implementação.
+
+## Documentação para controle da IA
+Uma categoria de documentação existe principalmente para controlar a própria execução da IA. Entram aqui documentos de progresso, listas de tarefas, estados de revisão, registros de checkpoint e referências que permitem ao agente saber o que já fez, o que falta fazer e quais documentos governam a próxima ação. Esse tipo de artefato funciona como memória operacional e mecanismo de coordenação. Sem ele, a automação perde consistência e volta a depender de supervisão manual excessiva.
+
+## Documentação para consumo humano
+Outra categoria é a documentação voltada ao entendimento humano: explicações de produto, regras de negócio, contexto organizacional e decisões que precisam ser lidas por desenvolvedores, arquitetos, gestores e outras pessoas envolvidas. Ela existe porque software não serve apenas para ser executado pela IA; ele também precisa ser compreendido, discutido e decidido por pessoas. Em domínios específicos, como seguros e sinistros em um banco, essa documentação se torna indispensável para preservar significado e evitar interpretações superficiais. A IA pode usar esses documentos como contexto, mas eles não deixam de ser documentos humanos.
+
+## ADRs como ponte entre IA e pessoas
+ADRs (`Architecture Decision Records`) registram decisões arquiteturais de forma explícita, incluindo contexto, escolha feita e implicações. Eles são úteis para a IA porque tornam visíveis restrições e padrões que devem orientar a implementação; ao mesmo tempo, são úteis para pessoas que precisam entender por que o sistema foi desenhado de determinada maneira. Quando um diretor, gerente ou arquiteto precisa avaliar o software, o ADR reduz dependência de memória informal e acelera a tomada de decisão. Ele serve, portanto, como ponte entre execução automatizada e governança técnica.
+
+## Produto e domínio como base da especificação
+A documentação forma o produto antes de o código existir, porque é nela que o domínio, as regras e a intenção do sistema ganham estrutura verificável. Em áreas com regras densas, como sinistros em seguros, o maior risco não é escrever um `if` incorreto, mas modelar o problema de forma errada desde a origem. A IA implementa aquilo que o artefato descreve; se o domínio estiver mal representado, a implementação será fiel ao erro. Revisar especificações é, portanto, revisar o próprio entendimento do produto.

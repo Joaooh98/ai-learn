@@ -21,3 +21,18 @@ O F1, já definido anteriormente, continua útil como resumo do equilíbrio entr
 
 ## Evaluation como disciplina de engenharia
 Evaluation em sistemas com LLM cumpre papel análogo ao de testes em software. Ela não existe para “embelezar” o experimento, mas para garantir que mudanças no prompt não degradem o comportamento do sistema ao longo do tempo. Isso exige datasets, critérios de aceitação e comparação entre versões, exatamente como em práticas de qualidade de software. Quando o prompt é sensível a pequenas alterações, avaliar deixa de ser opcional e passa a ser parte do processo de desenvolvimento.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Aplicação além da classificação binária
+
+Precision e recall também avaliam recuperação de documentos, extração de entidades e
+conjuntos de findings. O requisito é definir unidades comparáveis e uma regra de correspondência,
+não necessariamente restringir a tarefa inteira a uma classificação binária.
+
+Mesmo rótulos humanos podem ser discutíveis: explicite a rubrica, revise divergências e
+versione as referências. “Usuário bravo” não se torna objetivo apenas porque foi convertido
+em `true` ou `false`. Um F1 elevado indica concordância com aquela referência sob aquela
+regra, sem provar que o sistema é seguro ou útil em qualquer contexto.

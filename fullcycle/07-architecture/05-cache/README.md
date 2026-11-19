@@ -127,3 +127,11 @@ não use essa média de custo como estimativa automática de p95.
 
 Para revisar a relação desses mecanismos com acoplamento, gateways e execução, comece no
 [índice de arquitetura](../README.md).
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[11-similarity-distance-and-threshold](11-similarity-distance-and-threshold/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

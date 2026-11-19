@@ -11,7 +11,7 @@ No experimento conservador, a leitura agregada mostrou precision muito alta, rec
 No experimento agressivo, o código permanece igual e apenas o prompt muda, o que isola a causa da diferença nas métricas. O resultado observado foi o inverso do conservador: precision baixa, recall mais alto e F1 ainda baixo. Isso mostra uma política mais permissiva, que recupera mais casos reais ao custo de introduzir mais ruído. A comparação lado a lado deixa explícito o trade-off já conhecido entre cobertura e confiabilidade dos alertas.
 
 ## Como interpretar o experimento balanceado
-O prompt balanceado produziu um F1 significativamente maior do que os outros dois, porque reduziu o desequilíbrio entre precision e recall. Ele não maximizou nenhuma métrica isoladamente, mas entregou uma combinação mais útil para comparação global. Quando o objetivo é escolher uma política geral de revisão, esse tipo de resultado costuma ser mais valioso do que extremos com uma métrica excelente e outra muito degradada. O F1, aqui, funciona como critério de ordenação prática entre políticas concorrentes.
+O prompt balanceado produziu um F1 numericamente maior do que os outros dois, porque reduziu o desequilíbrio entre precision e recall. Ele não maximizou nenhuma métrica isoladamente, mas entregou uma combinação mais útil para comparação global. Quando o objetivo é escolher uma política geral de revisão, esse tipo de resultado costuma ser mais valioso do que extremos com uma métrica excelente e outra muito degradada. O F1, aqui, funciona como critério de ordenação prática entre políticas concorrentes.
 
 ## Variabilidade experimental em LLMs
 Resultados com LLMs não são perfeitamente estáveis, mesmo quando a estrutura do experimento parece idêntica. Mudanças de momento de execução, versão de modelo ou pequenas variações internas de geração podem deslocar as métricas observadas. Por isso, um único run não deve ser tratado como verdade definitiva sobre a qualidade do prompt. A leitura correta é probabilística: o experimento sugere tendência, não certeza absoluta.
@@ -21,3 +21,29 @@ Confiabilidade experimental exige repetir o mesmo experimento mais de uma vez e 
 
 ## Leitura operacional no LangSmith
 A interface do LangSmith permite acompanhar iterações, execuções e métricas resumidas do experimento sem entrar registro por registro. Isso acelera a comparação entre versões como `conservative`, `aggressive` e `balanced`, especialmente quando o objetivo é decidir qual política seguir. Ainda assim, a leitura agregada só é confiável porque o dataset, o ground truth e o pipeline de extração permanecem constantes entre os testes. Sem esse controle, diferenças numéricas poderiam refletir mudança nos dados, e não no prompt.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## O que está efetivamente no print
+
+![Comparação dos três experimentos no LangSmith](img/image.png)
+
+| Variante | Precision exibida | Recall exibido | F1 exibido |
+|---|---|---|---|
+| Conservadora | 1,00 | 0,13 | 0,22 |
+| Agressiva | 0,14 | 0,38 | 0,20 |
+| Balanceada | 0,64 | 0,29 | 0,40 |
+
+São valores arredondados de uma execução registrada na aula. Recalcular F1 usando os
+números arredondados pode gerar pequena diferença. Não há evidência no print de intervalo
+de confiança, holdout ou validação em produção. A diferença numérica visível não demonstra significância estatística.
+
+### Como transformar o exemplo em experimento reproduzível
+
+Guarde hash do dataset, revisão do código, versão imutável dos prompts, modelo de geração,
+parâmetros aceitos por ele e versão do evaluator. Repita os runs, estratifique por dificuldade
+e severidade e mantenha casos de teste fora das iterações de ajuste. Compare também falhas
+de formato, custo e latência. O [summary evaluator](https://docs.langchain.com/langsmith/summary)
+é o ponto de agregação; a regra de acerto continua sendo responsabilidade da aplicação.

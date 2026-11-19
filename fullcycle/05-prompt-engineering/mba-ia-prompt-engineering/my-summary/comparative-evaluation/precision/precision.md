@@ -15,3 +15,27 @@ Retomando o cenário de logs e bugs, um prompt pode ter boa precision mesmo deix
 
 ## Relação entre prompt e métrica
 Mudanças de prompt deslocam o comportamento do modelo e, com isso, alteram precision, recall e F1. Um prompt mais agressivo, que tenta sinalizar qualquer indício de erro, tende a aumentar o número de positivos retornados, mas pode elevar os false positives e derrubar a precision. Já um prompt mais restritivo pode devolver menos alertas, porém com maior confiabilidade. A avaliação comparativa existe justamente para medir esse efeito em vez de depender de impressão subjetiva.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem e exemplo completo
+
+![Definição de precision e exemplo de logs](img/precision.png)
+
+O quadro usa 20 logs, 10 bugs reais, 8 acertos e 5 alarmes indevidos. A matriz completa é
+`TP=8, FP=5, FN=2, TN=5`: precision = `8/13 ≈ 0,6154`, recall = `8/10 = 0,8` e
+F1 = `16/23 ≈ 0,6957`. O `0,61` da imagem é uma aproximação; com arredondamento a duas
+casas, seria `0,62`.
+
+Encontrar 5 de 10 bugs, frase introdutória do quadro, descreve cobertura. Para calcular
+precision ainda falta saber quantos alertas eram falsos. Não confunda precision com taxa de
+falsos positivos: esta última usa `FP/(FP+TN)`.
+
+### Como usar no code review
+
+Defina antes o que conta como um acerto: categoria correta, severidade correta, trecho correto,
+ou a combinação desses atributos. Uma previsão só pode ser considerada TP segundo a regra
+escolhida. Registre também a quantidade de alertas, porque precision de 100% com um único
+alerta é evidência diferente de 100% com centenas deles.

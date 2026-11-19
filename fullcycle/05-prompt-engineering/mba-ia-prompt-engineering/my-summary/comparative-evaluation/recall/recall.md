@@ -21,3 +21,23 @@ Retomando a comparação com precision, as duas métricas observam lados diferen
 
 ## Leitura prática da métrica
 Um recall alto significa que poucos casos reais escaparam; um recall baixo significa que muitos positivos verdadeiros ficaram para trás. No exemplo citado, encontrar 9 de 10 bugs implica que apenas 1 escapou, o que caracteriza boa cobertura. A leitura correta da métrica sempre depende do custo de perder casos reais no domínio analisado. Quando deixar um bug passar é mais grave do que investigar um alerta extra, recall ganha prioridade na avaliação.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem e limite da conclusão
+
+![Recall: sete bugs encontrados entre dez existentes](img/image.png)
+
+A imagem mostra `TP=7` e `FN=3`, portanto recall de `0,7`. Ela não informa FP: não é possível
+calcular precision nem F1 para esse mesmo experimento. O quadro de precision usa oito
+acertos, por isso os dois exemplos não formam uma única matriz de confusão.
+
+### Cobertura por risco
+
+No code review, conte recall por classe e severidade além do agregado. Um modelo pode
+recuperar muitos problemas de nomenclatura e perder todas as vulnerabilidades críticas.
+Reporte o suporte de cada classe, por exemplo `2/3 vulnerabilidades críticas encontradas`,
+e inspecione os casos perdidos. Pedir um prompt agressivo é uma hipótese para melhorar
+cobertura; não é uma garantia de que nenhuma falha escapará.

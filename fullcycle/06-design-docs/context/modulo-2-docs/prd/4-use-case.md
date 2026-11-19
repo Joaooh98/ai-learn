@@ -8,7 +8,7 @@ Requisito funcional descreve uma capacidade necessária para o sistema operar, m
 Retomando o cenário de login, um sistema de autenticação básico pode ser apenas um pré-requisito técnico para acessar a plataforma. Se ele segue o fluxo padrão já oferecido por frameworks, não altera a proposta do produto, não introduz inovação relevante e não exige decisões de produto, então seu enquadramento natural é como requisito funcional de um sistema maior. Nesse caso, escrever um PRD específico tende a gerar mais formalidade do que clareza. O que importa é registrar que o sistema precisa de autenticação, não abrir um subproduto documental para algo padronizado.
 
 ## Por que o caso 1 não justifica PRD próprio
-O login commodity não gera valor específico para o negócio por si só; ele apenas viabiliza o acesso. Como a experiência é previsível e o modelo de implementação já é conhecido, as decisões recaem sobre tecnologia, framework e configuração, não sobre posicionamento de produto. Isso reduz a necessidade de objetivos próprios, métricas dedicadas ou escopo autônomo. Nessa situação, o PRD mais útil continua sendo o macro, com o login aparecendo como requisito funcional entre outros.
+No recorte simplificado da aula, o login básico é tratado como capacidade já contemplada no produto, sem necessidade de PRD próprio. Isso não elimina valor nem decisões de experiência e segurança: elas precisam ser registradas no artefato proporcional ao risco. Isso reduz a necessidade de objetivos próprios, métricas dedicadas ou escopo autônomo. Nessa situação, o PRD mais útil continua sendo o macro, com o login aparecendo como requisito funcional entre outros.
 
 ## Caso 2: login como produto estratégico
 O mesmo tema muda de categoria quando o login passa a fazer parte de uma plataforma multi-tenant com foco em segurança corporativa. Aqui entram capacidades como single sign-on, autenticação de dois fatores, logout centralizado e políticas de acesso, todas com impacto direto na experiência, na adoção e nas integrações entre sistemas. O login deixa de ser um detalhe técnico e passa a organizar uma parte relevante do valor entregue. Isso já caracteriza uma feature com identidade própria e decisões suficientes para merecer PRD específico.
@@ -24,3 +24,22 @@ Mesmo fora de um papel formal de produto, desenvolvedores ganham clareza ao escr
 
 ## Síntese comparativa
 Nos dois casos existe “login”, mas o nome da funcionalidade não determina sua granularidade documental. No primeiro, login é apenas capacidade necessária e padronizada; no segundo, ele se torna uma plataforma de autenticação com impacto estratégico, regras próprias e valor de produto. A decisão correta não depende da tecnologia usada, e sim da densidade de decisões de produto concentradas naquela entrega. Quando essa densidade existe, o PRD de feature prepara o terreno para as seções específicas que detalham escopo, objetivos, regras e restrições.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura dos quadros de login: risco e produto continuam presentes
+
+![Login como capacidade já conhecida no sistema](img/4.png)
+
+![Login corporativo com decisões específicas de produto](img/5.png)
+
+A aula contrapõe um acesso básico a um caso com identidade corporativa. Isso ajuda a escolher
+a profundidade documental, mas “commodity” não elimina valor, risco ou decisão de produto.
+Recuperação de conta, acessibilidade, expiração de sessão e experiência de bloqueio continuam
+exigindo critérios de aceitação mesmo quando não há PRD separado.
+
+A escolha entre SSO, autenticação adicional e regras por tenant precisa conectar comportamento
+esperado e evidência de validação. Não basta listar nomes de protocolos ou ferramentas.
+A continuação com um exercício prático está em [5-use-case.md](5-use-case.md).

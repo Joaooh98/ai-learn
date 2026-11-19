@@ -17,10 +17,32 @@ Few-shot, neste contexto, não serve apenas para mostrar formato de resposta; el
 A checklist transforma uma instrução genérica de revisão em um procedimento observável. Em vez de depender de uma noção vaga de “qualidade”, o modelo recebe uma lista de tipos de erro que deve procurar em cada categoria. Essa estrutura melhora consistência entre execuções, facilita auditoria do prompt e ajuda a deslocar o comportamento do modelo de forma controlada, porque cada item da checklist funciona como um lembrete operacional do que merece atenção.
 
 ## Regras de confiança mínimas
-Definir confiança mínima, como exigir 80% ou mais para reportar um finding, cria um limiar explícito de emissão de alertas. Esse mecanismo é especialmente útil no prompt balanceado, porque evita que o modelo reporte hipóteses fracas apenas por associação superficial. Quando combinado com regras específicas por categoria — análise mais profunda em segurança, padrões claros em robustez, exclusão de borderline cases em qualidade — o prompt passa a codificar uma política de risco, não apenas uma instrução textual.
+Definir no prompt uma confiança mínima, como 80%, tenta tornar o comportamento mais seletivo, mas o número declarado pelo modelo não é uma probabilidade calibrada. A instrução precisa ser confrontada com exemplos rotulados para verificar se reduz alarmes indevidos sem perder casos relevantes. Regras por categoria e exemplos de evidência tornam a política mais explícita; seu efeito continua sendo uma hipótese a medir.
 
 ## Calibração do prompt como estratégia
 Calibrar um prompt significa ajustar instruções, exemplos, categorias e critérios de confiança para deslocar deliberadamente o perfil de erro do modelo. Isso conecta diretamente o design do prompt às métricas já conhecidas: um texto mais permissivo tende a aumentar cobertura, um texto mais restritivo tende a aumentar confiabilidade, e um texto balanceado tenta preservar utilidade nos dois lados. Em avaliação comparativa, o prompt deixa de ser redação e passa a ser instrumento de engenharia experimental.
 
 ## Passo a passo de implementação
 Comece com o mesmo código em Go e o mesmo ground truth para todas as variantes, porque a comparação só é válida quando o prompt é a variável experimental. Em seguida, escreva três versões: uma agressiva, instruindo o modelo a suspeitar de tudo; uma conservadora, limitando o reporte a casos de alta certeza; e uma balanceada, separando categorias, exemplos e regras de confiança. Execute cada prompt sobre o mesmo dataset, colete os findings no formato esperado e compare como cada política desloca o comportamento do modelo em relação às métricas já estabelecidas.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: referência separada da entrada
+
+![Exemplo de dataset com código, findings esperados e metadados](img/one.png)
+
+O print contém `inputs.code`, `outputs.expected_findings` e metadados de categoria/dificuldade.
+Os findings visíveis são `missing_timeout/medium`, `ignored_error/high` e
+`missing_status_check/low`. Isso define o contrato daquele dataset, sem estabelecer uma
+classificação universal de severidade. Na avaliação, forneça o código ao modelo gerador;
+os findings esperados devem ficar com o evaluator para evitar vazamento da resposta.
+
+### Confiança declarada não é probabilidade calibrada
+
+Pedir “reporte apenas acima de 80% de confiança” pode mudar o estilo da resposta, mas não
+prova que oito de cada dez findings estejam corretos. Trate o limiar textual como hipótese.
+Exija evidência verificável do trecho e confira precision/recall no conjunto de validação.
+Use exemplos positivos, negativos e ambíguos, preservando o conjunto de teste para a
+comparação final.

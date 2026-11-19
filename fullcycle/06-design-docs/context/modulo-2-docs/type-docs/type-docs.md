@@ -18,3 +18,21 @@ A documentação já foi posicionada anteriormente como contexto operacional par
 
 ## Prompt Engineering aplicado à documentação
 Prompt Engineering ganha relevância porque a qualidade do documento gerado depende da instrução dada à IA sobre tipo, objetivo, escopo e profundidade do artefato. Pedir “gere um design doc” é vago; pedir um documento técnico de arquitetura, infraestrutura ou operação produz saídas mais úteis porque a categoria já delimita o conteúdo esperado. Isso transforma prompt em mecanismo de operacionalização da taxonomia documental. Quanto mais claro o enquadramento do documento, maior a chance de a IA gerar e manter artefatos consistentes.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem e outra dimensão útil
+
+![Produto e as categorias técnicas de documentação](img/image.png)
+
+O quadro organiza documentos por assunto: produto, arquitetura, infraestrutura, operação e
+referência. Essa é a convenção didática do curso; nem toda empresa usa “design docs” como
+nome para o mesmo conjunto.
+
+Uma segunda dimensão é a necessidade do leitor. O [Diátaxis](https://diataxis.fr/) distingue
+tutorial, guia de tarefa, referência e explicação. Um runbook de recuperação é um guia de
+tarefa; um contrato de API é referência; o motivo de escolher uma fila é explicação/decisão.
+As duas dimensões se complementam: defina assunto e tarefa de leitura antes de escolher
+estrutura e profundidade.

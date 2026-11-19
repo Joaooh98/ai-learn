@@ -97,3 +97,11 @@ Na integração com [05 — Cache](../05-cache/README.md), trate separadamente r
 ## Fontes e critério de revisão
 
 Revisão documental e leitura dos artefatos em **1 de outubro de 2026**. Referências primárias acompanham os assuntos. Durações e registros das aulas foram preservados. As ressalvas descrevem limites observáveis do código; as evoluções propostas não são funcionalidades já implementadas.
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[03-streaming-and-perceived-latency](03-streaming-and-perceived-latency/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

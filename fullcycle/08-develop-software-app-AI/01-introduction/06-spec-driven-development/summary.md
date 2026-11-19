@@ -1,5 +1,17 @@
-# Spec Driven Development
+## Spec Driven Development
+Spec Driven Development é uma abordagem em que o trabalho da IA é guiado por especificações estruturadas, e não por pedidos soltos feitos no improviso. O ponto central não é “usar IA para gerar código”, mas traduzir o problema em instruções suficientemente claras para que a execução possa acontecer com consistência. Isso transforma a especificação no principal mecanismo de direção do desenvolvimento. Quando a entrada é bem definida, a IA deixa de operar como um chat reativo e passa a atuar dentro de um processo técnico controlável.
 
-> Duração: `02:20`
+## Por que essa abordagem amarra os elementos anteriores
+Spec Driven Development funciona como uma síntese operacional do que já foi estabelecido sobre workflow, documentação, arquitetura e entendimento de produto. Retomando essa base, a especificação vira o lugar onde essas dimensões se encontram: o problema de produto é descrito, as restrições arquiteturais são preservadas e a execução entra em um fluxo verificável. Sem essa convergência, a IA até produz saídas, mas tende a produzir retrabalho, desalinhamento e falsa sensação de progresso. A abordagem existe justamente para reduzir a distância entre intenção e implementação.
 
-<!-- A preencher com o resumo da aula. -->
+## Especificação como forma de passar o problema para a IA
+Em desenvolvimento com IA, o problema raramente é entregue diretamente à implementação; ele precisa ser convertido em uma forma que a IA consiga executar. Essa conversão normalmente acontece por especificações, porque elas tornam explícitos escopo, objetivo e direção. Retomando o cenário recorrente do capítulo, a mudança de método está aqui: o problema deixa de ser passado à IA de forma solta e passa a ser descrito em artefatos que orientam a execução. O ganho não está no nome da abordagem, mas na capacidade de transformar intenção em instrução operacional.
+
+## Condições para funcionar na prática
+Spec Driven Development não funciona só por adotar um termo ou um template de documento. A abordagem depende de maturidade de processo, porque especificar mal em um fluxo com IA significa escalar erro com mais velocidade. Também depende de domínio sobre artefatos e revisões, já que avançar sem validar o que foi especificado pode gerar a mesma bola de neve já discutida anteriormente. Em outras palavras, a autonomia da IA cresce quando a qualidade da especificação cresce junto.
+
+## Tendência de mercado e estabilidade do princípio
+O nome “Spec Driven Development” pode mudar com o tempo, porque o ecossistema de IA cria novos rótulos com frequência. O princípio, porém, tende a permanecer: existe um problema, esse problema é formalizado em especificações e a IA executa a partir delas. Por isso, o valor profissional não está em decorar a buzzword do momento, mas em dominar o raciocínio estrutural por trás dela. Quem entende esse princípio consegue transferi-lo entre ferramentas, workflows e nomenclaturas diferentes.
+
+## Ponte para os pilares do processo
+Spec Driven Development organiza a passagem da introdução conceitual para a execução disciplinada do restante do processo. Depois que o problema é tratado como especificação, fica mais claro quais pilares precisam sustentar a operação: como definir, revisar, validar e evoluir esses artefatos sem perder coerência técnica. A partir daí, desenvolver com IA deixa de ser apenas interação com ferramenta e passa a ser condução de um sistema de trabalho. Esse é o ponto em que método começa a importar mais do que entusiasmo com geração automática.

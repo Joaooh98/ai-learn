@@ -96,3 +96,11 @@ flowchart TD
 - Por que um filtro de `doc_type` restritivo demais no *Query Planner* pode derrubar o *recall* a zero mesmo quando a resposta existe na base?
 - O que acontece no índice vetorial quando um documento é editado e reindexado sem apagar os `chunk_id`s da versão anterior?
 - Por que a aplicação monta a lista final de `Sources` a partir dos metadados dos `used_chunk_ids` em vez de pedir ao LLM que escreva as citações em texto livre?
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[14-retrieval-where-rag-wins-or-loses](14-retrieval-where-rag-wins-or-loses/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

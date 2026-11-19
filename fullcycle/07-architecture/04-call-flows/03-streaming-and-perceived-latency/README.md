@@ -84,3 +84,30 @@ SSE requer `Content-Type: text/event-stream` e mensagens com campos como `event`
 Chunks de rede não são necessariamente tokens nem frases completas. O consumidor precisa decodificar UTF-8 incrementalmente e preservar fragmentos quando interpreta eventos ou JSON. Para dados estruturados, pode exibir progresso e juntar o documento; a ação de negócio espera conclusão e validação.
 
 Streaming não reduz por si só quantidade de tokens, chamadas ou trabalho do modelo. Ainda mantém conexão aberta e requer tratamento de cancelamento, buffer no caminho, pausa entre chunks e falhas parciais. Meça tempo até o primeiro texto e tempo total separadamente.
+
+---
+
+> Complemento revisado em 19/11/2026. Exemplos propostos não são medições da aula.
+
+## Aprofundamento: progresso exibido e conclusão válida
+
+Os cinco quadros percorrem a mudança de experiência, a linha de tempo ilustrativa de 18s/1,5s,
+um endpoint de explicação, os limites de dados parciais e a escolha entre stream/job.
+Tempo até o primeiro byte, primeiro texto útil e conclusão são medições diferentes. Um
+heartbeat rápido demonstra conexão viva, sem necessariamente entregar valor ao usuário.
+
+### Contrato de estado proposto
+
+Defina `started`, `delta`, `completed`, `failed` e `cancelled` na camada de aplicação, mesmo
+que o transporte seja outro. Marque conteúdo parcial na interface; execute ações de negócio
+somente após conclusão e validação. Uma desconexão pode exigir consulta de status em vez
+de repetir automaticamente uma operação que já produziu efeito.
+
+SSE permite identificar eventos e informar o último ID recebido na reconexão, conforme o
+[padrão HTML](https://html.spec.whatwg.org/multipage/server-sent-events.html). Isso não cria
+histórico ou replay sozinho: persistência e política de retomada são responsabilidade do servidor.
+Um job durável também pode publicar progresso por streaming; as escolhas podem coexistir.
+
+Ao testar, inclua caracteres UTF-8 divididos entre chunks, cancelamento do cliente, proxy com
+buffer e erro após a primeira entrega. O objetivo é impedir que um fragmento pareça um
+resultado final ou que um retry concatene duas respostas incompatíveis.

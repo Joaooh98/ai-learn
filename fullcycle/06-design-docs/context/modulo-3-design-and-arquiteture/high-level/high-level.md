@@ -24,3 +24,23 @@ Retomando a distinção de níveis de abstração já estabelecida, o HLD não s
 
 ## Adaptação ao contexto
 Não existe conjunto obrigatório e universal de seções para todo HLD. O documento funciona melhor como guideline adaptável: muitos artefatos compartilham uma espinha dorsal parecida, mas cada contexto pode exigir seções extras, ênfases diferentes ou até nomenclaturas distintas. Essa flexibilidade é parte do próprio papel do HLD, porque a arquitetura precisa refletir o problema real, não obedecer rigidamente a um template. Um bom documento preserva a cobertura das decisões essenciais e ajusta a forma ao contexto do sistema.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura dos dois quadros e precisão do diagrama
+
+![Visão do sistema e responsabilidades](img/01.png)
+
+![Seções sugeridas para HLD](img/02.png)
+
+O HLD apresenta limites, componentes e comunicação. Em um diagrama C4 de containers,
+“container” significa uma aplicação ou armazenamento, não necessariamente um container Docker.
+Informe o papel de cada caixa e rotule as relações com protocolo e propósito, como descreve
+o [modelo C4](https://c4model.com/diagrams/container).
+
+Acrescente um cenário de falha às setas: timeout no provider, Redis indisponível ou fila
+acumulada. Uma topologia sem fluxo de erro deixa de explicar a parte mais difícil da operação.
+Use a [estrutura arc42](https://arc42.org/overview/) como checklist adaptável para contexto,
+execução, deploy, decisões e atributos de qualidade, sem reproduzir todo o template por rotina.

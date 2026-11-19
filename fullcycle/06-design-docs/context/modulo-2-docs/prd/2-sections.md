@@ -33,3 +33,21 @@ Stakeholders são todas as pessoas ou papéis com interesse direto na iniciativa
 
 ## Leitura correta dessa estrutura
 Essa lista representa uma anatomia típica de um PRD amplo, não um checklist universal. Nem todo documento precisará de todas as seções, e o nível de detalhe muda conforme a granularidade: um PRD mais macro tende a ser mais amplo e menos minucioso do que um PRD de feature. A utilidade do documento depende menos do nome exato das seções e mais da presença das informações necessárias para contextualizar corretamente o produto.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: transformar objetivos em evidências
+
+![Seções possíveis de um PRD](img/2.png)
+
+A lista é um cardápio, não obrigação de preencher todas as seções com texto genérico.
+Para cada objetivo, registre indicador, ponto de partida conhecido, meta proposta, janela
+de observação e responsável pela medição. Quando a baseline não existe, marque a coleta
+como pendência em vez de inventar um número.
+
+Exemplo proposto: “reduzir falhas de autenticação” precisa distinguir erro de senha,
+indisponibilidade do provider e bloqueio legítimo por política. Uma métrica agregada sem essa
+definição pode premiar um fluxo que libera acessos indevidos. A meta deve vir acompanhada
+dos limites que a solução precisa preservar.

@@ -19,3 +19,20 @@ Templates, prompts e entrevistas existem para reduzir o esforço de sair da pág
 ## Documentação como ativo cumulativo reutilizável
 Depois de produzidos, esses documentos deixam de servir apenas ao momento inicial da decisão e passam a compor o contexto reutilizável do ciclo de desenvolvimento. Eles ajudam novas pessoas a entender o que está sendo construído, sustentam decisões futuras e fornecem base para revisões, extensões e refinamentos arquiteturais. A própria IA se beneficia disso: com documentos anteriores como contexto, ela consegue responder e apoiar melhor tarefas posteriores. Documentação, nesse sentido, é um ativo cumulativo que preserva raciocínio e reduz perda de contexto ao longo do tempo.
 
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: o nome não define a qualidade
+
+![Papéis de HLD, FDD, LLD, ADR e RFC](img/image.png)
+
+O quadro ressalta que organizações usam nomes e estruturas diferentes. Combine o papel de
+cada documento com o time: proposta em revisão, decisão aceita, visão de estrutura ou
+contrato para implementar. FDD e LLD podem se sobrepor; não duplique um contrato apenas
+para preencher dois templates.
+
+Uma RFC interna pode ser aceita, rejeitada ou substituída. Um ADR também pode começar como
+proposta antes de ser aceito. Preserve status e referências entre eles. O
+[MADR](https://adr.github.io/madr/) fornece uma estrutura enxuta para registrar decisões,
+contexto, alternativas e consequências.

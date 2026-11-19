@@ -1,5 +1,32 @@
-# Pilares do desenvolvimento com IA
+## Visão integrada dos pilares
+Desenvolvimento com IA funciona como um sistema de componentes que precisam operar juntos, e não como uma única ferramenta isolada. Ferramenta, agentes, modelos, documentação, artefatos, skills, MCP e ambiente formam a infraestrutura prática da delegação. Estudar cada peça separadamente é necessário porque cada uma resolve um tipo diferente de problema operacional. O ganho real aparece quando essas peças convergem em um workflow capaz de executar com consistência e paralelismo.
 
-> Duração: `10:28`
+## Ferramentas, IDEs, CLI, comandos e prompts
+Ferramentas são a camada de operação onde o workflow acontece; aqui entram IDEs, CLIs, comandos e prompts como interface prática de execução. Retomando o que já foi estabelecido sobre workflow, o ponto novo não é a ferramenta em si, mas a necessidade de dominar múltiplas superfícies de interação para acelerar tarefas simples e complexas. Em um processo maduro, comandos e prompts deixam de ser pedidos soltos e passam a ser mecanismos de acionamento do fluxo. Isso aumenta velocidade porque reduz fricção entre intenção, contexto e execução.
 
-<!-- A preencher com o resumo da aula. -->
+## Agentes e modelos
+Agentes são a forma prática de encapsular execução orientada por IA dentro da ferramenta, mas sua qualidade depende diretamente do modelo escolhido para cada tarefa. Modelo não é só capacidade máxima; é também custo, adequação ao tipo de problema e impacto no resultado final. Um modelo mais caro pode ser desperdício em tarefas mecânicas, enquanto um modelo fraco pode comprometer análise, planejamento ou revisão. Escolher modelo, portanto, é uma decisão operacional: balanceia qualidade, latência e custo dentro do workflow.
+
+## Documentação formal versus artefatos mutáveis
+A separação entre documentação e artefatos precisa ser explícita porque eles cumprem papéis diferentes no processo. A documentação é a camada mais formal e estável: registra o que o projeto é, o que precisa respeitar e o que humanos também precisam entender. Já os artefatos são elementos mutáveis de tarefa, como listas, exemplos, assets, planos de ação e estruturas temporárias que a IA usa para executar, se orientar ou se autocontrolar. Misturar os dois prejudica governança, porque o que deveria ser fonte estável de verdade passa a oscilar junto com a execução diária.
+
+## Documentação proporcional ao projeto
+Documentar bem não significa documentar ao máximo. Excesso de documentação aumenta custo de contexto, consome tokens e dificulta manutenção; falta de documentação reduz autonomia e faz a IA operar com direção insuficiente. O critério correto é proporcionalidade ao tamanho e à complexidade do projeto. Além de orientar a IA, a documentação continua servindo para leitura humana, alinhamento interno e comunicação com gestão.
+
+## Skills como superpoderes on-demand
+Skills são pacotes acionáveis de contexto e capacidade que a IA carrega apenas quando precisa executar um tipo específico de tarefa. Em vez de manter scripts, documentos, assets e instruções sempre no contexto principal, a skill encapsula esse conjunto e o disponibiliza sob demanda. Isso reduz poluição de contexto e torna o agente mais modular, porque cada competência especializada pode ser anexada no momento certo. O efeito prático é semelhante a dar ferramentas especializadas para a IA sem sobrecarregar todas as execuções com o mesmo volume de informação.
+
+## Criar skills é parte da engenharia do processo
+Ter skills prontas não basta; é preciso saber projetá-las para o domínio e para o tipo de tarefa que será delegada. Uma skill mal desenhada só desloca a desorganização para outro lugar, porque a IA continua recebendo contexto ruim, só que empacotado. Uma skill boa combina instruções, referências e recursos de forma reutilizável e acionável. Isso transforma conhecimento recorrente em infraestrutura operacional do workflow.
+
+## MCP como camada de conexão externa
+Servidores MCP entram quando a IA precisa sair do contexto local e interagir com sistemas, documentação e serviços externos. Retomando o conceito já conhecido, o avanço aqui é enxergar MCP como parte estrutural do processo de desenvolvimento, não como acessório. Integrações com GitHub, Jira, Notion, Context7 e WebCrawler ampliam o alcance do agente e permitem que ele consulte, registre, sincronize e execute ações fora do editor. Sem essa camada, a IA fica restrita a um contexto mais fechado e perde capacidade de operar sobre o ecossistema real do projeto.
+
+## Ambientes locais e remotos
+Ambiente é o lugar onde a execução acontece, e essa escolha altera o que pode ser delegado e de onde o trabalho pode ser coordenado. O desenvolvimento local continua válido, mas workflows mais maduros permitem deslocar execução para ambientes remotos e supervisionar o processo à distância. Isso abre espaço para operar pelo celular, desde que o setup, os comandos e os pontos de controle já estejam bem definidos. O celular, nesse cenário, não substitui a engenharia do processo; ele se torna viável justamente porque o processo já foi externalizado para um ambiente executável.
+
+## Desenvolvimento pelo celular como consequência, não como truque
+Programar pelo celular não significa escrever software complexo em uma tela pequena por digitação manual. Significa acionar comandos, acompanhar execuções e coordenar agentes em um ambiente remoto que já foi preparado para trabalhar com autonomia. O resultado ainda exige revisão, e o setup inicial pode ser caro em tempo, mas a possibilidade operacional é real. Quando isso funciona, fica evidente que o valor principal não está no dispositivo, e sim no workflow bem amarrado.
+
+## Convergência para autodelegação e paralelização
+Retomando a paralelização já discutida, esses pilares são as peças que tornam a autodelegação viável na prática. Ferramenta executa, agente opera, modelo decide o nível de capacidade, documentação fixa direção, artefatos sustentam a tarefa, skills injetam competência sob demanda, MCP conecta sistemas e ambiente hospeda a execução. Quando essas camadas estão alinhadas, vários processos podem rodar ao mesmo tempo, inclusive revisão de código, sem depender de microgerenciamento contínuo. O desenvolvedor passa a coordenar um sistema de execução, e não apenas escrever cada passo manualmente.

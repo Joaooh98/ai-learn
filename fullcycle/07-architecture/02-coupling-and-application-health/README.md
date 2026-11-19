@@ -83,3 +83,11 @@ O repositório não contém o projeto prático, scripts, gráficos ou imagens da
 ausência impede reconstruir fielmente comandos, linguagem, estrutura de arquivos e resultados.
 Quando o material for adicionado, cada aula deve receber apenas o snapshot correspondente àquele
 momento, seguindo o mesmo princípio usado nos projetos práticos do [módulo de cache](../05-cache/README.md).
+
+
+## Atualização de estudo — 19/11/2026
+
+Nesta rodada, as imagens das seguintes aulas foram interpretadas e suas notas incrementadas:
+[04-main-sequence-and-coupling-zones](04-main-sequence-and-coupling-zones/README.md).
+
+Veja a [síntese e o escopo da revisão](../99-synthesis-and-updates/README.md).

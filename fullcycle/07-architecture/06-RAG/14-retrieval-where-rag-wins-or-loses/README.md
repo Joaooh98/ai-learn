@@ -136,7 +136,7 @@ Como mostra o quadro inferior (`$ Script simples + pgVector + terminal`), a obse
 No projeto [`mba-ia-rag`](../mba-ia-rag/README.md), os conceitos desta aula se materializam em quatro pontos da arquitetura:
 
 1. **Script de teste isolado de retrieval (`app/retrieve.py`):** permite testar qualquer pergunta e combinação de filtros (`--tenant`, `--product`, `--plan`, `--doc-type`, `--status`, `--top-k`) diretamente contra o `pgvector`, sem chamar o LLM (tema prático da Aula 15).
-2. **Filtros de segurança e escopo fixos na aplicação (`SAFE_FILTERS`):** em [`app/query_planner.py`](../mba-ia-rag/app/query_planner.py), `{"tenant": "fcai", "product": "fcai-cloud", "status": "published"}` garante que similaridade vetorial nunca atropele isolamento de tenant, produto ou status de publicação.
+2. **Filtros de segurança e escopo fixos na aplicação (`SAFE_FILTERS`):** em [`app/query_planner.py`](../mba-ia-rag/app/query_planner.py), `{"tenant": "fcai", "product": "fcai-cloud", "status": "published"}` restringe a consulta ao tenant, produto e status fixos do exemplo; não implementa, por si só, autorização multi-tenant.
 3. **Inspeção visual em tempo de execução (`--debug`):** em [`app/rag_chat.py`](../mba-ia-rag/app/rag_chat.py) e na API (`debug=true`), a aplicação expõe a consulta planejada, os filtros aplicados, a lista de chunks recuperados com scores e os `chunk_ids` efetivamente usados na resposta.
 4. **Logs estruturados (`app/rag_pipeline.py`):** cada requisição emite um JSON auditável com `request_id`, contagens de chunks recuperados/selecionados, `source_files`, tempos por etapa (`retrieval_ms`) e uso de tokens.
 
@@ -158,3 +158,30 @@ Na arquitetura final do projeto (`mba-ia-rag`), o retrieval trabalha com `TOP_K 
 ## Pergunta de revisão
 
 Por que ajustar repetidamente o prompt de sistema ou reduzir a `temperature` do LLM para `0` não resolve o problema quando o usuário recebe uma resposta incorreta causada por um chunk de outro plano comercial recuperado no `top-k`?
+
+---
+
+> Complemento revisado em 19/11/2026. Exemplos propostos não são medições da aula.
+
+## Aprofundamento: separar recuperação relevante de divulgação autorizada
+
+Os cinco quadros mostram indexação, recuperação, inspeção, filtros e observabilidade.
+O texto do quadro é um desenho lógico; não implica que filtros de segurança possam ser
+aplicados apenas depois que conteúdo restrito chegou ao modelo.
+
+No projeto local, `SAFE_FILTERS` fixa um escopo de demonstração. Para vários clientes, esse
+escopo precisa vir de um contexto autenticado e autorizado da aplicação. O planner pode
+restringir a busca, mas uma frase do usuário ou do documento não deve ampliar suas permissões.
+
+### Diagnóstico proposto para recall baixo
+
+1. Confirme que o documento correto foi aceito, indexado e está vigente.
+2. Confira o filtro autorizado e a referência esperada para aquela consulta.
+3. Compare a busca por termos exatos e a vetorial sem mudar simultaneamente o gerador.
+4. Inspecione os candidatos antes e depois do reranker.
+5. Avalie uma mudança por vez e preserve os mesmos IDs/versões de referência.
+
+Em busca aproximada, filtros e parâmetros do índice podem reduzir a quantidade de candidatos
+que satisfazem a consulta. O [pgvector documenta filtros e iterative scans](https://github.com/pgvector/pgvector#filtering).
+Avalie a configuração efetiva, sem assumir que aumentar `top-k` sempre devolve a evidência.
+Reranking só reordena o que recebeu; não recupera um documento ausente do conjunto candidato.

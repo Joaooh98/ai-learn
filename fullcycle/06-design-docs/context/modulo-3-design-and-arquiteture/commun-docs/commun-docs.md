@@ -14,13 +14,13 @@ Uma feature pequena ou isolada nem sempre exige um HLD completo antes do detalha
 LLD, ou Low Level Design, aproxima o design da implementação concreta. Ele detalha endpoints, contratos de comunicação, campos de API, patterns adotados e outras decisões que já orientam diretamente o código. A diferença para o Feature Design Doc está no grau de precisão: o documento de feature pode dizer que haverá determinados endpoints, enquanto o LLD define quais endpoints existirão e como seus contratos serão estruturados. Por isso, o LLD é útil quando a equipe precisa reduzir ambiguidade técnica antes de implementar.
 
 ## RFC
-RFC, ou Request for Comments, é um documento de deliberação técnica. Ele circula uma proposta para receber comentários, objeções e alternativas antes da decisão final, sendo especialmente comum em projetos open source e em mudanças com impacto relevante, como novas features ou breaking changes. Seu valor está em expor o raciocínio enquanto a decisão ainda está aberta, permitindo revisão coletiva em vez de validação tardia. RFC não registra a decisão definitiva; ela organiza a discussão que antecede essa decisão.
+RFC, ou Request for Comments, é um documento de deliberação técnica. Ele circula uma proposta para receber comentários, objeções e alternativas antes da decisão final, sendo especialmente comum em projetos open source e em mudanças com impacto relevante, como novas features ou breaking changes. Seu valor está em expor o raciocínio enquanto a decisão ainda está aberta, permitindo revisão coletiva em vez de validação tardia. A RFC organiza a discussão da proposta e pode preservar seu desfecho, desde que o status e a decisão final estejam explícitos.
 
 ## ADR
-ADR, ou Architecture Decision Record, registra uma decisão arquitetural já tomada, junto com sua justificativa e seu contexto. Diferentemente da RFC, que é deliberativa, o ADR é o artefato de memória técnica: ele responde por que uma tecnologia, stack, banco de dados ou abordagem foi escolhida e em que condições essa escolha faz sentido. Um ADR pode ficar ativo, ser substituído ou tornar-se inativo quando a decisão deixa de valer. Esse histórico evita que o time precise redescobrir continuamente o motivo das escolhas anteriores.
+ADR, ou Architecture Decision Record, registra uma decisão arquitetural já tomada, junto com sua justificativa e seu contexto. O ADR concentra a memória de uma decisão, podendo passar de proposto a aceito: ele responde por que uma tecnologia, stack, banco de dados ou abordagem foi escolhida e em que condições essa escolha faz sentido. Um ADR pode ficar ativo, ser substituído ou tornar-se inativo quando a decisão deixa de valer. Esse histórico evita que o time precise redescobrir continuamente o motivo das escolhas anteriores.
 
 ## RFC e ADR na linha do tempo
-A diferença central entre RFC e ADR é temporal e funcional. A RFC aparece antes, quando ainda há debate sobre a melhor alternativa; o ADR aparece depois, quando a organização precisa registrar a decisão que venceu esse debate. Em um fluxo maduro, a RFC captura argumentos e contrapontos, e o ADR consolida a decisão técnica de forma clara e sucinta. Nem toda decisão exige os dois documentos, mas confundir discussão com registro costuma gerar perda de contexto.
+A diferença central entre RFC e ADR é temporal e funcional. A RFC costuma estruturar o debate; o ADR concentra a decisão e sua justificativa. Ambos podem existir em estado proposto e ser atualizados após a deliberação. Em um fluxo maduro, a RFC captura argumentos e contrapontos, e o ADR consolida a decisão técnica de forma clara e sucinta. Nem toda decisão exige os dois documentos, mas confundir discussão com registro costuma gerar perda de contexto.
 
 ## Tabela comparativa
 | Documento | Pergunta principal | Nível de detalhe | Momento de uso |
@@ -34,3 +34,19 @@ A diferença central entre RFC e ADR é temporal e funcional. A RFC aparece ante
 
 ## Aplicação no mesmo problema ao longo da cadeia
 Retomando o mesmo problema de produto já contextualizado anteriormente, o PRD define o objetivo e as restrições do recurso. O HLD transforma isso em visão estrutural da solução; o Feature Design Doc desce para a implementação daquela feature específica; o LLD fixa contratos, endpoints e detalhes executáveis; se houver dúvida relevante entre alternativas, a discussão pode passar por uma RFC; quando a escolha é feita, ela deve ser registrada em ADR. O valor do ecossistema documental está justamente nesse encadeamento: cada artefato responde uma pergunta diferente sem competir com os demais.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Nomenclatura e rastreabilidade sem documentos duplicados
+
+FRD costuma designar um documento de requisitos funcionais e não deve ser considerado
+sinônimo universal de FDD. Defina o vocabulário local. RFC e ADR podem ter estados propostos
+e aceitos; nem toda RFC exige criar outro documento, se a decisão e suas consequências
+já ficam registradas de forma inequívoca.
+
+Uma cadeia prática é `REQ-01 -> ADR-01 -> operação pública -> TEST-01`. O requisito explica
+o resultado desejado; o ADR justifica uma escolha; o contrato define o comportamento;
+o teste oferece evidência. A mesma cadeia pode caber em um documento pequeno. Seu valor
+vem das relações verificáveis, não da quantidade de arquivos.

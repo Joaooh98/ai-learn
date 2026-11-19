@@ -30,3 +30,19 @@ Riscos continuam relevantes, mas aqui aparecem conectados à execução concreta
 
 ## Relação com desenvolvimento e com IA
 O PRD de feature se aproxima mais do cotidiano de desenvolvimento porque organiza informações diretamente acionáveis para construir a entrega. Retomando o papel do PRD como contexto para IA, esse formato reduz ambiguidade sobre o que o código precisa resolver, quais limites respeitar e quais condições definem sucesso. Ele não substitui design docs, mas melhora muito a qualidade dos artefatos técnicos produzidos depois. Quanto mais explícitas estiverem essas seções, menor a chance de o time ou a IA preencherem lacunas com suposições erradas.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: aceite funcional e não funcional
+
+![Seções do PRD de feature](img/6.png)
+
+Use um cenário de aceitação para cada comportamento relevante: condição inicial, ação e
+resultado observável. Para requisitos de qualidade, acrescente carga, ambiente, unidade,
+percentil e janela de medição, sem apresentar uma meta como desempenho já medido.
+
+Exemplo proposto para acesso: “dado um usuário de tenant A, ao consultar recurso de tenant B,
+o serviço nega acesso e não retorna o conteúdo”. Esse cenário é mais verificável que
+“o sistema deve ser seguro” e pode ser rastreado do PRD à matriz de autorização e ao teste.

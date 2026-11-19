@@ -21,3 +21,25 @@ Precision, recall e F1 continuam adequados quando existe ground truth confiável
 
 ## Pairwise no LangSmith
 No LangSmith, pairwise aparece como um evaluator porque a ferramenta precisa de um componente concreto para aplicar o julgamento comparativo. O ponto central não é a nomenclatura da interface, mas entender que o evaluator operacionaliza uma avaliação relativa entre duas execuções. Essa leitura ajuda a estruturar experimentos corretamente: duas opções são executadas sobre o mesmo input, e o juiz decide a preferência. A partir daí, as próximas iterações podem inspecionar justificativas, versionar prompts e repetir comparações com mais controle.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura dos dois quadros
+
+![Comparação relativa e exemplo de timeout em Go](img/image-1.png)
+
+![Continuação: comparação e agregação](img/image-2.png)
+
+Os dois recortes mostram o exemplo `context.WithTimeout` versus `time.Sleep`, com preferência
+por A. A escolha ilustra o critério, mas uma implementação real precisa propagar o contexto
+para a requisição e executar o cancelamento. Só escrever o nome da função não prova que
+um timeout foi configurado corretamente.
+
+### Como evitar um vencedor enganoso
+
+Ambas as respostas podem estar erradas e uma ainda assim vencer. Separe a preferência
+relativa de um requisito absoluto, como compilar, cumprir schema ou não introduzir falha de
+segurança. Em avaliação com juiz, alterne a ordem A/B e oculte os nomes dos modelos para
+reduzir pistas. Registre A, B, empate e erro do juiz em estados distintos.

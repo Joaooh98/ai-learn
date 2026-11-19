@@ -1,5 +1,23 @@
-# Arquitetura de Software e solução
+## Democratização da implementação e limite do software gerado por IA
+Ferramentas de geração de software reduziram drasticamente a barreira de entrada para construir protótipos, MVPs e aplicações pequenas. Isso desloca o software comum para áreas de produto e para perfis não especializados, porque o custo de experimentar caiu muito e a velocidade inicial aumentou. O exemplo da pessoa sem conhecimento de HTML que consegue montar um sistema com área administrativa mostra exatamente essa mudança: a implementação básica foi democratizada, mas os problemas de segurança e qualidade continuam existindo. O valor técnico deixa de estar em “conseguir gerar algo” e passa a estar em garantir que esse algo possa operar com confiabilidade.
 
-> Duração: `06:13`
+## Software crítico exige profissional especializado
+Nem todo software tolera código frágil, arquitetura improvisada ou integração mal resolvida. Sistemas críticos precisam escalar, lidar com regras complexas, conversar com outros ecossistemas e manter segurança operacional, o que exige decisão técnica consciente e não apenas geração automática de código. A diferença central não é entre “quem programa” e “quem não programa”, mas entre quem produz um protótipo funcional e quem consegue transformar esse protótipo em solução real. É nesse ponto que o profissional especializado continua indispensável.
 
-<!-- A preencher com o resumo da aula. -->
+## O desenvolvedor como arquiteto de software e de solução
+O papel do desenvolvedor se desloca da execução manual para a definição estrutural do sistema. Em vez de concentrar valor em criar arquivos e implementar tudo diretamente, o profissional passa a responder por arquitetura, boas práticas, integrações, restrições de produto e coerência entre partes do sistema. Em empresas maiores ou em contextos mais complexos, isso evolui de arquitetura de software para arquitetura de solução, porque a responsabilidade inclui o encaixe do sistema dentro de processos, plataformas e dependências externas. O centro do trabalho deixa de ser o código isolado e passa a ser a decisão técnica que organiza o todo.
+
+## Coautoria de código em vez de autoria solitária
+Coautor de código é o profissional que trabalha com a IA como executora da implementação, mas mantém responsabilidade sobre direção, revisão e qualidade do resultado. A IA produz partes do sistema, acelera entregas e reduz trabalho mecânico, enquanto o desenvolvedor define o problema, estabelece critérios e valida consequências técnicas. Isso muda a competência principal exigida: menos digitação manual e mais julgamento, comunicação e capacidade de orientar a construção. A implementação continua existindo, mas deixa de ser a única forma de contribuição relevante.
+
+## Novos eixos arquiteturais trazidos por IA
+Retomando o cenário em que protótipos já podem ser gerados rapidamente, a camada seguinte do problema é arquitetural: disponibilidade, segurança, uso de tokens, integrações com aplicações de IA e comportamento operacional do sistema. Esses fatores não eram centrais em muitos softwares tradicionais e agora entram como restrições de primeira ordem. Projetar uma solução com IA significa decidir não apenas “o que o sistema faz”, mas também “quanto custa operar”, “como ele responde sob carga” e “quais riscos novos ele introduz”. A arquitetura passa a absorver variáveis que antes não existiam no mesmo nível.
+
+## Prompt Injection como problema arquitetural
+Prompt Injection não é apenas um detalhe de prompt engineering; é uma superfície de ataque que afeta o desenho da solução. Quando um sistema consome instruções, documentos ou entradas externas que podem influenciar o comportamento do modelo, a arquitetura precisa prever isolamento de contexto, validação de entrada, delimitação de permissões e contenção de efeitos colaterais. Isso importa porque um agente com acesso a ferramentas ou dados sensíveis pode executar ações indevidas a partir de contexto malicioso. Tratar esse risco como problema de arquitetura evita que segurança fique dependente apenas de “prompts melhores”.
+
+## Latência de LLM como restrição de projeto
+Um LLM pode levar muitos segundos ou até cerca de um minuto para retornar uma resposta completa, e isso altera decisões de UX, backend e integração. Um fluxo síncrono simples pode se tornar inviável quando o usuário espera resposta imediata ou quando outras partes do sistema dependem desse retorno para continuar. A solução pode exigir processamento assíncrono, filas, streaming, estados intermediários e desenho explícito de timeout e retry. Latência, nesse contexto, deixa de ser detalhe de infraestrutura e vira restrição arquitetural.
+
+## Comunicação e resolução de problemas ganham centralidade
+Como a implementação tende a ser cada vez mais delegada, o profissional agrega valor ao traduzir problemas de negócio em decisões técnicas executáveis. Isso exige comunicação forte com produto, alinhamento com outras pessoas e capacidade de formular restrições com clareza — algo que se conecta diretamente à documentação como fonte da verdade já estabelecida anteriormente. Sem essa clareza, a IA apenas acelera ambiguidades e amplia erros em escala. Resolver o problema certo passa a ser mais importante do que escrever pessoalmente cada linha da solução.

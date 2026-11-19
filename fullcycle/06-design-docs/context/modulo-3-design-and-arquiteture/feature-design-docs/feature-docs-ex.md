@@ -45,3 +45,32 @@ Critérios de aceite convertem o documento em checklist verificável para implem
 
 ## Pesquisa técnica como insumo para IA
 IA acelera a escrita do documento, mas não inventa requisitos corretos que não foram fornecidos ou compreendidos. Se o autor não souber que scripts Lua, mutex por chave, semântica de headers ou modos de fallback são relevantes, o rascunho tende a omitir exatamente os pontos que mais afetam a implementação. Pesquisa técnica profunda amplia o repertório de decisões que podem ser pedidas e revisadas. O valor da IA cresce quando ela recebe contexto técnico real, não quando substitui entendimento do problema.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Revisão técnica do exemplo: tornar o contrato testável
+
+| Fronteira | Definição que falta explicitar no projeto concreto |
+|---|---|
+| Unidade da política | Janela, capacidade, taxa de reposição, custo por requisição e identidade |
+| Concorrência | Onde a leitura/decisão/atualização é atômica e qual o escopo dessa garantia |
+| Redis Cluster | Quais chaves precisam estar no mesmo slot e como distribuir a carga |
+| Falha de Redis | Timeout, comportamento por rota, sinal de degradação e recuperação |
+| Memória local | Limite por processo ou coordenação global; descarte de chaves e reinício |
+| Compatibilidade | Headers, unidade dos valores e exemplos completos de resposta |
+
+Lua tem execução atômica no Redis, mas scripts longos também bloqueiam outras atividades:
+limite o trabalho realizado, conforme a [documentação do Redis](https://redis.io/docs/latest/develop/programmability/eval-intro/).
+Atomicidade não implica persistência garantida nem contagem global correta em partições.
+
+Para respostas HTTP de excesso de requisições, `429` é definido na
+[RFC 6585](https://www.rfc-editor.org/rfc/rfc6585.html#section-4), que permite `Retry-After`.
+Especifique os outros headers conforme o contrato escolhido e a versão da referência;
+não trate diferentes nomes de headers de rate limiting como equivalentes universais.
+
+Critérios úteis: uma rajada concorrente na mesma chave respeita o limite definido; outro
+tenant mantém sua própria cota; indisponibilidade produz o modo documentado; reinício e
+retorno de Redis têm efeitos explícitos. Esses são cenários propostos para evolução do
+exemplo, não testes executados nesta revisão.

@@ -27,3 +27,18 @@ A geração assistida não elimina edição humana; ela desloca o esforço de es
 
 ## Documentação como ativo de engenharia
 Documentação dá trabalho, mas se torna um ativo quando passa a ser lida por pessoas e por IA ao longo do ciclo de vida do software. Um FDD inicial bem gerado acelera implementação, revisão técnica, testes, manutenção e futuras automações baseadas em contexto. Em engenharia de software, isso importa porque o desenvolvimento não termina no código: decisões, contratos e restrições precisam continuar acessíveis, atualizáveis e reutilizáveis.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## A fonte citada ainda precisa sustentar a afirmação
+
+Um PDF de pesquisa produzido por IA é insumo secundário. Para uma recomendação decisiva,
+abra a fonte primária e confira data, versão, condição de uso e se o trecho realmente
+sustenta a conclusão. Não promova uma opção a requisito porque a ferramenta a recomendou.
+
+Mantenha um pequeno registro: pergunta, alternativas, evidências, limitações e decisão do
+responsável. Quando a fonte está inacessível, marque a conclusão como não verificada.
+As notas desta pasta não incluem o PDF de pesquisa mencionado; não há como atribuir a ele
+valores específicos sem acrescentar o arquivo ou uma referência verificável.

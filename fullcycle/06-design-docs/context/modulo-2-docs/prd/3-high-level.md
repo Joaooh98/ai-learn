@@ -15,3 +15,19 @@ Roadmap e definição de papéis entram no PRD de alto nível porque o documento
 
 ## Clareza como critério de qualidade do PRD macro
 Se as perguntas centrais do PRD de alto nível não podem ser respondidas, o problema não é apenas documental; é falta de clareza sobre o próprio projeto. Retomando o uso de PRD para IA, esse ponto é ainda mais importante porque o modelo depende desse contexto para interpretar corretamente a iniciativa antes de qualquer design doc. Um documento macro bem formulado reduz inferência implícita e melhora a qualidade das decisões derivadas. O próximo passo natural é descer desse enquadramento estratégico para o nível em que uma feature específica passa a exigir seu próprio contexto.
+
+---
+
+> Complemento de estudo revisado em 19/11/2026.
+
+## Leitura da imagem: contexto macro com vínculos verificáveis
+
+![Perguntas de um PRD em alto nível](img/3.png)
+
+As perguntas percorrem propósito, escopo, público, sucesso e riscos. Para tornar as respostas
+úteis à implementação, atribua IDs aos requisitos e referencie o documento que detalha cada
+contrato. Mantenha alternativas em discussão separadas das decisões aceitas.
+
+O PRD não precisa antecipar a topologia, mas restrições reais, como integração obrigatória
+com um sistema existente, devem aparecer com sua origem. Um alvo sugerido pela IA deve
+continuar marcado como proposta até a decisão do responsável pelo produto.
